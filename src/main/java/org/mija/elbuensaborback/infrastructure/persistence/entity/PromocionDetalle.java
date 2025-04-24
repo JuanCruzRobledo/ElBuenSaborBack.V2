@@ -20,7 +20,7 @@ public class PromocionDetalle {
 
     @ManyToOne
     @JoinColumn(name = "promocion_id")
-    private Promocion promocion;
+    private ArticuloPromocion articuloPromocion;
 
     @ManyToOne
     @JoinColumn(name = "articulo_id")

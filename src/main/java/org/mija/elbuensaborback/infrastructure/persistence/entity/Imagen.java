@@ -23,7 +23,4 @@ public class Imagen {
     @JoinColumn(name = "articulo_id")
     private Articulo articulo;
 
-    @ManyToOne
-    @JoinColumn(name = "promocion_id")
-    private Promocion promocion;
 }

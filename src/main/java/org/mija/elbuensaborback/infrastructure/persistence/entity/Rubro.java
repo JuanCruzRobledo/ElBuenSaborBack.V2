@@ -29,4 +29,7 @@ public class Rubro {
     @OneToMany(mappedBy = "rubroPadre", cascade = CascadeType.ALL)
     private Set<Rubro> subrubros;
 
+    @OneToMany(mappedBy = "rubro")
+    Set<ArticuloInsumo> articulosInsumos;
+
 }

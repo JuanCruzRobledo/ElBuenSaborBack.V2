@@ -27,6 +27,8 @@ public class Sucursal {
     @JoinColumn(name = "domicilio_id", referencedColumnName = "id")
     private Domicilio domicilio;
 
+    /*
+    AHORA PROMOCION ES UN ARTICULO
     @ManyToMany
     @JoinTable(
             name = "sucursal_promociones",
@@ -35,6 +37,10 @@ public class Sucursal {
     )
     private List<Promocion> listaPromociones;
 
+    */
+
+    /*
+    AHORA SE RELACIONA DIRECTAMENTE CON ARTICULO QUE SI TIENE UN RUBRO
     @ManyToMany
     @JoinTable(
             name = "sucursal_rubro",
@@ -46,6 +52,7 @@ public class Sucursal {
             )
     )
     private List<Rubro> listaRubros;
+    */
 
     @ManyToOne
     @JoinColumn(name = "empresa_id", nullable = false)
@@ -65,4 +72,8 @@ public class Sucursal {
 
     @OneToMany(mappedBy = "sucursal")
     private List<Pedido> listaPedidos ;
+
+    @OneToMany(mappedBy = "sucursal")
+    private List<Articulo> listaArticulos;
+
 }

@@ -15,11 +15,11 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+//@Entity
 @Deprecated
 public class FacturaDetalle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer cantidad;
     private BigDecimal subTotal;

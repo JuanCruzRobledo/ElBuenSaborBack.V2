@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 
 import java.math.BigDecimal;
-import java.util.List;
-
+import java.util.Set;
 
 
 @Entity
@@ -17,11 +16,15 @@ public abstract class Articulo {
     private String denominacion;
     private BigDecimal precioVenta;
     @OneToMany(mappedBy = "articulo")
-    private List<Imagen> listaImagenes;
+    private Set<Imagen> listaImagenes;
     @ManyToOne
     @JoinColumn(name = "rubro_id")
     private Rubro rubro;
     @Enumerated(EnumType.STRING)
     private UnidadMedidaEnum unidadMedidaEnum;
+
+    @ManyToOne
+    @JoinColumn(name = "sucursal_id")
+    private Sucursal sucursal;
 
 }
