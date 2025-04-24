@@ -1,23 +1,36 @@
-package org.mija.elbuensaborback.domain.model;
+package org.mija.elbuensaborback.infrastructure.persistence.entity;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.mija.elbuensaborback.domain.enums.AuthProviderEnum;
 
-
-
+@NoArgsConstructor
+@Data
+@AllArgsConstructor
+@Builder
+@Entity
 public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String email;
 
-    //Usuario OAuth2
+    //usuario OAuth2
     private String oauth2Id;
     private AuthProviderEnum authProviderEnum;
-    //Usuario Local
+    //usuario Local
     private boolean isEnabled;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
     private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
     private Role rol;
 
 }

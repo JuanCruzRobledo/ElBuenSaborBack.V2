@@ -10,6 +10,6 @@ public class EmployeeController {
 
     @GetMapping
     public String holaSoyEmpleado(){
-        return "Hola Soy Empleado";
+        return "Hola Soy empleado";
     }
 }
