@@ -10,24 +10,21 @@ import org.mija.elbuensaborback.domain.enums.FormaPagoEnum;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Factura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate fechaFacturacion;
-    private Integer mpPaymentId;
-    private Integer mpMerchantOrderId;
-    private String mpPreferenceId;
-    private String mpPaymentType;
+
     @Enumerated(EnumType.STRING)
     private FormaPagoEnum formaPagoEnum;
     private BigDecimal totalVenta;
-    private BigDecimal gastosEnvio;
-    private BigDecimal descuento;
+    private LocalDate fechaFacturacion;
+    private Long numeroComprobante;
 
 }

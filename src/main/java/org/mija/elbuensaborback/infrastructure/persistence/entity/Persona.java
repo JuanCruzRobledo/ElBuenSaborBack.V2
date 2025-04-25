@@ -11,9 +11,13 @@ public abstract class Persona {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    protected String nombre;
-    protected String apellido;
-    protected String telefono;
-    protected String email;
+    private String nombre;
+    private String apellido;
+    private String telefono;
+    private String email;
+
+    @OneToOne()
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    private Usuario usuario;
 
 }

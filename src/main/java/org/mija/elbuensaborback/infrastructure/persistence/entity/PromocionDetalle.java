@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-//ESTA CLASE SE USA?
 public class PromocionDetalle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

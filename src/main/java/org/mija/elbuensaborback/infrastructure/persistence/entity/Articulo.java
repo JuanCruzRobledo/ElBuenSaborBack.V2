@@ -15,6 +15,7 @@ public abstract class Articulo {
     private Long id;
     private String denominacion;
     private BigDecimal precioVenta;
+    private double cantidad;
     @OneToMany(mappedBy = "articulo")
     private Set<Imagen> listaImagenes;
     @ManyToOne

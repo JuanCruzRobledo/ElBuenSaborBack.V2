@@ -21,9 +21,7 @@ public class ArticuloPromocion extends Articulo {
     private LocalTime horaDesde;
     private LocalTime horaHasta;
     private String descripcionDescuento;
-
-    @Enumerated(EnumType.STRING)
-    private TipoPromocionEnum tipoPromocionEnum;
+    private String nombre;
 
     @OneToMany(mappedBy = "articuloPromocion")
     private List<PromocionDetalle> promocionDetalle;

@@ -14,12 +14,8 @@ import java.util.List;
 @Entity
 public class Empleado extends Persona {
 
-    @OneToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "sucursal_id")
+    private Sucursal sucursal;
 
-    @OneToMany(mappedBy = "empleado")
-    private List<Pedido> listaPedido;
-
-    //TIENE QUE TENER SUCURSAL PARA MI
 }

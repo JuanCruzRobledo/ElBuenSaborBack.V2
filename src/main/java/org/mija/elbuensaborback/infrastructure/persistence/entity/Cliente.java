@@ -13,9 +13,6 @@ import java.util.List;
 @Entity
 public class Cliente extends Persona {
 
-    @OneToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    private Usuario usuario;
 
     @ManyToMany
     @JoinTable(
