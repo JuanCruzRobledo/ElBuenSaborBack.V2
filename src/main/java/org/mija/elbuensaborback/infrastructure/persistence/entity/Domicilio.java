@@ -18,7 +18,7 @@ public class Domicilio {
     private String calle;
     private Integer numero;
     private String codigoPostal;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "localidad_id", referencedColumnName = "id")
     private Localidad localidad;
 }

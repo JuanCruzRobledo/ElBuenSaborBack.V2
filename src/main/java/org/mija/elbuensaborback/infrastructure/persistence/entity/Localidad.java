@@ -17,7 +17,7 @@ public class Localidad {
     private Long id;
     private String nombre;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "provincia_id" , referencedColumnName = "id")
     private Provincia provincia;
 }

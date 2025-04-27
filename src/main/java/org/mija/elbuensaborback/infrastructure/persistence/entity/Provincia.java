@@ -17,7 +17,7 @@ public class Provincia {
     private Long id;
     private String nombre;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "pais_id")
     private Pais pais;
 }
