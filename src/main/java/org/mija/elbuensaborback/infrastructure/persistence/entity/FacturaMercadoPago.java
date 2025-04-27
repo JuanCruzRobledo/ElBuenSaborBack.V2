@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
-@Builder
 @Entity
 public class FacturaMercadoPago extends Factura {
 
