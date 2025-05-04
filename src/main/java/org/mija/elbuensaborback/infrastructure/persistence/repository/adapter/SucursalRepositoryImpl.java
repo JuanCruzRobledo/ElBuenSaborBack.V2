@@ -1,7 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
 import org.mija.elbuensaborback.domain.repository.SucursalRepositoryPort;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.Sucursal;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.SucursalJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,17 +17,17 @@ public class SucursalRepositoryImpl implements SucursalRepositoryPort {
     }
 
     @Override
-    public Optional<Sucursal> findById(Long id) {
+    public Optional<SucursalEntity> findById(Long id) {
         return Optional.empty();
     }
 
     @Override
-    public List<Sucursal> findAll() {
+    public List<SucursalEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public Sucursal save(Sucursal nombreEntidad) {
+    public SucursalEntity save(SucursalEntity nombreEntidad) {
         return sucursalJpaRepository.save(nombreEntidad);
     }
 
@@ -37,7 +37,7 @@ public class SucursalRepositoryImpl implements SucursalRepositoryPort {
     }
 
     @Override
-    public List<Sucursal> saveAll(List<Sucursal> sucursales) {
+    public List<SucursalEntity> saveAll(List<SucursalEntity> sucursales) {
         return List.of();
     }
 }

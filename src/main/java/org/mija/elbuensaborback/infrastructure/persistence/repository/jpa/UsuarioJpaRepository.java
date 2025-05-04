@@ -1,7 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.jpa;
 
-import org.mija.elbuensaborback.infrastructure.persistence.entity.Usuario;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.UsuarioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UsuarioJpaRepository extends JpaRepository<Usuario, Long> {
+public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Long> {
 }

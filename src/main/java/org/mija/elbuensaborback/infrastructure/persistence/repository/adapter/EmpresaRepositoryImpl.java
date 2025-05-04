@@ -1,7 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
 import org.mija.elbuensaborback.domain.repository.EmpresaRepositoryPort;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.Empresa;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.EmpresaEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.EmpresaJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,17 +17,17 @@ public class EmpresaRepositoryImpl implements EmpresaRepositoryPort {
     }
 
     @Override
-    public Optional<Empresa> findById(Long id) {
+    public Optional<EmpresaEntity> findById(Long id) {
         return Optional.empty();
     }
 
     @Override
-    public List<Empresa> findAll() {
+    public List<EmpresaEntity> findAll() {
         return empresaJpaRepository.findAll();
     }
 
     @Override
-    public Empresa save(Empresa nombreEntidad) {
+    public EmpresaEntity save(EmpresaEntity nombreEntidad) {
         return empresaJpaRepository.save(nombreEntidad);
     }
 

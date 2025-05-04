@@ -1,7 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.jpa;
 
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloPromocion;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloPromocionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ArticuloPromocionJpaRepository extends JpaRepository<ArticuloPromocion, Long> {
+public interface ArticuloPromocionJpaRepository extends JpaRepository<ArticuloPromocionEntity, Long> {
 }

@@ -1,7 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
 import org.mija.elbuensaborback.domain.repository.LocalidadRepositoryPort;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.Localidad;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.LocalidadEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.LocalidadJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,17 +17,17 @@ public class LocalidadRepositoryImpl implements LocalidadRepositoryPort {
     }
 
     @Override
-    public Optional<Localidad> findById(Long id) {
+    public Optional<LocalidadEntity> findById(Long id) {
         return Optional.empty();
     }
 
     @Override
-    public List<Localidad> findAll() {
+    public List<LocalidadEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public Localidad save(Localidad nombreEntidad) {
+    public LocalidadEntity save(LocalidadEntity nombreEntidad) {
         return localidadJpaRepository.save(nombreEntidad);
     }
 
@@ -37,7 +37,7 @@ public class LocalidadRepositoryImpl implements LocalidadRepositoryPort {
     }
 
     @Override
-    public List<Localidad> saveAll(List<Localidad> localidades) {
+    public List<LocalidadEntity> saveAll(List<LocalidadEntity> localidades) {
         return localidadJpaRepository.saveAll(localidades);
     }
 }

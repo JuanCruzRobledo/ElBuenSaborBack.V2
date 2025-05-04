@@ -1,14 +1,14 @@
 package org.mija.elbuensaborback.domain.repository;
 
-import org.mija.elbuensaborback.infrastructure.persistence.entity.Sucursal;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface SucursalRepositoryPort {
-    Optional<Sucursal> findById(Long id);
-    List<Sucursal> findAll();
-    Sucursal save(Sucursal nombreEntidad);
+    Optional<SucursalEntity> findById(Long id);
+    List<SucursalEntity> findAll();
+    SucursalEntity save(SucursalEntity nombreEntidad);
     void deleteById(Long id);
-    List<Sucursal> saveAll(List<Sucursal> sucursales);
+    List<SucursalEntity> saveAll(List<SucursalEntity> sucursales);
 }
