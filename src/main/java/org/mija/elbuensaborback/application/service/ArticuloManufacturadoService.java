@@ -2,7 +2,6 @@ package org.mija.elbuensaborback.application.service;
 
 import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoRequestDto;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoResponseDto;
-import org.mija.elbuensaborback.domain.model.ArticuloManufacturado;
 
 public interface ArticuloManufacturadoService {
     // Métodos para gestionar los artículos manufacturados

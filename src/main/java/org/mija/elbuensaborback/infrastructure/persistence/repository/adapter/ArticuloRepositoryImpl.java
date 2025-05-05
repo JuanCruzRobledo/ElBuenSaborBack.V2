@@ -34,4 +34,9 @@ public class ArticuloRepositoryImpl implements ArticuloRepositoryPort {
     @Override
     public void deleteById(Long id) {
     }
+
+    @Override
+    public List<ArticuloEntity> saveAll(List<ArticuloEntity> entities) {
+        return List.of();
+    }
 }

@@ -11,7 +11,7 @@ import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "articulo_manufacturado_detalle")
 public class ArticuloManufacturadoDetalleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +26,9 @@ public class ArticuloManufacturadoDetalleEntity {
 
     @ManyToOne
     @JoinColumn(name = "articulo_manufacturado_id")
-    private ArticuloManufacturadoEntity articuloManufacturadoEntity;
+    private ArticuloManufacturadoEntity articuloManufacturado;
 
     @ManyToOne
     @JoinColumn(name = "articulo_insumo_id")
-    private ArticuloInsumoEntity articuloInsumoEntity;
+    private ArticuloInsumoEntity articuloInsumo;
 }

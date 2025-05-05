@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Entity
+@Entity(name = "articulo")
 //@MappedSuperclass
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class ArticuloEntity {
@@ -32,11 +32,11 @@ public abstract class ArticuloEntity {
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
-    private CategoriaEntity categoriaEntity;
+    private CategoriaEntity categoria;
 
     @ManyToOne
     @JoinColumn(name = "sucursal_id")
-    private SucursalEntity sucursalEntity;
+    private SucursalEntity sucursal;
 
     /*
     RELACION VIEJA

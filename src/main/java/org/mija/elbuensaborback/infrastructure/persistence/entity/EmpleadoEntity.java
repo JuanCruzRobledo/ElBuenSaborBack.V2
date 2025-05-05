@@ -9,11 +9,11 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "empleado")
 public class EmpleadoEntity extends PersonaEntity {
 
     @ManyToOne
     @JoinColumn(name = "sucursal_id")
-    private SucursalEntity sucursalEntity;
+    private SucursalEntity sucursal;
 
 }

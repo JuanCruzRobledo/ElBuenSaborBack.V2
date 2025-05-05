@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
-@Entity
+@Entity(name = "articulo_promocion")
 public class ArticuloPromocionEntity extends ArticuloEntity {
 
     private LocalDate fechaDesde;
@@ -25,7 +25,7 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
     private String nombre;
 
     @OneToMany(mappedBy = "articuloPromocion")
-    private List<PromocionDetalleEntity> promocionDetalleEntity;
+    private List<PromocionDetalleEntity> promocionDetalle;
 
 
 

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "pedido_detalle")
 public class DetallePedidoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +22,9 @@ public class DetallePedidoEntity {
 
     @ManyToOne
     @JoinColumn(name = "articulo_id")
-    private ArticuloEntity articuloEntity;
+    private ArticuloEntity articulo;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
-    private PedidoEntity pedidoEntity;
+    private PedidoEntity pedido;
 }

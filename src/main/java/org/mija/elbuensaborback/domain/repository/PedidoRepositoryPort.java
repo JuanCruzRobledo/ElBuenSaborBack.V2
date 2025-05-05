@@ -1,4 +1,6 @@
 package org.mija.elbuensaborback.domain.repository;
 
-public interface PedidoRepositoryPort {
+import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
+
+public interface PedidoRepositoryPort extends GenericRepositoryPort<PedidoEntity,Long> {
 }

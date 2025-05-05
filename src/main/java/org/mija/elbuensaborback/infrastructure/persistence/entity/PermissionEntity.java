@@ -11,7 +11,7 @@ import org.mija.elbuensaborback.domain.enums.PermissionEnum;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "permisos")
 public class PermissionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +21,5 @@ public class PermissionEntity {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private RoleEntity roleEntity;
+    private RoleEntity role;
 }

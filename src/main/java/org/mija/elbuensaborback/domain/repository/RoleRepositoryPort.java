@@ -1,4 +1,6 @@
 package org.mija.elbuensaborback.domain.repository;
 
-public interface RoleRepositoryPort{
+import org.mija.elbuensaborback.infrastructure.persistence.entity.RoleEntity;
+
+public interface RoleRepositoryPort extends GenericRepositoryPort<RoleEntity,Long>{
 }

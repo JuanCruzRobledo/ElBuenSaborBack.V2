@@ -1,4 +1,6 @@
 package org.mija.elbuensaborback.domain.repository;
 
-public interface UsuarioRepositoryPort {
+import org.mija.elbuensaborback.infrastructure.persistence.entity.UsuarioEntity;
+
+public interface UsuarioRepositoryPort extends GenericRepositoryPort<UsuarioEntity,Long>{
 }

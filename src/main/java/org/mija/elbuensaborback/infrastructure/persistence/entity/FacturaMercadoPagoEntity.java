@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
-@Entity
+@Entity(name = "factura_mercadopago")
 public class FacturaMercadoPagoEntity extends FacturaEntity {
 
     private Integer mpPaymentId;

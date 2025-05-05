@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "pais")
 public class PaisEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +21,5 @@ public class PaisEntity {
     private String nombre;
 
     @OneToMany(mappedBy = "pais", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProvinciaEntity> provinciaEntities;
+    private List<ProvinciaEntity> provincia;
 }

@@ -1,4 +1,6 @@
 package org.mija.elbuensaborback.domain.repository;
 
-public interface PersonaRepositoryPort {
+import org.mija.elbuensaborback.infrastructure.persistence.entity.PersonaEntity;
+
+public interface PersonaRepositoryPort extends GenericRepositoryPort<PersonaEntity,Long>{
 }

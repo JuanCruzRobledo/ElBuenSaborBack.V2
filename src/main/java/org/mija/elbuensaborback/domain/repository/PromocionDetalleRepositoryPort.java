@@ -1,4 +1,6 @@
 package org.mija.elbuensaborback.domain.repository;
 
-public interface PromocionDetalleRepositoryPort {
+import org.mija.elbuensaborback.infrastructure.persistence.entity.PromocionDetalleEntity;
+
+public interface PromocionDetalleRepositoryPort extends GenericRepositoryPort<PromocionDetalleEntity,Long>{
 }

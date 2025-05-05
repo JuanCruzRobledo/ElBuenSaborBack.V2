@@ -18,27 +18,27 @@ public class ArticuloInsumoRepositoryImpl implements ArticuloInsumoRepositoryPor
 
 
     @Override
-    public Optional<ArticuloInsumoEntity> findById(Long id) {
+    public Optional<ArticuloInsumoEntity> findById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
     public List<ArticuloInsumoEntity> findAll() {
-        return articuloInsumoJpaRepository.findAll();
+        return List.of();
     }
 
     @Override
-    public ArticuloInsumoEntity save(ArticuloInsumoEntity nombreEntidad) {
-        return articuloInsumoJpaRepository.save(nombreEntidad);
+    public ArticuloInsumoEntity save(ArticuloInsumoEntity entity) {
+        return null;
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Long aLong) {
 
     }
 
     @Override
-    public List<ArticuloInsumoEntity> saveAll(List<ArticuloInsumoEntity> insumos) {
-        return articuloInsumoJpaRepository.saveAll(insumos);
+    public List<ArticuloInsumoEntity> saveAll(List<ArticuloInsumoEntity> entities) {
+        return articuloInsumoJpaRepository.saveAll(entities);
     }
 }

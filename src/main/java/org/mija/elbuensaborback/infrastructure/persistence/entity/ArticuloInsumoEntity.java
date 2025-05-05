@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @SuperBuilder
-@Entity
+@Entity(name = "articulo_insumo")
 public class ArticuloInsumoEntity extends ArticuloEntity {
 
     private BigDecimal precioCompra;

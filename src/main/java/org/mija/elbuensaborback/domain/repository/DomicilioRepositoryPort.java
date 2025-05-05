@@ -1,4 +1,6 @@
 package org.mija.elbuensaborback.domain.repository;
 
-public interface DomicilioRepositoryPort {
+import org.mija.elbuensaborback.infrastructure.persistence.entity.DomicilioEntity;
+
+public interface DomicilioRepositoryPort extends GenericRepositoryPort<DomicilioEntity,Long> {
 }

@@ -35,4 +35,9 @@ public class EmpresaRepositoryImpl implements EmpresaRepositoryPort {
     public void deleteById(Long id) {
 
     }
+
+    @Override
+    public List<EmpresaEntity> saveAll(List<EmpresaEntity> entities) {
+        return List.of();
+    }
 }

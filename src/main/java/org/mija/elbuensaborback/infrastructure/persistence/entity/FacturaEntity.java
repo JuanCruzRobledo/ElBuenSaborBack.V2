@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "factura")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class FacturaEntity {
     @Id

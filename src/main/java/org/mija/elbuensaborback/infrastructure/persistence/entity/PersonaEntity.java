@@ -2,7 +2,7 @@ package org.mija.elbuensaborback.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 
-@Entity
+@Entity(name = "persona")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "tipo_persona") // opcional
 public abstract class PersonaEntity {
@@ -18,6 +18,6 @@ public abstract class PersonaEntity {
 
     @OneToOne()
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    private UsuarioEntity usuarioEntity;
+    private UsuarioEntity usuario;
 
 }

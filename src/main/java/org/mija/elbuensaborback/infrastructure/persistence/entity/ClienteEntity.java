@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "cliente")
 public class ClienteEntity extends PersonaEntity {
 
 
@@ -24,10 +24,10 @@ public class ClienteEntity extends PersonaEntity {
                     name = "domicilio_id"
             )
     )
-    private List<DomicilioEntity> domicilioEntity;
+    private List<DomicilioEntity> domicilio;
 
     @OneToMany(mappedBy = "cliente")
-    private List<PedidoEntity> listaPedidoEntities;
+    private List<PedidoEntity> listaPedido;
 
     @OneToOne
     @JoinColumn(name = "imagen_id")

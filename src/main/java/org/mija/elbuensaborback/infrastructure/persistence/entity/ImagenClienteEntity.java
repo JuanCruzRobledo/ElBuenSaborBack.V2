@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "imagen_cliente")
 public class ImagenClienteEntity {
 
     @Id
@@ -18,7 +18,7 @@ public class ImagenClienteEntity {
     private Long id;
     private String denominacion;
     @OneToOne(mappedBy = "imagen")
-    private ClienteEntity clienteEntity;
+    private ClienteEntity cliente;
 
 
 }

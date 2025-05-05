@@ -1,4 +1,6 @@
 package org.mija.elbuensaborback.domain.repository;
 
-public interface PermissionRepositoryPort {
+import org.mija.elbuensaborback.infrastructure.persistence.entity.PermissionEntity;
+
+public interface PermissionRepositoryPort extends GenericRepositoryPort<PermissionEntity,Long>{
 }

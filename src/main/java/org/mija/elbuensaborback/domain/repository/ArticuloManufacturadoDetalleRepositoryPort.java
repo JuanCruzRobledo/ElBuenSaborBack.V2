@@ -1,4 +1,7 @@
 package org.mija.elbuensaborback.domain.repository;
 
-public interface ArticuloManufacturadoDetalleRepositoryPort {
+
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoDetalleEntity;
+
+public interface ArticuloManufacturadoDetalleRepositoryPort extends GenericRepositoryPort<ArticuloManufacturadoDetalleEntity,Long>{
 }

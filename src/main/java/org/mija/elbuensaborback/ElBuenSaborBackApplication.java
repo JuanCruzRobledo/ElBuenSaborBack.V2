@@ -18,6 +18,9 @@ public class ElBuenSaborBackApplication {
     public static void main(String[] args) {
         SpringApplication.run(ElBuenSaborBackApplication.class, args);
     }
+
+
+
     @Bean
     CommandLineRunner init(
             PaisRepositoryPort paisRepository,
@@ -41,28 +44,28 @@ public class ElBuenSaborBackApplication {
             // Crear y guardar provincias (usando el país persistido)
             ProvinciaEntity mendoza = provinciaRepository.save(ProvinciaEntity.builder()
                     .nombre("Mendoza")
-                    .paisEntity(argentina)
+                    .pais(argentina)
                     .build());
 
             // Crear localidades (usando la provincia persistida)
             LocalidadEntity godoyCruz = LocalidadEntity.builder()
                     .nombre("Godoy Cruz")
-                    .provinciaEntity(mendoza)
+                    .provincia(mendoza)
                     .build();
 
             LocalidadEntity lujanDeCuyo = LocalidadEntity.builder()
                     .nombre("Luján de Cuyo")
-                    .provinciaEntity(mendoza)
+                    .provincia(mendoza)
                     .build();
 
             LocalidadEntity maipu = LocalidadEntity.builder()
                     .nombre("Maipú")
-                    .provinciaEntity(mendoza)
+                    .provincia(mendoza)
                     .build();
 
             LocalidadEntity lasHeras = LocalidadEntity.builder()
                     .nombre("Las Heras")
-                    .provinciaEntity(mendoza)
+                    .provincia(mendoza)
                     .build();
 
             localidadRepository.saveAll(List.of(godoyCruz, lujanDeCuyo, maipu, lasHeras));
@@ -72,63 +75,62 @@ public class ElBuenSaborBackApplication {
                     .nombre("PanchosSupremos Las Heras")
                     .horarioApertura(LocalTime.of(20, 0, 0))
                     .horarioCierre(LocalTime.of(1, 0, 0))
-                    .domicilioEntity(DomicilioEntity.builder().calle("Av.Pepe").numero(123).codigoPostal("5523").localidadEntity(lasHeras).build())
+                    .domicilio(DomicilioEntity.builder().calle("Av.Pepe").numero(123).codigoPostal("5523").localidad(lasHeras).build())
                     .build();
 
             EmpresaEntity empresaEntity1 = EmpresaEntity.builder()
                     .cuil(232323232)
                     .nombre("PanchosSupremos")
                     .razonSocial("PanchosSupremos")
-                    .listaSucursalEntity(List.of(sucursalEntity1))
+                    .listaSucursal(List.of(sucursalEntity1))
                     .build();
 
-            sucursalEntity1.setEmpresaEntity(empresaEntity1);
+            sucursalEntity1.setEmpresa(empresaEntity1);
 
             empresaRepository.save(empresaEntity1);
 
             // CATEGORIAS
             CategoriaEntity comidas = CategoriaEntity.builder().denominacion("Comidas").build();
-            CategoriaEntity pizzas = CategoriaEntity.builder().denominacion("Pizzas").categoriaEntityPadre(comidas).build();
-            CategoriaEntity hamburguesas = CategoriaEntity.builder().denominacion("Hamburguesas").categoriaEntityPadre(comidas).build();
-            CategoriaEntity hamburguesasVeganas = CategoriaEntity.builder().denominacion("Hamburguesas Veganas").categoriaEntityPadre(comidas).categoriaEntityPadre(hamburguesas).build();
-            CategoriaEntity empanadas = CategoriaEntity.builder().denominacion("Empanadas").categoriaEntityPadre(comidas).build();
-            CategoriaEntity pastas = CategoriaEntity.builder().denominacion("Pastas").categoriaEntityPadre(comidas).build();
+            CategoriaEntity pizzas = CategoriaEntity.builder().denominacion("Pizzas").categoriaPadre(comidas).build();
+            CategoriaEntity hamburguesas = CategoriaEntity.builder().denominacion("Hamburguesas").categoriaPadre(comidas).build();
+            CategoriaEntity hamburguesasVeganas = CategoriaEntity.builder().denominacion("Hamburguesas Veganas").categoriaPadre(comidas).categoriaPadre(hamburguesas).build();
+            CategoriaEntity empanadas = CategoriaEntity.builder().denominacion("Empanadas").categoriaPadre(comidas).build();
+            CategoriaEntity pastas = CategoriaEntity.builder().denominacion("Pastas").categoriaPadre(comidas).build();
 
             CategoriaEntity postres = CategoriaEntity.builder().denominacion("Postres").build();
-            CategoriaEntity helados = CategoriaEntity.builder().denominacion("Helados").categoriaEntityPadre(postres).build();
-            CategoriaEntity tortas = CategoriaEntity.builder().denominacion("Tortas").categoriaEntityPadre(postres).build();
-            CategoriaEntity flanes = CategoriaEntity.builder().denominacion("Flanes y Budines").categoriaEntityPadre(postres).build();
-
-            CategoriaEntity bebidas = CategoriaEntity.builder().denominacion("Bebidas").build();
-            CategoriaEntity gaseosas = CategoriaEntity.builder().denominacion("Gaseosas").categoriaEntityPadre(bebidas).build();
-            CategoriaEntity aguas = CategoriaEntity.builder().denominacion("Aguas").categoriaEntityPadre(bebidas).build();
-            CategoriaEntity cervezas = CategoriaEntity.builder().denominacion("Cervezas").categoriaEntityPadre(bebidas).build();
-            CategoriaEntity jugos = CategoriaEntity.builder().denominacion("Jugos").categoriaEntityPadre(bebidas).build();
+            CategoriaEntity helados = CategoriaEntity.builder().denominacion("Helados").categoriaPadre(postres).build();
+            CategoriaEntity tortas = CategoriaEntity.builder().denominacion("Tortas").categoriaPadre(postres).build();
+            CategoriaEntity flanes = CategoriaEntity.builder().denominacion("Flanes y Budines").categoriaPadre(postres).build();
 
             CategoriaEntity combos = CategoriaEntity.builder().denominacion("Combos").build();
-            CategoriaEntity comboFamiliar = CategoriaEntity.builder().denominacion("Combo Familiar").categoriaEntityPadre(combos).build();
-            CategoriaEntity comboIndividual = CategoriaEntity.builder().denominacion("Combo Individual").categoriaEntityPadre(combos).build();
+            CategoriaEntity comboFamiliar = CategoriaEntity.builder().denominacion("Combo Familiar").categoriaPadre(combos).build();
+            CategoriaEntity comboIndividual = CategoriaEntity.builder().denominacion("Combo Individual").categoriaPadre(combos).build();
 
             CategoriaEntity ensaladas = CategoriaEntity.builder().denominacion("Ensaladas").build();
-            CategoriaEntity ensaladasClasicas = CategoriaEntity.builder().denominacion("Clásicas").categoriaEntityPadre(ensaladas).build();
-            CategoriaEntity ensaladasEspeciales = CategoriaEntity.builder().denominacion("Especiales").categoriaEntityPadre(ensaladas).build();
+            CategoriaEntity ensaladasClasicas = CategoriaEntity.builder().denominacion("Clásicas").categoriaPadre(ensaladas).build();
+            CategoriaEntity ensaladasEspeciales = CategoriaEntity.builder().denominacion("Especiales").categoriaPadre(ensaladas).build();
 
             CategoriaEntity insumos = CategoriaEntity.builder().denominacion("Insumos").build();
-            CategoriaEntity salsas = CategoriaEntity.builder().denominacion("Salsas").categoriaEntityPadre(insumos).build();
-            CategoriaEntity panaderia = CategoriaEntity.builder().denominacion("Panadería").categoriaEntityPadre(insumos).build();
-            CategoriaEntity lacteos = CategoriaEntity.builder().denominacion("Lácteos").categoriaEntityPadre(insumos).build();
-            CategoriaEntity verduras = CategoriaEntity.builder().denominacion("Verduras").categoriaEntityPadre(insumos).build();
-            CategoriaEntity carnes = CategoriaEntity.builder().denominacion("Carnes").categoriaEntityPadre(insumos).build();
-            CategoriaEntity condimentos = CategoriaEntity.builder().denominacion("Condimentos").categoriaEntityPadre(insumos).build();
-            CategoriaEntity bebidasInsumo = CategoriaEntity.builder().denominacion("Bebidas para Stock").categoriaEntityPadre(insumos).build();
+            CategoriaEntity salsas = CategoriaEntity.builder().denominacion("Salsas").categoriaPadre(insumos).build();
+            CategoriaEntity panaderia = CategoriaEntity.builder().denominacion("Panadería").categoriaPadre(insumos).build();
+            CategoriaEntity lacteos = CategoriaEntity.builder().denominacion("Lácteos").categoriaPadre(insumos).build();
+            CategoriaEntity verduras = CategoriaEntity.builder().denominacion("Verduras").categoriaPadre(insumos).build();
+            CategoriaEntity carnes = CategoriaEntity.builder().denominacion("Carnes").categoriaPadre(insumos).build();
+            CategoriaEntity condimentos = CategoriaEntity.builder().denominacion("Condimentos").categoriaPadre(insumos).build();
+
+            CategoriaEntity bebidas = CategoriaEntity.builder().denominacion("Bebidas").categoriaPadre(insumos).build();
+            CategoriaEntity gaseosas = CategoriaEntity.builder().denominacion("Gaseosas").categoriaPadre(bebidas).build();
+            CategoriaEntity aguas = CategoriaEntity.builder().denominacion("Aguas").categoriaPadre(bebidas).build();
+            CategoriaEntity cervezas = CategoriaEntity.builder().denominacion("Cervezas").categoriaPadre(bebidas).build();
+            CategoriaEntity jugos = CategoriaEntity.builder().denominacion("Jugos").categoriaPadre(bebidas).build();
 
             categoriaRepository.saveAll(List.of(
                     comidas, pizzas, hamburguesas, hamburguesasVeganas, empanadas, pastas,
                     postres, helados, tortas, flanes,
-                    bebidas, gaseosas, aguas, cervezas, jugos,
                     combos, comboFamiliar, comboIndividual,
                     ensaladas, ensaladasClasicas, ensaladasEspeciales,
-                    insumos, salsas, panaderia, lacteos, verduras, carnes, condimentos, bebidasInsumo
+                    insumos, salsas, panaderia, lacteos, verduras, carnes, condimentos,
+                    bebidas, gaseosas, aguas, cervezas, jugos
             ));
 
             //ARTICULOS INSUMOS
@@ -143,8 +145,8 @@ public class ElBuenSaborBackApplication {
                     .esParaPreparar(true)
                     .esVendible(false)
                     .productoActivo(true)
-                    .categoriaEntity(panaderia)
-                    .sucursalEntity(sucursalEntity1)
+                    .categoria(panaderia)
+                    .sucursal(sucursalEntity1)
                     .build();
 
             ArticuloInsumoEntity medallonCarne = ArticuloInsumoEntity.builder()
@@ -158,8 +160,8 @@ public class ElBuenSaborBackApplication {
                     .esParaPreparar(true)
                     .esVendible(false)
                     .productoActivo(true)
-                    .categoriaEntity(carnes)
-                    .sucursalEntity(sucursalEntity1)
+                    .categoria(carnes)
+                    .sucursal(sucursalEntity1)
                     .build();
 
             ArticuloInsumoEntity quesoCheddar = ArticuloInsumoEntity.builder()
@@ -173,8 +175,8 @@ public class ElBuenSaborBackApplication {
                     .esParaPreparar(true)
                     .esVendible(false)
                     .productoActivo(true)
-                    .categoriaEntity(lacteos)
-                    .sucursalEntity(sucursalEntity1)
+                    .categoria(lacteos)
+                    .sucursal(sucursalEntity1)
                     .build();
 
             ArticuloInsumoEntity lechuga = ArticuloInsumoEntity.builder()
@@ -188,8 +190,8 @@ public class ElBuenSaborBackApplication {
                     .esParaPreparar(true)
                     .esVendible(false)
                     .productoActivo(true)
-                    .categoriaEntity(verduras)
-                    .sucursalEntity(sucursalEntity1)
+                    .categoria(verduras)
+                    .sucursal(sucursalEntity1)
                     .build();
 
             ArticuloInsumoEntity tomate = ArticuloInsumoEntity.builder()
@@ -203,8 +205,8 @@ public class ElBuenSaborBackApplication {
                     .esParaPreparar(true)
                     .esVendible(false)
                     .productoActivo(true)
-                    .categoriaEntity(verduras)
-                    .sucursalEntity(sucursalEntity1)
+                    .categoria(verduras)
+                    .sucursal(sucursalEntity1)
                     .build();
 
             ArticuloInsumoEntity mayonesa = ArticuloInsumoEntity.builder()
@@ -218,8 +220,8 @@ public class ElBuenSaborBackApplication {
                     .esParaPreparar(true)
                     .esVendible(false)
                     .productoActivo(true)
-                    .categoriaEntity(salsas)
-                    .sucursalEntity(sucursalEntity1)
+                    .categoria(salsas)
+                    .sucursal(sucursalEntity1)
                     .build();
 
             ArticuloInsumoEntity mostaza = ArticuloInsumoEntity.builder()
@@ -233,8 +235,8 @@ public class ElBuenSaborBackApplication {
                     .esParaPreparar(true)
                     .esVendible(false)
                     .productoActivo(true)
-                    .categoriaEntity(salsas)
-                    .sucursalEntity(sucursalEntity1)
+                    .categoria(salsas)
+                    .sucursal(sucursalEntity1)
                     .build();
 
             ArticuloInsumoEntity sal = ArticuloInsumoEntity.builder()
@@ -248,8 +250,8 @@ public class ElBuenSaborBackApplication {
                     .esParaPreparar(true)
                     .esVendible(false)
                     .productoActivo(true)
-                    .categoriaEntity(condimentos)
-                    .sucursalEntity(sucursalEntity1)
+                    .categoria(condimentos)
+                    .sucursal(sucursalEntity1)
                     .build();
 
             articuloInsumoRepository.saveAll(List.of(

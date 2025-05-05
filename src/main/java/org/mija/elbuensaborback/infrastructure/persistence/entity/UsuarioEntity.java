@@ -11,7 +11,7 @@ import org.mija.elbuensaborback.domain.enums.AuthProviderEnum;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "usuario")
 public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

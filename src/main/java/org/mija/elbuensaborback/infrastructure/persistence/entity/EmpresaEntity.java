@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "empresa")
 public class EmpresaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +20,5 @@ public class EmpresaEntity {
     private String razonSocial;
     private Integer cuil;
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true ) //defecto fech type lazy
-    private List<SucursalEntity> listaSucursalEntity;
+    private List<SucursalEntity> listaSucursal;
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "localidad")
 public class LocalidadEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,5 +19,5 @@ public class LocalidadEntity {
 
     @ManyToOne
     @JoinColumn(name = "provincia_id" , referencedColumnName = "id", nullable = false)
-    private ProvinciaEntity provinciaEntity;
+    private ProvinciaEntity provincia;
 }

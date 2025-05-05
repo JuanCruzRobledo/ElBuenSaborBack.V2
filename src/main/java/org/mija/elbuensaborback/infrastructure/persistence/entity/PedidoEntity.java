@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "pedido")
 public class PedidoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,20 +45,20 @@ public class PedidoEntity {
 
     @OneToOne
     @JoinColumn(name = "factura_id", referencedColumnName = "id")
-    private FacturaEntity facturaEntity;
+    private FacturaEntity factura;
 
     @ManyToOne
     @JoinColumn(name = "domicilio_id")
-    private DomicilioEntity domicilioEntity;
+    private DomicilioEntity domicilio;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private ClienteEntity clienteEntity;
+    private ClienteEntity cliente;
 
 
     @ManyToOne
     @JoinColumn(name = "sucursal_id")
-    private SucursalEntity sucursalEntity;
+    private SucursalEntity sucursal;
 
     //ID DE SUCURSAL EN INFRAESTRUCTURE
     //METODO GENERATE FACTURA QUE GENERE Y HAGA UN SET A LA FACTURA

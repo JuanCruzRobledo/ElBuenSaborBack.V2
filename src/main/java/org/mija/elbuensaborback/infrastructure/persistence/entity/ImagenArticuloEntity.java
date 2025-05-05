@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "imagen_articulo")
 public class ImagenArticuloEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +19,6 @@ public class ImagenArticuloEntity {
 
     @ManyToOne
     @JoinColumn(name = "articulo_id")
-    private ArticuloEntity articuloEntity;
+    private ArticuloEntity articulo;
 
 }

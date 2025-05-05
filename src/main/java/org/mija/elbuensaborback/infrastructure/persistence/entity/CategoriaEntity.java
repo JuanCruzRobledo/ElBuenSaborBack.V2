@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "categoria")
 public class CategoriaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,12 +23,12 @@ public class CategoriaEntity {
     // Referencia al padre (puede ser null si es categoría raíz)
     @ManyToOne
     @JoinColumn(name = "padre_id")
-    private CategoriaEntity categoriaEntityPadre;
+    private CategoriaEntity categoriaPadre;
 
     // Hijos de esta categoría
-    @OneToMany(mappedBy = "categoriaEntityPadre", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "categoriaPadre", cascade = CascadeType.ALL)
     private Set<CategoriaEntity> subcategorias;
 
     @OneToMany(mappedBy = "categoria")
-    private Set<ArticuloEntity> articuloEntities;
+    private Set<ArticuloEntity> articulo;
 }

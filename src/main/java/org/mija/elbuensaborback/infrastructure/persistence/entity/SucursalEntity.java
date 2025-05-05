@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "sucursal")
 public class SucursalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class SucursalEntity {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "domicilio_id", referencedColumnName = "id")
-    private DomicilioEntity domicilioEntity;
+    private DomicilioEntity domicilio;
 
     /*
     AHORA PROMOCION ES UN ARTICULO
@@ -56,7 +56,7 @@ public class SucursalEntity {
 
     @ManyToOne
     @JoinColumn(name = "empresa_id", nullable = false)
-    private EmpresaEntity empresaEntity;
+    private EmpresaEntity empresa;
 
     @ManyToMany
     @JoinTable(
@@ -68,12 +68,12 @@ public class SucursalEntity {
                     name = "persona_id"
             )
     )
-    private List<PersonaEntity> listaPersonaEntities;
+    private List<PersonaEntity> listaPersona;
 
     @OneToMany(mappedBy = "sucursal")
-    private List<PedidoEntity> listaPedidoEntities;
+    private List<PedidoEntity> listaPedido;
 
     @OneToMany(mappedBy = "sucursal")
-    private List<ArticuloEntity> listaArticuloEntities;
+    private List<ArticuloEntity> listaArticulo;
 
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Entity
+@Entity(name = "articulo_manufacturado")
 public class ArticuloManufacturadoEntity extends ArticuloEntity {
 
     private String descripcion;
@@ -30,10 +30,10 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
     //private String preparacion; no se si iria
 
     @OneToMany(mappedBy = "articuloManufacturado", cascade = CascadeType.ALL , fetch = FetchType.EAGER)
-    private List<ArticuloManufacturadoDetalleEntity> articuloManufacturadoDetalleEntity;
+    private List<ArticuloManufacturadoDetalleEntity> articuloManufacturadoDetalle;
 
     public boolean sePuedePreparar(){
-        return null != articuloManufacturadoDetalleEntity;
+        return null != articuloManufacturadoDetalle;
     }
 
     public BigDecimal precioCostoCalculado(){

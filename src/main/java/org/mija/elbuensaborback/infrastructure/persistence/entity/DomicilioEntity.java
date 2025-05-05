@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "domicilio")
 public class DomicilioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +20,5 @@ public class DomicilioEntity {
     private String codigoPostal;
     @OneToOne
     @JoinColumn(name = "localidad_id", referencedColumnName = "id", nullable = false)
-    private LocalidadEntity localidadEntity;
+    private LocalidadEntity localidad;
 }
