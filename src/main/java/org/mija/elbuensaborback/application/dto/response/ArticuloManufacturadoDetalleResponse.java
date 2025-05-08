@@ -2,10 +2,10 @@ package org.mija.elbuensaborback.application.dto.response;
 
 import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 
-public record ArticuloManufacturadoDetalleResponseDto(
+public record ArticuloManufacturadoDetalleResponse(
         Long id,
-        Double cantidad,
-        UnidadMedidaEnum unidadMedidaEnum,
         Long articuloInsumoId,
-        String articuloInsumoNombre
+        String articuloInsumoDenominacion,
+        Double cantidad,
+        UnidadMedidaEnum unidadMedidaEnum
 ) {}

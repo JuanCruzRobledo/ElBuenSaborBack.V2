@@ -1,10 +1,8 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
-import org.mija.elbuensaborback.domain.model.ArticuloManufacturado;
 import org.mija.elbuensaborback.domain.repository.ArticuloManufacturadoRepositoryPort;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.ArticuloManufacturadoJpaRepository;
-import org.mija.elbuensaborback.infrastructure.persistence.repository.mapper.ArticuloManufacturadoEntityMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,18 +12,18 @@ import java.util.Optional;
 public class ArticuloManufacturadoRepositoryImpl implements ArticuloManufacturadoRepositoryPort {
 
     private final ArticuloManufacturadoJpaRepository articuloManufacturadoJpaRepository;
-    private final ArticuloManufacturadoEntityMapper articuloManufacturadoMapper;
-    //Usar MAPPER PARA RECIBIR UN OBJETO DOMAIN PASARLO A ENTIDAD Y LUEGO DEVOLVER OTRO DOMAIN O DTO
 
-    public ArticuloManufacturadoRepositoryImpl(ArticuloManufacturadoJpaRepository articuloManufacturadoJpaRepository, ArticuloManufacturadoEntityMapper articuloManufacturadoMapper) {
+
+    public ArticuloManufacturadoRepositoryImpl(ArticuloManufacturadoJpaRepository articuloManufacturadoJpaRepository) {
         this.articuloManufacturadoJpaRepository = articuloManufacturadoJpaRepository;
-        this.articuloManufacturadoMapper = articuloManufacturadoMapper;
     }
+
+    //Usar MAPPER PARA RECIBIR UN OBJETO DOMAIN PASARLO A ENTIDAD Y LUEGO DEVOLVER OTRO DOMAIN O DTO
 
 
     @Override
     public Optional<ArticuloManufacturadoEntity> findById(Long aLong) {
-        return Optional.empty();
+        return articuloManufacturadoJpaRepository.findById(aLong);
     }
 
     @Override
@@ -35,7 +33,7 @@ public class ArticuloManufacturadoRepositoryImpl implements ArticuloManufacturad
 
     @Override
     public ArticuloManufacturadoEntity save(ArticuloManufacturadoEntity entity) {
-        return null;
+        return articuloManufacturadoJpaRepository.save(entity);
     }
 
     @Override

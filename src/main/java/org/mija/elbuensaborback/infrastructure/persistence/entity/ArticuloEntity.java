@@ -27,7 +27,7 @@ public abstract class ArticuloEntity {
 
 
     @OneToMany(mappedBy = "articulo")
-    private Set<ImagenArticuloEntity> listaImagenes;
+    private Set<ImagenArticuloEntity> imagenesUrls;
 
 
     @ManyToOne

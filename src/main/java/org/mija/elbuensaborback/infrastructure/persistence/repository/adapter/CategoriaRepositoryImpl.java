@@ -19,7 +19,7 @@ public class CategoriaRepositoryImpl implements CategoriaRepositoryPort {
 
     @Override
     public Optional<CategoriaEntity> findById(Long id) {
-        return Optional.empty();
+        return categoriaJpaRepository.findById(id);
     }
 
     @Override

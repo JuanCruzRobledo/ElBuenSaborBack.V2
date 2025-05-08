@@ -18,7 +18,7 @@ public class SucursalRepositoryImpl implements SucursalRepositoryPort {
 
     @Override
     public Optional<SucursalEntity> findById(Long id) {
-        return Optional.empty();
+         return sucursalJpaRepository.findById(id);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class ArticuloRepositoryImpl implements ArticuloRepositoryPort {
     }
 
     @Override
-    public Optional<ArticuloEntity> findById(Long id) {
+    public Optional<ArticuloEntity> findById(Long aLong) {
         return Optional.empty();
     }
 
@@ -27,12 +27,13 @@ public class ArticuloRepositoryImpl implements ArticuloRepositoryPort {
     }
 
     @Override
-    public ArticuloEntity save(ArticuloEntity nombreEntidad) {
+    public ArticuloEntity save(ArticuloEntity entity) {
         return null;
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Long aLong) {
+
     }
 
     @Override

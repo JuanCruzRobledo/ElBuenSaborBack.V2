@@ -6,20 +6,20 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
-public record ArticuloManufacturadoResponseDto(
+public record ArticuloManufacturadoResponse(
         Long id,
         String denominacion,
         BigDecimal precioVenta,
         Boolean productoActivo,
-        Set<ImagenArticuloResponseDto> listaImagenes,
-        Long categoriaId,
-        String categoriaNombre,
-        Long sucursalId,
-        String sucursalNombre,
+        Set<String> imagenesUrls,
         String descripcion,
         BigDecimal precioCosto,
         Integer tiempoEstimadoMinutos,
         Double pesoTotal,
         UnidadMedidaEnum unidadMedidaEnum,
-        List<ArticuloManufacturadoDetalleResponseDto> detalle
+        Long categoriaId,
+        String categoriaNombre,
+        Long sucursalId,
+        String sucursalNombre,
+        List<ArticuloManufacturadoDetalleResponse> articuloManufacturadoDetalle
 ) {}

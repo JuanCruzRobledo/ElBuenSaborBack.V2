@@ -19,7 +19,7 @@ public class ArticuloInsumoRepositoryImpl implements ArticuloInsumoRepositoryPor
 
     @Override
     public Optional<ArticuloInsumoEntity> findById(Long aLong) {
-        return Optional.empty();
+        return articuloInsumoJpaRepository.findById(aLong);
     }
 
     @Override
@@ -39,6 +39,6 @@ public class ArticuloInsumoRepositoryImpl implements ArticuloInsumoRepositoryPor
 
     @Override
     public List<ArticuloInsumoEntity> saveAll(List<ArticuloInsumoEntity> entities) {
-        return articuloInsumoJpaRepository.saveAll(entities);
+        return List.of();
     }
 }

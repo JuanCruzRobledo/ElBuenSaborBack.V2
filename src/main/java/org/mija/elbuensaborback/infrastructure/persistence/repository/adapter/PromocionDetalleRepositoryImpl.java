@@ -16,6 +16,7 @@ public class PromocionDetalleRepositoryImpl implements PromocionDetalleRepositor
         this.promocionDetalleJpaRepository = promocionDetalleJpaRepository;
     }
 
+
     @Override
     public Optional<PromocionDetalleEntity> findById(Long aLong) {
         return Optional.empty();

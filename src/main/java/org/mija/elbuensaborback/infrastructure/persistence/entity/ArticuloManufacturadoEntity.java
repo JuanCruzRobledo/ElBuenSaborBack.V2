@@ -39,4 +39,12 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
     public BigDecimal precioCostoCalculado(){
         return null;
     }
+    public void pesoTotal(){
+        this.pesoTotal = 0.00;
+
+        articuloManufacturadoDetalle.stream().forEach(detalle -> {
+            this.pesoTotal += detalle.getCantidad();
+        });
+
+    }
 }
