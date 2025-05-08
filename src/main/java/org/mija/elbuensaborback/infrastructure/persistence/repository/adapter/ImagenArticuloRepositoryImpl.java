@@ -18,7 +18,7 @@ public class ImagenArticuloRepositoryImpl implements ImagenArticuloRepositoryPor
 
     @Override
     public Optional<ImagenArticuloEntity> findById(Long aLong) {
-        return Optional.empty();
+        return imagenArticuloJpaRepository.findById(aLong);
     }
 
     @Override

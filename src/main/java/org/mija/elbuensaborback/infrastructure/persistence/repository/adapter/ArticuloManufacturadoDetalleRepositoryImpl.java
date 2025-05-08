@@ -19,7 +19,7 @@ public class ArticuloManufacturadoDetalleRepositoryImpl implements ArticuloManuf
 
     @Override
     public Optional<ArticuloManufacturadoDetalleEntity> findById(Long aLong) {
-        return Optional.empty();
+        return articuloManufacturadoDetalleJpaRepository.findById(aLong);
     }
 
     @Override

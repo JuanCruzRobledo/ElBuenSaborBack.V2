@@ -26,7 +26,7 @@ public abstract class ArticuloEntity {
     private Boolean productoActivo;
 
 
-    @OneToMany(mappedBy = "articulo")
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL)
     private Set<ImagenArticuloEntity> imagenesUrls;
 
 

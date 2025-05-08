@@ -38,7 +38,7 @@ public class ArticuloManufacturadoRepositoryImpl implements ArticuloManufacturad
 
     @Override
     public void deleteById(Long aLong) {
-
+        articuloManufacturadoJpaRepository.deleteById(aLong);
     }
 
     @Override

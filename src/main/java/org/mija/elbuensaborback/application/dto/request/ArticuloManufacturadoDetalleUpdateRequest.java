@@ -1,13 +1,13 @@
-package org.mija.elbuensaborback.application.dto.response;
+package org.mija.elbuensaborback.application.dto.request;
 
 import lombok.Builder;
 import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 
 @Builder
-public record ArticuloManufacturadoDetalleResponse(
+public record ArticuloManufacturadoDetalleUpdateRequest(
         Long id,
         Long articuloInsumoId,
-        String articuloInsumoDenominacion,
         Double cantidad,
         UnidadMedidaEnum unidadMedidaEnum
-) {}
+) {
+}

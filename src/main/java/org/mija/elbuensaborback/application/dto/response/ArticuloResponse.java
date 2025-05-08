@@ -1,8 +1,11 @@
 package org.mija.elbuensaborback.application.dto.response;
 
+import lombok.Builder;
+
 import java.math.BigDecimal;
 import java.util.Set;
 
+@Builder
 public record ArticuloResponse(
         Long id,
         String denominacion,
