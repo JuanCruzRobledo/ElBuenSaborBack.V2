@@ -3,6 +3,7 @@ package org.mija.elbuensaborback.application.service;
 import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoResponse;
+import java.util.Set;
 
 public interface ArticuloManufacturadoService {
     // Métodos para gestionar los artículos manufacturados
@@ -10,4 +11,5 @@ public interface ArticuloManufacturadoService {
     ArticuloManufacturadoResponse actualizarArticulo(Long id , ArticuloManufacturadoUpdateRequest articulo);
     ArticuloManufacturadoResponse obtenerArticulo(Long id);
     void eliminarArticulo(Long id);
+    Set<ArticuloManufacturadoResponse> listarArticulos();
 }

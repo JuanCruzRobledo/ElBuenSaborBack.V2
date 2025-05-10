@@ -28,7 +28,7 @@ public class ArticuloManufacturadoRepositoryImpl implements ArticuloManufacturad
 
     @Override
     public List<ArticuloManufacturadoEntity> findAll() {
-        return List.of();
+        return articuloManufacturadoJpaRepository.findAll();
     }
 
     @Override

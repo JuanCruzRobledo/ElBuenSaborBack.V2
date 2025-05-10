@@ -7,6 +7,10 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufa
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloManufacturadoRepositoryImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 public class ArticuloManufacturadoManagementServiceImpl implements ArticuloManufacturadoService {
 
@@ -54,4 +58,12 @@ public class ArticuloManufacturadoManagementServiceImpl implements ArticuloManuf
     public void eliminarArticulo(Long id) {
         articuloManufacturadoRepository.deleteById(id);
     }
+
+    @Override
+    public Set<ArticuloManufacturadoResponse> listarArticulos() {
+
+        List<ArticuloManufacturadoEntity> articulos = articuloManufacturadoRepository.findAll();
+        return articulos.stream().map(articuloManufacturadoMapper::toResponse).collect(Collectors.toSet());
+    }
+
 }
