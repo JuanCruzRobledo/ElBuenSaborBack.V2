@@ -12,12 +12,13 @@ import java.util.Set;
 public record ArticuloManufacturadoCreatedRequest(
         String denominacion,
         BigDecimal precioVenta,
+        Boolean productoActivo,
+        Set<String> imagenesUrls,
+        Long categoriaId,
+        Long sucursalId,
         String descripcion,
         BigDecimal precioCosto,
         int tiempoEstimadoMinutos,
         UnidadMedidaEnum unidadMedidaEnum,
-        Long categoriaId,
-        Long sucursalId,
-        Set<String> imagenesUrls,
         List<ArticuloManufacturadoDetalleCreatedRequest> articuloManufacturadoDetalle
-) implements ArticuloManufacturadoBaseRequest {}
+) implements ArticuloManufacturadoBaseRequest{}

@@ -1,14 +1,12 @@
 package org.mija.elbuensaborback.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @Builder
 @Entity(name = "articulo_manufacturado_detalle")
@@ -25,10 +23,10 @@ public class ArticuloManufacturadoDetalleEntity {
 
 
     @ManyToOne
-    @JoinColumn(name = "articulo_manufacturado_id")
+    @JoinColumn(name = "articulo_manufacturado_id", nullable = false)
     private ArticuloManufacturadoEntity articuloManufacturado;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "articulo_insumo_id")
     private ArticuloInsumoEntity articuloInsumo;
 }
