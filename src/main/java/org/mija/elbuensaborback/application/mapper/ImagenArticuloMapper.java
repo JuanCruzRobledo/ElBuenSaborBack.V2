@@ -1,9 +1,15 @@
 package org.mija.elbuensaborback.application.mapper;
 
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mija.elbuensaborback.application.dto.global.ImagenDto;
+import org.mapstruct.MappingTarget;
+import org.mija.elbuensaborback.application.dto.global.manufacturado.ImagenDto;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenArticuloEntity;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Mapper(componentModel="spring")
@@ -13,4 +19,22 @@ public interface ImagenArticuloMapper {
     ImagenArticuloEntity dtoToEntity(ImagenDto imagenDto);
 
     ImagenDto entityToDto(ImagenArticuloEntity imagenArticuloEntity);
+
+    /* TENGO QUE ARREGLAR PARA QUE SE HAGA ACA
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "denominacion", ignore = true)
+    @Mapping(target = "articulo", ignore = true)
+    public abstract Set<ImagenArticuloEntity> stringToImagenEntity(Set<String> imagenDto);
+
+
+    @AfterMapping
+    protected void stringToEntity(@MappingTarget ImagenArticuloEntity imagenArticuloEntity, Set<String> imagenDto ){
+        imagenDto.stream()
+                .map(url -> {
+                    return ImagenArticuloEntity.builder()
+                            .denominacion(url)
+                            .build();
+                }).collect(Collectors.toSet());
+    }*/
+
 }

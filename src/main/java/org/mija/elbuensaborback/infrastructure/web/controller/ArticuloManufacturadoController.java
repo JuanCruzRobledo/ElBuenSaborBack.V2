@@ -1,10 +1,9 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
-import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoCreatedRequest;
-import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoUpdateRequest;
+import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoCreatedRequest;
+import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoResponse;
-import org.mija.elbuensaborback.application.service.ArticuloManufacturadoManagementServiceImpl;
-import org.mija.elbuensaborback.application.service.ArticuloManufacturadoService;
+import org.mija.elbuensaborback.application.service.ArticuloManufacturadoServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/articulo-manufacturado")
 public class ArticuloManufacturadoController {
-    private final ArticuloManufacturadoManagementServiceImpl articuloManufacturadoService;
+    private final ArticuloManufacturadoServiceImpl articuloManufacturadoService;
 
-    public ArticuloManufacturadoController(ArticuloManufacturadoManagementServiceImpl articuloManufacturadoService) {
+    public ArticuloManufacturadoController(ArticuloManufacturadoServiceImpl articuloManufacturadoService) {
         this.articuloManufacturadoService = articuloManufacturadoService;
     }
 
@@ -62,6 +61,15 @@ public class ArticuloManufacturadoController {
     public ResponseEntity<?> obtenerTodosArticuloManufacturado (){
         try{
             return ResponseEntity.ok(articuloManufacturadoService.listarArticulos());
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+        }
+    }
+
+    @GetMapping("/basic/getAll")
+    public ResponseEntity<?> obtenerTodosBasicArticulosManufacturados (){
+        try{
+            return ResponseEntity.ok(articuloManufacturadoService.listarBasicArticulosManufacturados());
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }

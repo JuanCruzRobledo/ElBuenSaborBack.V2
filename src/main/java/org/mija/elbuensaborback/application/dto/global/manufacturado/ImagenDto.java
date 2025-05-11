@@ -1,4 +1,4 @@
-package org.mija.elbuensaborback.application.dto.global;
+package org.mija.elbuensaborback.application.dto.global.manufacturado;
 
 import lombok.Builder;
 

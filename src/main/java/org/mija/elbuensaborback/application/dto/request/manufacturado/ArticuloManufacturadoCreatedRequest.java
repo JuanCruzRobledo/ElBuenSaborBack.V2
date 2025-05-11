@@ -1,4 +1,4 @@
-package org.mija.elbuensaborback.application.dto.request;
+package org.mija.elbuensaborback.application.dto.request.manufacturado;
 
 
 import lombok.Builder;
@@ -18,7 +18,7 @@ public record ArticuloManufacturadoCreatedRequest(
         Long sucursalId,
         String descripcion,
         BigDecimal precioCosto,
-        int tiempoEstimadoMinutos,
+        Integer tiempoEstimadoMinutos,
         UnidadMedidaEnum unidadMedidaEnum,
         List<ArticuloManufacturadoDetalleCreatedRequest> articuloManufacturadoDetalle
-) implements ArticuloManufacturadoBaseRequest{}
+){}

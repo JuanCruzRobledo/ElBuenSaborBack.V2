@@ -4,9 +4,10 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mija.elbuensaborback.application.dto.global.ArticuloManufacturadoDetalleDto;
-import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoCreatedRequest;
-import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoUpdateRequest;
+import org.mija.elbuensaborback.application.dto.global.manufacturado.ArticuloManufacturadoDetalleDto;
+import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoCreatedRequest;
+import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoUpdateRequest;
+import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoResponse;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoDetalleEntity;
@@ -119,4 +120,7 @@ public abstract class ArticuloManufacturadoMapper {
     @Mapping(target = "categoriaId", source = "categoria.id")
     @Mapping(target = "sucursalId", source = "sucursal.id")
     public abstract ArticuloManufacturadoResponse toResponse(ArticuloManufacturadoEntity entity);
+
+    //-------------- BASIC -------------
+    public abstract ArticuloManufacturadoBasicResponse toBasicResponse(ArticuloManufacturadoEntity entity);
 }

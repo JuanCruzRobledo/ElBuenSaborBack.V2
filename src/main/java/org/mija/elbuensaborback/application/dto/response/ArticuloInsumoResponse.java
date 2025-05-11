@@ -1,16 +1,11 @@
 package org.mija.elbuensaborback.application.dto.response;
 
-import lombok.Builder;
-import org.mija.elbuensaborback.application.dto.global.manufacturado.ArticuloManufacturadoDetalleDto;
 import org.mija.elbuensaborback.application.dto.global.manufacturado.ImagenDto;
 import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
-
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
-@Builder
-public record ArticuloManufacturadoResponse(
+public record ArticuloInsumoResponse(
         Long id,
         String denominacion,
         BigDecimal precioVenta,
@@ -18,10 +13,12 @@ public record ArticuloManufacturadoResponse(
         Set<ImagenDto> imagenesUrls,
         Long categoriaId,
         Long sucursalId,
-        String descripcion,
-        BigDecimal precioCosto,
-        Integer tiempoEstimadoMinutos,
-        Double pesoTotal,
+        BigDecimal precioCompra,
         UnidadMedidaEnum unidadMedidaEnum,
-        List<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalle
-) {}
+        Double stockActual,
+        Double stockMaximo,
+        Double stockMinimo,
+        Boolean esParaPreparar,
+        Boolean esVendible
+) {
+}

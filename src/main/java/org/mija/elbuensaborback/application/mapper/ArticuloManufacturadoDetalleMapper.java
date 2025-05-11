@@ -1,12 +1,9 @@
 package org.mija.elbuensaborback.application.mapper;
 
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mija.elbuensaborback.application.dto.global.ArticuloManufacturadoDetalleDto;
-import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoDetalleCreatedRequest;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumoEntity;
+import org.mija.elbuensaborback.application.dto.global.manufacturado.ArticuloManufacturadoDetalleDto;
+import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoDetalleCreatedRequest;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoDetalleEntity;
 
 

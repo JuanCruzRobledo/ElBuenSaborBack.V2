@@ -1,7 +1,7 @@
-package org.mija.elbuensaborback.application.service;
+package org.mija.elbuensaborback.application.service.contratos;
 
-import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoCreatedRequest;
-import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoUpdateRequest;
+import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoCreatedRequest;
+import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoResponse;
 import java.util.Set;
 

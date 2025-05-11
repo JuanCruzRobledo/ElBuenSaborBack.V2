@@ -1,8 +1,8 @@
-package org.mija.elbuensaborback.application.dto.request;
+package org.mija.elbuensaborback.application.dto.request.manufacturado;
 
 import lombok.Builder;
-import org.mija.elbuensaborback.application.dto.global.ArticuloManufacturadoDetalleDto;
-import org.mija.elbuensaborback.application.dto.global.ImagenDto;
+import org.mija.elbuensaborback.application.dto.global.manufacturado.ArticuloManufacturadoDetalleDto;
+import org.mija.elbuensaborback.application.dto.global.manufacturado.ImagenDto;
 import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 
 import java.math.BigDecimal;
@@ -19,7 +19,7 @@ public record ArticuloManufacturadoUpdateRequest(
         Long sucursalId,
         String descripcion,
         BigDecimal precioCosto,
-        int tiempoEstimadoMinutos,
+        Integer tiempoEstimadoMinutos,
         UnidadMedidaEnum unidadMedidaEnum,
         List<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalle
-) implements ArticuloManufacturadoBaseRequest {}
+){}

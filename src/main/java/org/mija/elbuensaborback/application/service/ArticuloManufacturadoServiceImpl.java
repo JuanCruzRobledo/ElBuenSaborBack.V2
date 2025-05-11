@@ -1,8 +1,10 @@
 package org.mija.elbuensaborback.application.service;
-import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoCreatedRequest;
-import org.mija.elbuensaborback.application.dto.request.ArticuloManufacturadoUpdateRequest;
+import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoCreatedRequest;
+import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoUpdateRequest;
+import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoResponse;
 import org.mija.elbuensaborback.application.mapper.ArticuloManufacturadoMapper;
+import org.mija.elbuensaborback.application.service.contratos.ArticuloManufacturadoService;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloManufacturadoRepositoryImpl;
 import org.springframework.stereotype.Service;
@@ -12,12 +14,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class ArticuloManufacturadoManagementServiceImpl implements ArticuloManufacturadoService {
+public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoService {
 
     private final ArticuloManufacturadoRepositoryImpl articuloManufacturadoRepository;
     private final ArticuloManufacturadoMapper articuloManufacturadoMapper;
 
-    public ArticuloManufacturadoManagementServiceImpl(ArticuloManufacturadoRepositoryImpl articuloManufacturadoRepository, ArticuloManufacturadoMapper articuloManufacturadoMapper) {
+    public ArticuloManufacturadoServiceImpl(ArticuloManufacturadoRepositoryImpl articuloManufacturadoRepository, ArticuloManufacturadoMapper articuloManufacturadoMapper) {
         this.articuloManufacturadoRepository = articuloManufacturadoRepository;
         this.articuloManufacturadoMapper = articuloManufacturadoMapper;
     }
@@ -64,6 +66,13 @@ public class ArticuloManufacturadoManagementServiceImpl implements ArticuloManuf
 
         List<ArticuloManufacturadoEntity> articulos = articuloManufacturadoRepository.findAll();
         return articulos.stream().map(articuloManufacturadoMapper::toResponse).collect(Collectors.toSet());
+    }
+
+    public List<ArticuloManufacturadoBasicResponse> listarBasicArticulosManufacturados() {
+        //AGREGAR QUERY PERSONALIZADA
+        //basicFindAll
+        List<ArticuloManufacturadoEntity> articulos = articuloManufacturadoRepository.findAll();
+        return articulos.stream().map(articuloManufacturadoMapper::toBasicResponse).collect(Collectors.toList());
     }
 
 }

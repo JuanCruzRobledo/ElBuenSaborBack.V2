@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
+import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoBasicResponse;
 import org.mija.elbuensaborback.domain.repository.ArticuloManufacturadoRepositoryPort;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.ArticuloManufacturadoJpaRepository;
@@ -28,6 +29,13 @@ public class ArticuloManufacturadoRepositoryImpl implements ArticuloManufacturad
 
     @Override
     public List<ArticuloManufacturadoEntity> findAll() {
+        return articuloManufacturadoJpaRepository.findAll();
+    }
+
+    //CAMBIAR POR ArticuloManufacturadoBasicResponse
+    public List<ArticuloManufacturadoEntity> findAllBasic() {
+        //CAMBIAR POR findAllBasic
+        //return articuloManufacturadoJpaRepository.findAllBasic();
         return articuloManufacturadoJpaRepository.findAll();
     }
 

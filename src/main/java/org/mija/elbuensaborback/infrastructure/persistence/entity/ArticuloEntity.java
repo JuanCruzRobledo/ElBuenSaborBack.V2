@@ -18,6 +18,10 @@ import java.util.Set;
 //@MappedSuperclass
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class ArticuloEntity {
+
+    //TENDRIA QUE AGREGAR UN ATRIBUTO QUE DIGA SI ES VISIBLE
+    //productoActivo SERIA PARA CUANDO SI QUIERO QUE SE VEA EN EL FRONT PERO NO HAY STOCK
+    //visible SERIA PARA CUANDO NO SE QUIERA MOSTRAR EN EL FRONT
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,7 +30,7 @@ public abstract class ArticuloEntity {
     private Boolean productoActivo;
 
 
-    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ImagenArticuloEntity> imagenesUrls;
 
 

@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
+import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoBasicResponse;
 import org.mija.elbuensaborback.domain.repository.ArticuloInsumoRepositoryPort;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.ArticuloInsumoJpaRepository;
@@ -24,17 +25,21 @@ public class ArticuloInsumoRepositoryImpl implements ArticuloInsumoRepositoryPor
 
     @Override
     public List<ArticuloInsumoEntity> findAll() {
-        return List.of();
+        return articuloInsumoJpaRepository.findAll();
+    }
+
+    public List<ArticuloInsumoBasicResponse> basicFindAll() {
+        return articuloInsumoJpaRepository.basicFindAll();
     }
 
     @Override
     public ArticuloInsumoEntity save(ArticuloInsumoEntity entity) {
-        return null;
+        return articuloInsumoJpaRepository.save(entity);
     }
 
     @Override
     public void deleteById(Long aLong) {
-
+        articuloInsumoJpaRepository.deleteById(aLong);
     }
 
     @Override

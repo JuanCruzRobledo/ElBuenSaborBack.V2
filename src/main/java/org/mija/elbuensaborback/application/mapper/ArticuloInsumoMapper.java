@@ -1,0 +1,66 @@
+package org.mija.elbuensaborback.application.mapper;
+
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoCreatedRequest;
+import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoUpdateRequest;
+import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoBasicResponse;
+import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoResponse;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumoEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.CategoriaEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenArticuloEntity;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Mapper(componentModel = "spring", uses = {ImagenArticuloMapper.class})
+public abstract class ArticuloInsumoMapper {
+
+    @Mapping(target = "categoriaId", source = "categoria.id")
+    @Mapping(target = "sucursalId", source = "sucursal.id")
+    public abstract ArticuloInsumoResponse toResponse(ArticuloInsumoEntity articuloEntity);
+
+    @Mapping(target = "imagenesUrls", ignore = true)
+    @Mapping(target = "categoria.id", source = "categoriaId")
+    @Mapping(target = "sucursal.id", source = "sucursalId")
+    public abstract ArticuloInsumoEntity toEntity(ArticuloInsumoCreatedRequest articuloCreatedRequest);
+
+    //Despues usar en mapper imagen
+    @AfterMapping
+    protected void mapImagenes(@MappingTarget ArticuloInsumoEntity entity, ArticuloInsumoCreatedRequest articuloCreatedRequest) {
+        if (articuloCreatedRequest.imagenesUrls() != null) {
+            Set<ImagenArticuloEntity> imagenes = articuloCreatedRequest.imagenesUrls().stream()
+                    .map(url -> {
+                        return ImagenArticuloEntity.builder()
+                                .denominacion(url)
+                                .articulo(entity)
+                                .build();
+                    }).collect(Collectors.toSet());
+            entity.setImagenesUrls(imagenes);
+        }
+    }
+
+
+    @Mapping(target = "id", ignore = true )
+    @Mapping(target = "categoria.id", ignore = true)
+    @Mapping(target = "sucursal.id", source = "sucursalId")
+    public abstract void toEntity(@MappingTarget ArticuloInsumoEntity articuloEntity,ArticuloInsumoUpdateRequest articuloUpdatedRequest);
+
+    public void updateEntity(@MappingTarget ArticuloInsumoEntity articuloEntity, ArticuloInsumoUpdateRequest articuloUpdateRequest) {
+        toEntity(articuloEntity,articuloUpdateRequest);
+        articuloEntity.setCategoria(CategoriaEntity.builder().id(articuloUpdateRequest.categoriaId()).build());
+
+        if (articuloEntity.getImagenesUrls() != null) {
+            articuloEntity.getImagenesUrls().forEach(image -> {
+                if (image != null) {
+                    image.setArticulo(articuloEntity);
+                }
+            });
+        }
+
+    }
+
+    public abstract ArticuloInsumoBasicResponse toBasic(ArticuloInsumoEntity articuloEntity);
+}
