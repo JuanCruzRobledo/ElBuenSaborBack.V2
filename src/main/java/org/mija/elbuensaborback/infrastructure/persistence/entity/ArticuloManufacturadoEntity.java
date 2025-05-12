@@ -19,7 +19,6 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
 
     private String descripcion;
     private BigDecimal precioCosto;
-    private Integer tiempoEstimadoMinutos;
 
     //CANTIDAD TOTAL DE LA UNIDAD DE MEDIDA EN ESTE ARTICULO MANUFACTURADO
     private Double pesoTotal;
@@ -64,7 +63,7 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
         sb.append(",\n  descripcion='").append(descripcion).append('\'');
         sb.append(",\n  precioVenta=").append(getPrecioVenta());
         sb.append(",\n  precioCosto=").append(precioCosto);
-        sb.append(",\n  tiempoEstimadoMinutos=").append(tiempoEstimadoMinutos);
+        sb.append(",\n  tiempoEstimadoMinutos=").append(getTiempoEstimadoMinutos());
         sb.append(",\n  productoActivo=").append(getProductoActivo());
         sb.append(",\n  pesoTotal=").append(pesoTotal);
         sb.append(" ").append(unidadMedidaEnum);

@@ -14,12 +14,11 @@ public record ArticuloManufacturadoUpdateRequest(
         String denominacion,
         BigDecimal precioVenta,
         Boolean productoActivo,
+        Integer tiempoEstimadoMinutos,
         Set<ImagenDto> imagenesUrls,
         Long categoriaId,
-        Long sucursalId,
         String descripcion,
         BigDecimal precioCosto,
-        Integer tiempoEstimadoMinutos,
         UnidadMedidaEnum unidadMedidaEnum,
         List<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalle
 ){}

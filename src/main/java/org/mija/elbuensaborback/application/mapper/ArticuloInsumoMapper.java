@@ -19,12 +19,13 @@ import java.util.stream.Collectors;
 public abstract class ArticuloInsumoMapper {
 
     @Mapping(target = "categoriaId", source = "categoria.id")
-    @Mapping(target = "sucursalId", source = "sucursal.id")
+    //@Mapping(target = "sucursalId", source = "sucursal.id")
+    @Mapping(target = "categoriaNombre", source = "categoria.denominacion")
     public abstract ArticuloInsumoResponse toResponse(ArticuloInsumoEntity articuloEntity);
 
     @Mapping(target = "imagenesUrls", ignore = true)
     @Mapping(target = "categoria.id", source = "categoriaId")
-    @Mapping(target = "sucursal.id", source = "sucursalId")
+    //@Mapping(target = "sucursal.id", source = "sucursalId")
     public abstract ArticuloInsumoEntity toEntity(ArticuloInsumoCreatedRequest articuloCreatedRequest);
 
     //Despues usar en mapper imagen
@@ -45,7 +46,7 @@ public abstract class ArticuloInsumoMapper {
 
     @Mapping(target = "id", ignore = true )
     @Mapping(target = "categoria.id", ignore = true)
-    @Mapping(target = "sucursal.id", source = "sucursalId")
+    //@Mapping(target = "sucursal.id", source = "sucursalId")
     public abstract void toEntity(@MappingTarget ArticuloInsumoEntity articuloEntity,ArticuloInsumoUpdateRequest articuloUpdatedRequest);
 
     public void updateEntity(@MappingTarget ArticuloInsumoEntity articuloEntity, ArticuloInsumoUpdateRequest articuloUpdateRequest) {

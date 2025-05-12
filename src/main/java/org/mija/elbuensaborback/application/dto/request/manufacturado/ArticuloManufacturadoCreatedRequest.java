@@ -13,12 +13,11 @@ public record ArticuloManufacturadoCreatedRequest(
         String denominacion,
         BigDecimal precioVenta,
         Boolean productoActivo,
+        Integer tiempoEstimadoMinutos,
         Set<String> imagenesUrls,
         Long categoriaId,
-        Long sucursalId,
         String descripcion,
         BigDecimal precioCosto,
-        Integer tiempoEstimadoMinutos,
         UnidadMedidaEnum unidadMedidaEnum,
         List<ArticuloManufacturadoDetalleCreatedRequest> articuloManufacturadoDetalle
 ){}

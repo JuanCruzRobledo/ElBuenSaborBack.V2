@@ -21,7 +21,6 @@ public class ElBuenSaborBackApplication {
     }
 
 
-
     @Bean
     CommandLineRunner init(
             PaisJpaRepository paisRepository,
@@ -169,6 +168,7 @@ public class ElBuenSaborBackApplication {
                     .denominacion("Queso Cheddar")
                     .precioCompra(new BigDecimal("200"))
                     .precioVenta(new BigDecimal("0"))
+                    .tiempoEstimadoMinutos(20)
                     .unidadMedidaEnum(UnidadMedidaEnum.GR)
                     .stockActual(1000.0)
                     .stockMaximo(2000.0)
@@ -262,4 +262,6 @@ public class ElBuenSaborBackApplication {
         };
 
     }
+
+
 }

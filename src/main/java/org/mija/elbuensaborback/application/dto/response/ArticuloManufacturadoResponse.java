@@ -15,12 +15,11 @@ public record ArticuloManufacturadoResponse(
         String denominacion,
         BigDecimal precioVenta,
         Boolean productoActivo,
+        Integer tiempoEstimadoMinutos,
         Set<ImagenDto> imagenesUrls,
         Long categoriaId,
-        Long sucursalId,
         String descripcion,
         BigDecimal precioCosto,
-        Integer tiempoEstimadoMinutos,
         Double pesoTotal,
         UnidadMedidaEnum unidadMedidaEnum,
         List<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalle

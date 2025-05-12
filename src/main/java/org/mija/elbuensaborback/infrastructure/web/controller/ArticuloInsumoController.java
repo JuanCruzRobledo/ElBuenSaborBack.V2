@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/articulo-insumo")
+//@CrossOrigin("*")
 public class ArticuloInsumoController {
 
     private final ArticuloInsumoServiceImpl articuloInsumoService;

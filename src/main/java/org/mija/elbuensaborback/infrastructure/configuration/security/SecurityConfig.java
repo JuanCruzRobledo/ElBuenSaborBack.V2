@@ -1,6 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.configuration.security;
 
-/*
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -38,10 +38,9 @@ public class SecurityConfig {
                         authorizeRequests ->{
                             //authorizeRequests.requestMatchers(HttpMethod.GET,"auth/sing-in").permitAll();
                             //authorizeRequests.requestMatchers(HttpMethod.GET,"auth/sing-up").permitAll();
-                            authorizeRequests.requestMatchers("auth/**").permitAll();
-                            authorizeRequests.requestMatchers("admin/**").hasRole("ADMIN");
-                            authorizeRequests.requestMatchers("empleado/**").hasRole("EMPLEADO");
-                            authorizeRequests.requestMatchers("cliente/**").authenticated();
+                            authorizeRequests.requestMatchers("user/**").permitAll();
+                            authorizeRequests.requestMatchers("cliente/hola").authenticated();
+                            authorizeRequests.requestMatchers("cliente/chau").permitAll();
                             authorizeRequests.anyRequest().denyAll();
                         }
                 )
@@ -57,7 +56,7 @@ public class SecurityConfig {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(null);
+        authenticationProvider.setUserDetailsService(userDetailsService());
         return authenticationProvider;
     }
 
@@ -66,7 +65,7 @@ public class SecurityConfig {
         return NoOpPasswordEncoder.getInstance();
     }
 
-    /*
+
     @Bean
     public UserDetailsService userDetailsService() {
         List<UserDetails> userList = new ArrayList<>();
@@ -94,7 +93,10 @@ public class SecurityConfig {
     }
 
 }
-*/
+
+
+/*
 public class SecurityConfig {
 
 }
+*/

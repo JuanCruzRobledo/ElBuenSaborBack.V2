@@ -24,7 +24,7 @@ public abstract class ArticuloManufacturadoMapper {
     // ======================= CREATE =======================
     @Mapping(target = "imagenesUrls", ignore = true)
     @Mapping(target = "categoria.id", source = "categoriaId")
-    @Mapping(target = "sucursal.id", source = "sucursalId")
+    //@Mapping(target = "sucursal.id", source = "sucursalId")
     @Mapping(target = "pesoTotal", ignore = true)
     public abstract ArticuloManufacturadoEntity toEntity(ArticuloManufacturadoCreatedRequest request);
 
@@ -118,7 +118,7 @@ public abstract class ArticuloManufacturadoMapper {
     // ======================= RESPONSE =======================
 
     @Mapping(target = "categoriaId", source = "categoria.id")
-    @Mapping(target = "sucursalId", source = "sucursal.id")
+    //@Mapping(target = "sucursalId", source = "sucursal.id")
     public abstract ArticuloManufacturadoResponse toResponse(ArticuloManufacturadoEntity entity);
 
     //-------------- BASIC -------------

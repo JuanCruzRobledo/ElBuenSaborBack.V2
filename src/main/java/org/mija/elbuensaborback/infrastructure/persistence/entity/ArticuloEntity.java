@@ -21,13 +21,14 @@ public abstract class ArticuloEntity {
 
     //TENDRIA QUE AGREGAR UN ATRIBUTO QUE DIGA SI ES VISIBLE
     //productoActivo SERIA PARA CUANDO SI QUIERO QUE SE VEA EN EL FRONT PERO NO HAY STOCK
-    //visible SERIA PARA CUANDO NO SE QUIERA MOSTRAR EN EL FRONT
+    //dadoDeBaja SERIA PARA CUANDO NO SE QUIERA MOSTRAR EN EL FRONT
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String denominacion;
     private BigDecimal precioVenta;
     private Boolean productoActivo;
+    private Integer tiempoEstimadoMinutos;
 
 
     @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, orphanRemoval = true)
