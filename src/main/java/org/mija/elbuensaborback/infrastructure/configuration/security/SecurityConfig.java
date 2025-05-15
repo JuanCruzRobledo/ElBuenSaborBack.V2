@@ -41,7 +41,8 @@ public class SecurityConfig {
                             authorizeRequests.requestMatchers("user/**").permitAll();
                             authorizeRequests.requestMatchers("cliente/hola").authenticated();
                             authorizeRequests.requestMatchers("cliente/chau").permitAll();
-                            authorizeRequests.anyRequest().denyAll();
+//                            authorizeRequests.anyRequest().denyAll();
+                            authorizeRequests.anyRequest().permitAll();
                         }
                 )
                 .build();

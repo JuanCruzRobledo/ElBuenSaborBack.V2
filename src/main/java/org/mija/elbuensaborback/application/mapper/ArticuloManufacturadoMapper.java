@@ -35,7 +35,7 @@ public abstract class ArticuloManufacturadoMapper {
             Set<ImagenArticuloEntity> imagenes = dto.imagenesUrls().stream()
                     .map(url -> {
                         return ImagenArticuloEntity.builder()
-                                .denominacion(url)
+                                .url(url)
                                 .articulo(entity)
                                 .build();
                     }).collect(Collectors.toSet());

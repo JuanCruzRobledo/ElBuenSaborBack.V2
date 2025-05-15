@@ -35,7 +35,7 @@ public abstract class ArticuloInsumoMapper {
             Set<ImagenArticuloEntity> imagenes = articuloCreatedRequest.imagenesUrls().stream()
                     .map(url -> {
                         return ImagenArticuloEntity.builder()
-                                .denominacion(url)
+                                .url(url)
                                 .articulo(entity)
                                 .build();
                     }).collect(Collectors.toSet());

@@ -24,12 +24,8 @@ public class PedidoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalTime horaEstimadaFinalizacion;
-
-    private BigDecimal subTotal;
-    private BigDecimal descuento;
-    private BigDecimal gastosEnvio;
     private BigDecimal total;
-    private BigDecimal totalCosto;
+    private BigDecimal gastosEnvio;
 
     @Enumerated(EnumType.STRING)
     private EstadoEnum estadoEnum;
@@ -37,7 +33,6 @@ public class PedidoEntity {
     private TipoEnvioEnum tipoEnvioEnum;
     @Enumerated(EnumType.STRING)
     private FormaPagoEnum formaPagoEnum;
-
     private LocalDate fechaPedido;
 
     @OneToMany(mappedBy = "pedido")
