@@ -1,14 +1,12 @@
 package org.mija.elbuensaborback.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,12 +19,12 @@ public class CategoriaEntity {
     private String denominacion;
 
     // Referencia al padre (puede ser null si es categoría raíz)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "padre_id")
     private CategoriaEntity categoriaPadre;
 
     // Hijos de esta categoría
-    @OneToMany(mappedBy = "categoriaPadre", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "categoriaPadre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CategoriaEntity> subcategorias;
 
     @OneToMany(mappedBy = "categoria")

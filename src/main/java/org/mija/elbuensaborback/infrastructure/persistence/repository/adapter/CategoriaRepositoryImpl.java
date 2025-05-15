@@ -34,11 +34,19 @@ public class CategoriaRepositoryImpl implements CategoriaRepositoryPort {
 
     @Override
     public void deleteById(Long id) {
-
+        categoriaJpaRepository.deleteById(id);
     }
 
     @Override
     public List<CategoriaEntity> saveAll(List<CategoriaEntity> categoriaEntities) {
         return categoriaJpaRepository.saveAll(categoriaEntities);
     }
+    public boolean existsById(Long id) {
+        return categoriaJpaRepository.existsById(id);
+    }
+
+    public Optional<CategoriaEntity> findWithSubcategoriasById(Long id){
+        return categoriaJpaRepository.findWithSubcategoriasById(id);
+    }
+
 }
