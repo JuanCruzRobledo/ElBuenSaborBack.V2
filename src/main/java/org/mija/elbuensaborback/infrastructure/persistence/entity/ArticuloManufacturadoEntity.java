@@ -113,7 +113,7 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
             for (ImagenArticuloEntity imagen : getImagenesUrls()) {
                 if (imageCount > 0) sb.append(", ");
                 sb.append("{id=").append(imagen.getId());
-                sb.append(", denominacion='").append(imagen.getDenominacion()).append("'");
+                sb.append(", url='").append(imagen.getUrl()).append("'");
                 sb.append("}");
                 imageCount++;
             }

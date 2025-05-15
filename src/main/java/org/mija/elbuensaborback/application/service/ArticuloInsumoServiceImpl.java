@@ -48,7 +48,7 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
         ArticuloInsumoEntity articuloInsumo = articuloInsumoRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Insumo"));
 
         System.out.println("IMAGENES: " );
-        articuloInsumo.getImagenesUrls().forEach(imagen -> System.out.println("IMAGEN ID: "+imagen.getId() + "IMAGEN DENOMINACION: "+ imagen.getDenominacion()));
+        articuloInsumo.getImagenesUrls().forEach(imagen -> System.out.println("IMAGEN ID: "+imagen.getId() + "IMAGEN DENOMINACION: "+ imagen.getUrl()));
         return articuloInsumoMapper.toResponse(articuloInsumo);
     }
 

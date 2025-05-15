@@ -15,7 +15,7 @@ public class ImagenArticuloEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String denominacion;
+    private String url;
 
     @ManyToOne
     @JoinColumn(name = "articulo_id")
