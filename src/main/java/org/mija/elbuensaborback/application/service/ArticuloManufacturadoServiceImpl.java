@@ -8,6 +8,7 @@ import org.mija.elbuensaborback.application.service.contratos.ArticuloManufactur
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoDetalleEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.CategoriaEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloManufacturadoDetalleRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloManufacturadoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.CategoriaRepositoryImpl;
@@ -40,6 +41,9 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
 
         ArticuloManufacturadoEntity articuloEntity = articuloManufacturadoMapper.toEntity(articulo);
         articuloEntity.setCategoria(categoria);
+
+        SucursalEntity sucursal = SucursalEntity.builder().id(1L).build();
+        articuloEntity.setSucursal(sucursal);
 
         articuloEntity = articuloManufacturadoRepository.save(articuloEntity);
 
