@@ -3,7 +3,6 @@ package org.mija.elbuensaborback.application.dto.response;
 import lombok.Builder;
 import org.mija.elbuensaborback.application.dto.global.manufacturado.ArticuloManufacturadoDetalleDto;
 import org.mija.elbuensaborback.application.dto.global.manufacturado.ImagenDto;
-import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,9 +17,8 @@ public record ArticuloManufacturadoResponse(
         Integer tiempoEstimadoMinutos,
         Set<ImagenDto> imagenesUrls,
         Long categoriaId,
+        String categoriaDenominacion,
         String descripcion,
         BigDecimal precioCosto,
-        Double pesoTotal,
-        UnidadMedidaEnum unidadMedidaEnum,
         List<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalle
 ) {}

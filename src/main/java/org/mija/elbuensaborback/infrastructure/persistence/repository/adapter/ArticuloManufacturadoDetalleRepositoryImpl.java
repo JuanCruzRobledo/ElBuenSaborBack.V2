@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Repository
@@ -26,6 +27,11 @@ public class ArticuloManufacturadoDetalleRepositoryImpl implements ArticuloManuf
     public List<ArticuloManufacturadoDetalleEntity> findAll() {
         return List.of();
     }
+
+    public List<ArticuloManufacturadoDetalleEntity> findAllByIdArticuloManufacturado(Long idArticuloManufacturado) {
+        return articuloManufacturadoDetalleJpaRepository.findAllByIdArticuloManufacturado(idArticuloManufacturado);
+    }
+
 
     @Override
     public ArticuloManufacturadoDetalleEntity save(ArticuloManufacturadoDetalleEntity entity) {

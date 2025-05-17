@@ -13,7 +13,7 @@ public record ArticuloInsumoResponse(
         Integer tiempoEstimadoMinutos,
         Set<ImagenDto> imagenesUrls,
         Long categoriaId,
-        String categoriaNombre,
+        String categoriaDenominacion,
         BigDecimal precioCompra,
         UnidadMedidaEnum unidadMedidaEnum,
         Double stockActual,

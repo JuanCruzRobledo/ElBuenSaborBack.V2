@@ -24,8 +24,6 @@ public abstract class ArticuloManufacturadoMapper {
     // ======================= CREATE =======================
     @Mapping(target = "imagenesUrls", ignore = true)
     @Mapping(target = "categoria.id", source = "categoriaId")
-    //@Mapping(target = "sucursal.id", source = "sucursalId")
-    @Mapping(target = "pesoTotal", ignore = true)
     public abstract ArticuloManufacturadoEntity toEntity(ArticuloManufacturadoCreatedRequest request);
 
 
@@ -44,25 +42,20 @@ public abstract class ArticuloManufacturadoMapper {
     }
 
     @AfterMapping
-    protected void calcularPeso(@MappingTarget ArticuloManufacturadoEntity entity, ArticuloManufacturadoCreatedRequest dto) {
-        entity.pesoTotal();
+    protected void relacionConManufacturado(@MappingTarget ArticuloManufacturadoEntity entity, ArticuloManufacturadoCreatedRequest dto) {
         entity.getArticuloManufacturadoDetalle().stream().forEach(detalle -> { detalle.setArticuloManufacturado(entity); });
     }
 
 
     // ======================= UPDATE =======================
 
-    @AfterMapping
-    protected void actualizarPeso(@MappingTarget ArticuloManufacturadoEntity entity, ArticuloManufacturadoUpdateRequest updateDto) {
-        entity.pesoTotal();
-    }
 
     @AfterMapping
     protected void relacionConArticulo( ArticuloManufacturadoUpdateRequest updateDto, @MappingTarget ArticuloManufacturadoEntity entity){
         entity.getArticuloManufacturadoDetalle().forEach(detalle -> detalle.setArticuloManufacturado(entity));
     }
 
-    @Mapping(target = "id", ignore = true)// no queremos sobrescribir el ID del entity existente
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "articuloManufacturadoDetalle", ignore = true)
     public abstract void updateEntityFromDto(ArticuloManufacturadoUpdateRequest dto, @MappingTarget ArticuloManufacturadoEntity entity);
 
@@ -87,12 +80,10 @@ public abstract class ArticuloManufacturadoMapper {
                 // Actualizar existente
                 detalle = existentesMap.get(dtoDetalle.id());
                 detalle.setCantidad(dtoDetalle.cantidad());
-                detalle.setUnidadMedidaEnum(dtoDetalle.unidadMedidaEnum());
             } else {
                 // Crear nuevo
                 detalle = new ArticuloManufacturadoDetalleEntity();
                 detalle.setCantidad(dtoDetalle.cantidad());
-                detalle.setUnidadMedidaEnum(dtoDetalle.unidadMedidaEnum());
                 detalle.setArticuloInsumo(ArticuloInsumoEntity.builder().id(dtoDetalle.articuloInsumoId()).build());
                 detalle.setArticuloManufacturado(entity);
             }
@@ -118,7 +109,7 @@ public abstract class ArticuloManufacturadoMapper {
     // ======================= RESPONSE =======================
 
     @Mapping(target = "categoriaId", source = "categoria.id")
-    //@Mapping(target = "sucursalId", source = "sucursal.id")
+    @Mapping(target = "categoriaDenominacion", source = "categoria.denominacion")
     public abstract ArticuloManufacturadoResponse toResponse(ArticuloManufacturadoEntity entity);
 
     //-------------- BASIC -------------

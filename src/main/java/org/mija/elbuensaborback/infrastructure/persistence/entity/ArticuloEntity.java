@@ -35,7 +35,7 @@ public abstract class ArticuloEntity {
     private Set<ImagenArticuloEntity> imagenesUrls;
 
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "categoria_id")
     private CategoriaEntity categoria;
 

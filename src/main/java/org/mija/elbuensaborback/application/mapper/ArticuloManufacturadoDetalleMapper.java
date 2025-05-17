@@ -14,6 +14,7 @@ public interface ArticuloManufacturadoDetalleMapper {
     ArticuloManufacturadoDetalleEntity dtoDetalleToEntity(ArticuloManufacturadoDetalleDto detalle);
 
     @Mapping(target = "articuloInsumoId", source = "articuloInsumo.id")
+    @Mapping(target = "articuloDenominacion", source = "articuloInsumo.denominacion")
     ArticuloManufacturadoDetalleDto entityToDto(ArticuloManufacturadoDetalleEntity detalle);
 
     @Mapping(target = "articuloInsumo.id", source="articuloInsumoId")

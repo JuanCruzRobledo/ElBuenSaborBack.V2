@@ -5,8 +5,12 @@ import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoBa
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoResponse;
 import org.mija.elbuensaborback.application.mapper.ArticuloManufacturadoMapper;
 import org.mija.elbuensaborback.application.service.contratos.ArticuloManufacturadoService;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoDetalleEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.CategoriaEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloManufacturadoDetalleRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloManufacturadoRepositoryImpl;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.CategoriaRepositoryImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,17 +21,33 @@ import java.util.stream.Collectors;
 public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoService {
 
     private final ArticuloManufacturadoRepositoryImpl articuloManufacturadoRepository;
+    private final CategoriaRepositoryImpl categoriaRepository;
+    private final ArticuloManufacturadoDetalleRepositoryImpl articuloManufacturadoDetalleRepository;
     private final ArticuloManufacturadoMapper articuloManufacturadoMapper;
 
-    public ArticuloManufacturadoServiceImpl(ArticuloManufacturadoRepositoryImpl articuloManufacturadoRepository, ArticuloManufacturadoMapper articuloManufacturadoMapper) {
+    public ArticuloManufacturadoServiceImpl(ArticuloManufacturadoRepositoryImpl articuloManufacturadoRepository, CategoriaRepositoryImpl categoriaRepository, ArticuloManufacturadoDetalleRepositoryImpl articuloManufacturadoDetalleRepository, ArticuloManufacturadoMapper articuloManufacturadoMapper) {
         this.articuloManufacturadoRepository = articuloManufacturadoRepository;
+        this.categoriaRepository = categoriaRepository;
+        this.articuloManufacturadoDetalleRepository = articuloManufacturadoDetalleRepository;
         this.articuloManufacturadoMapper = articuloManufacturadoMapper;
     }
 
 
     @Override
     public ArticuloManufacturadoResponse crearArticulo(ArticuloManufacturadoCreatedRequest articulo) {
-        ArticuloManufacturadoEntity articuloEntity = articuloManufacturadoRepository.save(articuloManufacturadoMapper.toEntity(articulo));
+        CategoriaEntity categoria = categoriaRepository.findById(articulo.categoriaId())
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+
+        ArticuloManufacturadoEntity articuloEntity = articuloManufacturadoMapper.toEntity(articulo);
+        articuloEntity.setCategoria(categoria);
+
+        articuloEntity = articuloManufacturadoRepository.save(articuloEntity);
+
+        List<ArticuloManufacturadoDetalleEntity> listaDetalles =
+                articuloManufacturadoDetalleRepository.findAllByIdArticuloManufacturado(articuloEntity.getId());
+
+        articuloEntity.setArticuloManufacturadoDetalle(listaDetalles);
+
         return articuloManufacturadoMapper.toResponse(articuloEntity);
     }
 

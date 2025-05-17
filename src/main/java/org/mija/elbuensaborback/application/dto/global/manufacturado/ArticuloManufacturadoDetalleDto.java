@@ -7,6 +7,6 @@ import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 public record ArticuloManufacturadoDetalleDto(
         Long id,
         Double cantidad,
-        UnidadMedidaEnum unidadMedidaEnum,
-        Long articuloInsumoId
+        Long articuloInsumoId,
+        String articuloDenominacion
 ) {}

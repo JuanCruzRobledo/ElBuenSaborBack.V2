@@ -1,15 +1,9 @@
 package org.mija.elbuensaborback.application.mapper;
 
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mija.elbuensaborback.application.dto.global.manufacturado.ImagenDto;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenArticuloEntity;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Mapper(componentModel="spring")

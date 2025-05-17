@@ -3,7 +3,6 @@ package org.mija.elbuensaborback.infrastructure.persistence.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +19,6 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
     private String descripcion;
     private BigDecimal precioCosto;
 
-    //CANTIDAD TOTAL DE LA UNIDAD DE MEDIDA EN ESTE ARTICULO MANUFACTURADO
-    private Double pesoTotal;
-    @Enumerated(EnumType.STRING)
-    private UnidadMedidaEnum unidadMedidaEnum;
-
     //private String preparacion; no se si iria
 
     @OneToMany(mappedBy = "articuloManufacturado", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -36,14 +30,6 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
 
     public BigDecimal precioCostoCalculado(){
         return null == precioCosto ? BigDecimal.ZERO : precioCosto;
-    }
-    public void pesoTotal(){
-        this.pesoTotal = 0.00;
-
-        articuloManufacturadoDetalle.stream().forEach(detalle -> {
-            this.pesoTotal += detalle.getCantidad();
-        });
-
     }
 
     public void addDetalle(ArticuloManufacturadoDetalleEntity detalle) {
@@ -65,8 +51,6 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
         sb.append(",\n  precioCosto=").append(precioCosto);
         sb.append(",\n  tiempoEstimadoMinutos=").append(getTiempoEstimadoMinutos());
         sb.append(",\n  productoActivo=").append(getProductoActivo());
-        sb.append(",\n  pesoTotal=").append(pesoTotal);
-        sb.append(" ").append(unidadMedidaEnum);
 
         // Información de categoría sin recursión
         sb.append(",\n  categoria=");
@@ -99,7 +83,6 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
                     sb.append("null");
                 }
                 sb.append(", cantidad=").append(detalle.getCantidad());
-                sb.append(" ").append(detalle.getUnidadMedidaEnum()).append("}");
             }
         } else {
             sb.append("vacío");

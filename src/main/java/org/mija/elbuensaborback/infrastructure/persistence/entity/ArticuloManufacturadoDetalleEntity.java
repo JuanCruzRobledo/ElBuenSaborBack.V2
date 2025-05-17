@@ -14,19 +14,14 @@ public class ArticuloManufacturadoDetalleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     //CANTIDAD DE ESA UNIDAD DE MEDIDA
     private Double cantidad;
-
-    @Enumerated(EnumType.STRING)
-    private UnidadMedidaEnum unidadMedidaEnum;
-
 
     @ManyToOne
     @JoinColumn(name = "articulo_manufacturado_id", nullable = false)
     private ArticuloManufacturadoEntity articuloManufacturado;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "articulo_insumo_id")
     private ArticuloInsumoEntity articuloInsumo;
 }

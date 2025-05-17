@@ -1,7 +1,5 @@
 package org.mija.elbuensaborback.application.dto.response;
 
-import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
-
 import java.math.BigDecimal;
 
 public record ArticuloManufacturadoBasicResponse(
@@ -10,7 +8,5 @@ public record ArticuloManufacturadoBasicResponse(
         BigDecimal precioVenta,
         //Set<String> imagenesUrls,
         String descripcion,
-        Integer tiempoEstimadoMinutos,
-        Double pesoTotal,
-        UnidadMedidaEnum unidadMedidaEnum
+        Integer tiempoEstimadoMinutos
 ) {}

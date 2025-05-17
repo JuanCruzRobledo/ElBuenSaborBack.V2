@@ -5,6 +5,6 @@ import lombok.Builder;
 @Builder
 public record ImagenDto (
         Long id,
-        String denominacion
+        String url
 ){
 }

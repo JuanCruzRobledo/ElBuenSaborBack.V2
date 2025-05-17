@@ -16,7 +16,7 @@ public class ImagenClienteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String denominacion;
+    private String url;
     @OneToOne(mappedBy = "imagen")
     private ClienteEntity cliente;
 
