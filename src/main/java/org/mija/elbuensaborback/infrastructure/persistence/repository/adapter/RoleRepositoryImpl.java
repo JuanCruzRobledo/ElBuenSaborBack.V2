@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
+import org.mija.elbuensaborback.domain.enums.RolEnum;
 import org.mija.elbuensaborback.domain.repository.RoleRepositoryPort;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.RoleEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.RoleJpaRepository;
@@ -19,6 +20,10 @@ public class RoleRepositoryImpl implements RoleRepositoryPort {
     @Override
     public Optional<RoleEntity> findById(Long aLong) {
         return Optional.empty();
+    }
+
+    public Optional<RoleEntity> findByRolEnum(RolEnum role) {
+        return roleJpaRepository.findByRolEnum(role);
     }
 
     @Override

@@ -1,17 +1,32 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
+import org.mija.elbuensaborback.application.dto.request.auth.AuthRequest;
+import org.mija.elbuensaborback.application.dto.request.auth.RegisterRequest;
+import org.mija.elbuensaborback.application.dto.response.AuthResponse;
+import org.mija.elbuensaborback.infrastructure.security.service.AuthenticationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("user/auth")
+@RequestMapping("/auth")
 public class AuthenticationController {
 
-    @GetMapping("/login")
-    public ResponseEntity<?> login(String username, String password) {
-        return ResponseEntity.ok().body("insegurisimo como tu cola");
+    private final AuthenticationService authService;
+
+    public AuthenticationController(AuthenticationService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+        System.out.println("LOGIN");
+        return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest nuevoUsuario) {
+        System.out.println("REGISTER");
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(nuevoUsuario));
     }
 }

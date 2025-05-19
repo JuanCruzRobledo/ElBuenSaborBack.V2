@@ -10,11 +10,11 @@ public class ClienteController {
 
     @GetMapping("/hola")
     public String clienteHola() {
-        return "cliente asegurado por la seguridad de asu";
+        return "cliente asegurado";
     }
 
     @GetMapping("/chau")
     public String clienteChau() {
-        return "cliente asegurado por la seguridad de asu";
+        return "cliente asegurado";
     }
 }

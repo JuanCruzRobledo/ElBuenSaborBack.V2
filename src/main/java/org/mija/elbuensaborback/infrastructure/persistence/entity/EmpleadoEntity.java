@@ -3,13 +3,14 @@ package org.mija.elbuensaborback.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
 @Data
-@AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity(name = "empleado")
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmpleadoEntity extends PersonaEntity {
 
     @ManyToOne

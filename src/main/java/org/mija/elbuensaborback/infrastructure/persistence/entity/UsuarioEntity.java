@@ -20,16 +20,16 @@ public class UsuarioEntity {
     private String email;
 
     //usuario OAuth2
-    private String oauth2Id;
-    private AuthProviderEnum authProviderEnum;
+    //private String oauth2Id;
+    //private AuthProviderEnum authProviderEnum;
     //usuario Local
-    private boolean isEnabled;
-    private boolean isAccountNonExpired;
-    private boolean isAccountNonLocked;
-    private boolean isCredentialsNonExpired;
+    private boolean disabled;
+    private boolean accountExpired;
+    private boolean accountLocked;
+    private boolean credentialsExpired;
     private String password;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private RoleEntity rol;
 

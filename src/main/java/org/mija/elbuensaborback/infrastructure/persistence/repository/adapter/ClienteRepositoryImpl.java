@@ -28,7 +28,7 @@ public class ClienteRepositoryImpl implements ClienteRepositoryPort {
 
     @Override
     public ClienteEntity save(ClienteEntity entity) {
-        return null;
+        return clienteJpaRepository.save(entity);
     }
 
     @Override

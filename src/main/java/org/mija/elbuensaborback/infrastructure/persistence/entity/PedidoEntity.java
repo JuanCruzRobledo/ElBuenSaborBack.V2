@@ -35,7 +35,7 @@ public class PedidoEntity {
     private FormaPagoEnum formaPagoEnum;
     private LocalDate fechaPedido;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.EAGER)
     private List<DetallePedidoEntity> listaDetalle;
 
     @OneToOne

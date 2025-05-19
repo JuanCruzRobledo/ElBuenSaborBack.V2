@@ -21,6 +21,14 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryPort {
         return Optional.empty();
     }
 
+    public Optional<UsuarioEntity> findByEmail(String email) {
+        return usuarioJpaRepository.findByEmail(email);
+    }
+
+    public Optional<UsuarioEntity> findByUsername(String email) {
+        return usuarioJpaRepository.findByUsername(email);
+    }
+
     @Override
     public List<UsuarioEntity> findAll() {
         return List.of();
@@ -28,7 +36,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryPort {
 
     @Override
     public UsuarioEntity save(UsuarioEntity entity) {
-        return null;
+        return usuarioJpaRepository.save(entity);
     }
 
     @Override
@@ -38,6 +46,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryPort {
 
     @Override
     public List<UsuarioEntity> saveAll(List<UsuarioEntity> entities) {
-        return List.of();
+        return usuarioJpaRepository.saveAll(entities);
     }
 }

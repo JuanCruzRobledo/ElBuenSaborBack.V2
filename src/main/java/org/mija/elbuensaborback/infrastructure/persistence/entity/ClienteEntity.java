@@ -2,6 +2,7 @@ package org.mija.elbuensaborback.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -9,10 +10,9 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity(name = "cliente")
 public class ClienteEntity extends PersonaEntity {
-
 
     @ManyToMany
     @JoinTable(

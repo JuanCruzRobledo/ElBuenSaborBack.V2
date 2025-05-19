@@ -17,9 +17,5 @@ public class PermissionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
-    private PermissionEnum permission;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private RoleEntity role;
+    private PermissionEnum permissionEnum;
 }

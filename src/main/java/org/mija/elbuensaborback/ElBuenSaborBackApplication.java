@@ -1,17 +1,23 @@
 package org.mija.elbuensaborback;
 
+import org.mija.elbuensaborback.domain.enums.PermissionEnum;
+import org.mija.elbuensaborback.domain.enums.RolEnum;
 import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 import org.mija.elbuensaborback.domain.repository.*;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.UsuarioRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootApplication
 public class ElBuenSaborBackApplication {
@@ -28,10 +34,94 @@ public class ElBuenSaborBackApplication {
             LocalidadJpaRepository localidadRepository,
             EmpresaJpaRepository empresaRepository,
             CategoriaJpaRepository categoriaRepository,
-            ArticuloInsumoJpaRepository articuloInsumoRepository
+            ArticuloInsumoJpaRepository articuloInsumoRepository,
+            UsuarioRepositoryImpl usuarioRepository,
+            PasswordEncoder passwordEncoder
     ) {
 
         return args -> {
+
+            /* CREATE PERMISSIONS */
+            PermissionEntity permissionEntity1 = PermissionEntity.builder()
+                    .permissionEnum(PermissionEnum.CREATE)
+                    .build();
+
+            PermissionEntity permissionEntity2 = PermissionEntity.builder()
+                    .permissionEnum(PermissionEnum.DELETE)
+                    .build();
+
+            PermissionEntity permissionEntity3 = PermissionEntity.builder()
+                    .permissionEnum(PermissionEnum.UPDATE)
+                    .build();
+
+
+            /* CREATE ROLES */
+            RoleEntity roleAdmin = RoleEntity.builder()
+                    .rolEnum(RolEnum.ADMIN)
+                    .permisos(new HashSet<>(Set.of(permissionEntity1, permissionEntity2, permissionEntity3))) // Usa new HashSet<>()
+                    .build();
+
+            RoleEntity roleCliente = RoleEntity.builder()
+                    .rolEnum(RolEnum.CLIENTE)
+                    .permisos(new HashSet<>(Set.of(permissionEntity1, permissionEntity2))) // Usa new HashSet<>()
+                    .build();
+
+            RoleEntity roleEmpleado = RoleEntity.builder()
+                    .rolEnum(RolEnum.EMPLEADO)
+                    .permisos(new HashSet<>(Set.of(permissionEntity1))) // Usa new HashSet<>()
+                    .build();
+
+
+            /* CREATE USERS */
+            UsuarioEntity userJuan = UsuarioEntity.builder()
+                    .username("juan")
+                    .email("juan@gmail.com")
+                    .password(passwordEncoder.encode("112233"))
+                    .disabled(false)
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .rol(roleAdmin)
+                    .build();
+
+            UsuarioEntity userAmbar= UsuarioEntity.builder()
+                    .username("ambar")
+                    .email("ambar@gmail.com")
+                    .password(passwordEncoder.encode("112233"))
+                    .disabled(false)
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .rol(roleCliente)
+                    .build();
+
+            UsuarioEntity userIsabella = UsuarioEntity.builder()
+                    .username("isabella")
+                    .email("isabella@gmail.com")
+                    .password(passwordEncoder.encode("112233"))
+                    .disabled(false)
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .rol(roleEmpleado)
+                    .build();
+
+            UsuarioEntity userMaiten = UsuarioEntity.builder()
+                    .username("maiten")
+                    .email("maiten@gmail.com")
+                    .password(passwordEncoder.encode("112233"))
+                    .disabled(false)
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .rol(roleEmpleado)
+                    .build();
+
+
+
+            usuarioRepository.saveAll(List.of(userJuan, userAmbar, userIsabella, userMaiten));
+
+
             // Crear y guardar países
             PaisEntity argentina = paisRepository.save(PaisEntity.builder()
                     .nombre("Argentina")
