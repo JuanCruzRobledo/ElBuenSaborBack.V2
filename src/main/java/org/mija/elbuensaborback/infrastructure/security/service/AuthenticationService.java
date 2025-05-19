@@ -41,7 +41,7 @@ public class AuthenticationService {
 
     public AuthResponse login(AuthRequest request) {
         Authentication authentication = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.username(), request.password())
+                new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
 
         UserDetails user = (UserDetails) authentication.getPrincipal();
@@ -51,12 +51,10 @@ public class AuthenticationService {
 
 
     public AuthResponse register(RegisterRequest nuevoUsuario) {
-        String username = nuevoUsuario.username();
-        String password = nuevoUsuario.password();
 
         // Validar si el usuario ya existe
-        if (usuarioRepository.findByUsername(username).isPresent()) {
-            throw new BadCredentialsException("El nombre de usuario ya está en uso.");
+        if (usuarioRepository.findByEmail(nuevoUsuario.email()).isPresent()) {
+            throw new BadCredentialsException("El correo ya está en uso.");
         }
 
         // Buscar rol CLIENTE
@@ -65,9 +63,8 @@ public class AuthenticationService {
 
         // Crear entidad de usuario
         UsuarioEntity usuario = UsuarioEntity.builder()
-                .username(username)
                 .email(nuevoUsuario.email())
-                .password(passwordEncoder.encode(password))
+                .password(passwordEncoder.encode(nuevoUsuario.password()))
                 .rol(role)
                 .disabled(false)
                 .accountLocked(false)
@@ -87,7 +84,7 @@ public class AuthenticationService {
         clienteRepository.save(cliente);
 
         // Generar token
-        UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getUsername());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
         String token = jwtService.generateToken(userDetails);
 
         return new AuthResponse(token);

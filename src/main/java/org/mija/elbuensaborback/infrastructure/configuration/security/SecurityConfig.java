@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(
                         authorizeRequests ->{
-                            authorizeRequests.requestMatchers("auth/**").permitAll() // permitir login y register
+                            authorizeRequests.requestMatchers("/auth/**").permitAll() // permitir login y register
                                     .anyRequest().authenticated();
                             //authorizeRequests.requestMatchers("user/**").permitAll();
                             //authorizeRequests.requestMatchers("cliente/hola").authenticated();

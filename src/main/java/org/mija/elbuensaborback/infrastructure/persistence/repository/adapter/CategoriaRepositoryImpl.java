@@ -27,6 +27,10 @@ public class CategoriaRepositoryImpl implements CategoriaRepositoryPort {
         return categoriaJpaRepository.findAll();
     }
 
+    public List<CategoriaEntity> findAllPadres() {
+        return categoriaJpaRepository.findByCategoriaPadreIsNull();
+    }
+
     @Override
     public CategoriaEntity save(CategoriaEntity nombreEntidad) {
         return categoriaJpaRepository.save(nombreEntidad);

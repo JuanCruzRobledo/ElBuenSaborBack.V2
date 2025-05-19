@@ -48,4 +48,9 @@ public class CategoriaController {
     public ResponseEntity<?> listarCategorias() {
         return ResponseEntity.status(HttpStatus.OK).body(categoriaService.listarCategoria());
     }
+
+    @GetMapping("padres/getAll")
+    public ResponseEntity<?> listarCategoriasPadres() {
+        return ResponseEntity.status(HttpStatus.OK).body(categoriaService.listarCategoriaPadres());
+    }
 }

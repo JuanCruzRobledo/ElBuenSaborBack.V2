@@ -25,9 +25,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryPort {
         return usuarioJpaRepository.findByEmail(email);
     }
 
-    public Optional<UsuarioEntity> findByUsername(String email) {
-        return usuarioJpaRepository.findByUsername(email);
-    }
 
     @Override
     public List<UsuarioEntity> findAll() {

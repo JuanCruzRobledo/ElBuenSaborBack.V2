@@ -23,8 +23,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UsuarioEntity usuario = usuarioRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("Usuario "+username + " no encontrado"));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UsuarioEntity usuario = usuarioRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("Email "+email + " no encontrado"));
 
         List<SimpleGrantedAuthority> listaAuthority = new ArrayList<>(usuario.getRol().getPermisos().stream().map((permiso) -> {
             return new SimpleGrantedAuthority(permiso.getPermissionEnum().name());
@@ -34,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
         return User.builder()
-                .username(usuario.getUsername())
+                .username(usuario.getEmail())
                 .password(usuario.getPassword())
                 .disabled(usuario.isDisabled())
                 .accountExpired(usuario.isAccountExpired())

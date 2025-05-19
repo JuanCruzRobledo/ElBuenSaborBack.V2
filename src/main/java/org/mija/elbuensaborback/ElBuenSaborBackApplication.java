@@ -74,7 +74,6 @@ public class ElBuenSaborBackApplication {
 
             /* CREATE USERS */
             UsuarioEntity userJuan = UsuarioEntity.builder()
-                    .username("juan")
                     .email("juan@gmail.com")
                     .password(passwordEncoder.encode("112233"))
                     .disabled(false)
@@ -85,7 +84,6 @@ public class ElBuenSaborBackApplication {
                     .build();
 
             UsuarioEntity userAmbar= UsuarioEntity.builder()
-                    .username("ambar")
                     .email("ambar@gmail.com")
                     .password(passwordEncoder.encode("112233"))
                     .disabled(false)
@@ -96,7 +94,6 @@ public class ElBuenSaborBackApplication {
                     .build();
 
             UsuarioEntity userIsabella = UsuarioEntity.builder()
-                    .username("isabella")
                     .email("isabella@gmail.com")
                     .password(passwordEncoder.encode("112233"))
                     .disabled(false)
@@ -107,7 +104,6 @@ public class ElBuenSaborBackApplication {
                     .build();
 
             UsuarioEntity userMaiten = UsuarioEntity.builder()
-                    .username("maiten")
                     .email("maiten@gmail.com")
                     .password(passwordEncoder.encode("112233"))
                     .disabled(false)

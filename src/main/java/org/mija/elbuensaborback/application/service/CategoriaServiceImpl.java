@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -100,5 +101,11 @@ public class CategoriaServiceImpl implements CategoriaService {
                 .stream()
                 .map(categoriaMapper::toDto)
                 .collect(Collectors.toSet());
+    }
+
+    public List<CategoriaDto> listarCategoriaPadres() {
+         return categoriaRepository.findAllPadres().stream()
+                .map(categoriaMapper::toDto)
+                .toList();
     }
 }
