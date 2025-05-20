@@ -38,6 +38,6 @@ public class PersonaRepositoryImpl implements PersonaRepositoryPort {
 
     @Override
     public List<PersonaEntity> saveAll(List<PersonaEntity> entities) {
-        return List.of();
+        return personaJpaRepository.saveAll(entities);
     }
 }

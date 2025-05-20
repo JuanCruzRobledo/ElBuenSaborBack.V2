@@ -18,12 +18,12 @@ public class ArticuloRepositoryImpl implements ArticuloRepositoryPort {
 
     @Override
     public Optional<ArticuloEntity> findById(Long aLong) {
-        return Optional.empty();
+        return articuloJpaRepository.findById(aLong);
     }
 
     @Override
     public List<ArticuloEntity> findAll() {
-        return List.of();
+        return articuloJpaRepository.findAll();
     }
 
     @Override

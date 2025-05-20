@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.persistence.entity;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 @Setter
 @SuperBuilder
 @Entity(name = "articulo_insumo")
+@DiscriminatorValue("ARTICULO_INSUMO")
 public class ArticuloInsumoEntity extends ArticuloEntity {
 
     private BigDecimal precioCompra;

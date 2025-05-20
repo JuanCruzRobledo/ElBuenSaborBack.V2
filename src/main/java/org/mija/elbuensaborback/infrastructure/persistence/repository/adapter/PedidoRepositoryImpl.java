@@ -26,14 +26,18 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
         return List.of();
     }
 
+    public List<PedidoEntity> findAllByCliente(Long id) {
+        return pedidoJpaRepository.findByClienteId(id);
+    }
+
     @Override
     public PedidoEntity save(PedidoEntity entity) {
-        return null;
+        return pedidoJpaRepository.save(entity);
     }
 
     @Override
     public void deleteById(Long aLong) {
-
+        pedidoJpaRepository.deleteById(aLong);
     }
 
     @Override

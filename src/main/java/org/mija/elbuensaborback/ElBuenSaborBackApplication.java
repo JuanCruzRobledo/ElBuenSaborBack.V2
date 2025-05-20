@@ -5,6 +5,7 @@ import org.mija.elbuensaborback.domain.enums.RolEnum;
 import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 import org.mija.elbuensaborback.domain.repository.*;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PersonaRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.UsuarioRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.*;
 import org.springframework.boot.CommandLineRunner;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,7 +37,7 @@ public class ElBuenSaborBackApplication {
             EmpresaJpaRepository empresaRepository,
             CategoriaJpaRepository categoriaRepository,
             ArticuloInsumoJpaRepository articuloInsumoRepository,
-            UsuarioRepositoryImpl usuarioRepository,
+            PersonaRepositoryImpl personaRepository,
             PasswordEncoder passwordEncoder
     ) {
 
@@ -114,8 +116,44 @@ public class ElBuenSaborBackApplication {
                     .build();
 
 
+            /* CREATE CLIENTES */
+            ClienteEntity cliente1 = ClienteEntity.builder()
+                    .nombre("Ambar")
+                    .apellido("Gonzalez")
+                    .telefono("123456789")
+                    .usuario(userAmbar)
+                    .domicilio(new ArrayList<>()) // opcional, si no tenés domicilios
+                    .listaPedido(new ArrayList<>()) // opcional, si no hay pedidos
+                    .build();
 
-            usuarioRepository.saveAll(List.of(userJuan, userAmbar, userIsabella, userMaiten));
+            ClienteEntity cliente2 = ClienteEntity.builder()
+                    .nombre("Juan")
+                    .apellido("Perez")
+                    .telefono("987654321")
+                    .usuario(userJuan)
+                    .domicilio(new ArrayList<>())
+                    .listaPedido(new ArrayList<>())
+                    .build();
+
+            /* CREATE EMPLEADOS */
+            EmpleadoEntity empleado1 = EmpleadoEntity.builder()
+                    .nombre("Isabella")
+                    .apellido("Lopez")
+                    .telefono("555111222")
+                    .usuario(userIsabella)
+                    .sucursal(null) // asigná una sucursal si tenés
+                    .build();
+
+            EmpleadoEntity empleado2 = EmpleadoEntity.builder()
+                    .nombre("Maiten")
+                    .apellido("Fernandez")
+                    .telefono("444333222")
+                    .usuario(userMaiten)
+                    .sucursal(null) // asigná una sucursal si tenés
+                    .build();
+
+            /* GUARDAR TODO CON UN SOLO saveAll */
+            personaRepository.saveAll(List.of(cliente1, cliente2, empleado1, empleado2));
 
 
             // Crear y guardar países

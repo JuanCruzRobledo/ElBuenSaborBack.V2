@@ -1,0 +1,52 @@
+package org.mija.elbuensaborback.application.service;
+
+import jakarta.persistence.EntityNotFoundException;
+import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
+import org.mija.elbuensaborback.application.dto.response.PedidoResponse;
+import org.mija.elbuensaborback.application.mapper.PedidoMapper;
+import org.mija.elbuensaborback.application.service.contratos.PedidoService;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PedidoRepositoryImpl;
+import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Service
+public class PedidoServiceImpl implements PedidoService {
+
+    private final PedidoRepositoryImpl pedidoRepository;
+    private final PedidoMapper pedidoMapper;
+
+    public PedidoServiceImpl(PedidoRepositoryImpl pedidoRepository, PedidoMapper pedidoMapper) {
+        this.pedidoRepository = pedidoRepository;
+        this.pedidoMapper = pedidoMapper;
+    }
+
+    @Override
+    public PedidoResponse crearPedido(PedidoCreatedRequest pedidoCreatedRequest) {
+        PedidoEntity pedido = pedidoMapper.toEntity(pedidoCreatedRequest);
+        pedido = pedidoRepository.save(pedido);
+        return pedidoMapper.toResponse(pedido);
+    }
+
+    @Override
+    public PedidoResponse obtenerPedido(Long id) {
+        return pedidoMapper.toResponse(pedidoRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se encontro el pedido con el id "+ id)));
+    }
+
+    @Override
+    public void eliminarPedido(Long id) {
+        pedidoRepository.deleteById(id);
+    }
+
+    @Override
+    public Set<PedidoResponse> listarPedido() {
+        return pedidoRepository.findAll().stream().map(pedidoMapper::toResponse).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<PedidoResponse> listarPedidoCliente(Long id) {
+        return pedidoRepository.findAllByCliente(id).stream().map(pedidoMapper::toResponse).collect(Collectors.toSet());
+    }
+}

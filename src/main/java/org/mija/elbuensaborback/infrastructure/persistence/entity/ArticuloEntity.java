@@ -15,8 +15,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = "articulo")
-//@MappedSuperclass
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "DTYPE")
 public abstract class ArticuloEntity {
 
     //TENDRIA QUE AGREGAR UN ATRIBUTO QUE DIGA SI ES VISIBLE

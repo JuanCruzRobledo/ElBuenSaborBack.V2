@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 @Entity(name = "articulo_manufacturado")
+@DiscriminatorValue("ARTICULO_MANUFACTURADO")
 public class ArticuloManufacturadoEntity extends ArticuloEntity {
 
     private String descripcion;

@@ -2,7 +2,9 @@ package org.mija.elbuensaborback.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Entity(name = "persona")
@@ -10,6 +12,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 //@DiscriminatorColumn(name = "tipo_persona") // opcional
 public abstract class PersonaEntity {
 

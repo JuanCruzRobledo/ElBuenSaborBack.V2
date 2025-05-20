@@ -6,10 +6,11 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+
 @NoArgsConstructor
-@Data
 @AllArgsConstructor
+@Getter
+@Setter
 @SuperBuilder
 @Entity(name = "cliente")
 public class ClienteEntity extends PersonaEntity {
