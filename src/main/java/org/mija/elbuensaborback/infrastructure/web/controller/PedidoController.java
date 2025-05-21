@@ -2,6 +2,7 @@ package org.mija.elbuensaborback.infrastructure.web.controller;
 
 import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.PedidoResponse;
+import org.mija.elbuensaborback.application.service.PedidoServiceImpl;
 import org.mija.elbuensaborback.application.service.contratos.PedidoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +14,9 @@ import java.util.Set;
 @RequestMapping("/pedido")
 public class PedidoController {
 
-    private final PedidoService pedidoService;
+    private final PedidoServiceImpl pedidoService;
 
-    public PedidoController(PedidoService pedidoService) {
+    public PedidoController(PedidoServiceImpl pedidoService) {
         this.pedidoService = pedidoService;
     }
 

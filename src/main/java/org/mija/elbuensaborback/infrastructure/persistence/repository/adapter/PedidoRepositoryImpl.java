@@ -18,12 +18,12 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
 
     @Override
     public Optional<PedidoEntity> findById(Long aLong) {
-        return Optional.empty();
+        return pedidoJpaRepository.findById(aLong);
     }
 
     @Override
     public List<PedidoEntity> findAll() {
-        return List.of();
+        return pedidoJpaRepository.findAll();
     }
 
     public List<PedidoEntity> findAllByCliente(Long id) {
