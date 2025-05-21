@@ -43,119 +43,6 @@ public class ElBuenSaborBackApplication {
 
         return args -> {
 
-            /* CREATE PERMISSIONS */
-            PermissionEntity permissionEntity1 = PermissionEntity.builder()
-                    .permissionEnum(PermissionEnum.CREATE)
-                    .build();
-
-            PermissionEntity permissionEntity2 = PermissionEntity.builder()
-                    .permissionEnum(PermissionEnum.DELETE)
-                    .build();
-
-            PermissionEntity permissionEntity3 = PermissionEntity.builder()
-                    .permissionEnum(PermissionEnum.UPDATE)
-                    .build();
-
-
-            /* CREATE ROLES */
-            RoleEntity roleAdmin = RoleEntity.builder()
-                    .rolEnum(RolEnum.ADMIN)
-                    .permisos(new HashSet<>(Set.of(permissionEntity1, permissionEntity2, permissionEntity3))) // Usa new HashSet<>()
-                    .build();
-
-            RoleEntity roleCliente = RoleEntity.builder()
-                    .rolEnum(RolEnum.CLIENTE)
-                    .permisos(new HashSet<>(Set.of(permissionEntity1, permissionEntity2))) // Usa new HashSet<>()
-                    .build();
-
-            RoleEntity roleEmpleado = RoleEntity.builder()
-                    .rolEnum(RolEnum.EMPLEADO)
-                    .permisos(new HashSet<>(Set.of(permissionEntity1))) // Usa new HashSet<>()
-                    .build();
-
-
-            /* CREATE USERS */
-            UsuarioEntity userJuan = UsuarioEntity.builder()
-                    .email("juan@gmail.com")
-                    .password(passwordEncoder.encode("112233"))
-                    .disabled(false)
-                    .accountExpired(false)
-                    .accountLocked(false)
-                    .credentialsExpired(false)
-                    .rol(roleAdmin)
-                    .build();
-
-            UsuarioEntity userAmbar= UsuarioEntity.builder()
-                    .email("ambar@gmail.com")
-                    .password(passwordEncoder.encode("112233"))
-                    .disabled(false)
-                    .accountExpired(false)
-                    .accountLocked(false)
-                    .credentialsExpired(false)
-                    .rol(roleCliente)
-                    .build();
-
-            UsuarioEntity userIsabella = UsuarioEntity.builder()
-                    .email("isabella@gmail.com")
-                    .password(passwordEncoder.encode("112233"))
-                    .disabled(false)
-                    .accountExpired(false)
-                    .accountLocked(false)
-                    .credentialsExpired(false)
-                    .rol(roleEmpleado)
-                    .build();
-
-            UsuarioEntity userMaiten = UsuarioEntity.builder()
-                    .email("maiten@gmail.com")
-                    .password(passwordEncoder.encode("112233"))
-                    .disabled(false)
-                    .accountExpired(false)
-                    .accountLocked(false)
-                    .credentialsExpired(false)
-                    .rol(roleEmpleado)
-                    .build();
-
-
-            /* CREATE CLIENTES */
-            ClienteEntity cliente1 = ClienteEntity.builder()
-                    .nombre("Ambar")
-                    .apellido("Gonzalez")
-                    .telefono("123456789")
-                    .usuario(userAmbar)
-                    .domicilio(new ArrayList<>()) // opcional, si no tenés domicilios
-                    .listaPedido(new ArrayList<>()) // opcional, si no hay pedidos
-                    .build();
-
-            ClienteEntity cliente2 = ClienteEntity.builder()
-                    .nombre("Juan")
-                    .apellido("Perez")
-                    .telefono("987654321")
-                    .usuario(userJuan)
-                    .domicilio(new ArrayList<>())
-                    .listaPedido(new ArrayList<>())
-                    .build();
-
-            /* CREATE EMPLEADOS */
-            EmpleadoEntity empleado1 = EmpleadoEntity.builder()
-                    .nombre("Isabella")
-                    .apellido("Lopez")
-                    .telefono("555111222")
-                    .usuario(userIsabella)
-                    .sucursal(null) // asigná una sucursal si tenés
-                    .build();
-
-            EmpleadoEntity empleado2 = EmpleadoEntity.builder()
-                    .nombre("Maiten")
-                    .apellido("Fernandez")
-                    .telefono("444333222")
-                    .usuario(userMaiten)
-                    .sucursal(null) // asigná una sucursal si tenés
-                    .build();
-
-            /* GUARDAR TODO CON UN SOLO saveAll */
-            personaRepository.saveAll(List.of(cliente1, cliente2, empleado1, empleado2));
-
-
             // Crear y guardar países
             PaisEntity argentina = paisRepository.save(PaisEntity.builder()
                     .nombre("Argentina")
@@ -386,6 +273,127 @@ public class ElBuenSaborBackApplication {
                     panHamburguesa, medallonCarne, quesoCheddar,
                     lechuga, tomate, mayonesa, mostaza, sal
             ));
+
+
+            /* CREATE PERMISSIONS */
+            PermissionEntity permissionEntity1 = PermissionEntity.builder()
+                    .permissionEnum(PermissionEnum.CREATE)
+                    .build();
+
+            PermissionEntity permissionEntity2 = PermissionEntity.builder()
+                    .permissionEnum(PermissionEnum.DELETE)
+                    .build();
+
+            PermissionEntity permissionEntity3 = PermissionEntity.builder()
+                    .permissionEnum(PermissionEnum.UPDATE)
+                    .build();
+
+
+            /* CREATE ROLES */
+            RoleEntity roleAdmin = RoleEntity.builder()
+                    .rolEnum(RolEnum.ADMIN)
+                    .permisos(new HashSet<>(Set.of(permissionEntity1, permissionEntity2, permissionEntity3))) // Usa new HashSet<>()
+                    .build();
+
+            RoleEntity roleCliente = RoleEntity.builder()
+                    .rolEnum(RolEnum.CLIENTE)
+                    .permisos(new HashSet<>(Set.of(permissionEntity1, permissionEntity2))) // Usa new HashSet<>()
+                    .build();
+
+            RoleEntity roleEmpleado = RoleEntity.builder()
+                    .rolEnum(RolEnum.EMPLEADO)
+                    .permisos(new HashSet<>(Set.of(permissionEntity1))) // Usa new HashSet<>()
+                    .build();
+
+
+            /* CREATE USERS */
+            UsuarioEntity userJuan = UsuarioEntity.builder()
+                    .email("juan@gmail.com")
+                    .password(passwordEncoder.encode("112233"))
+                    .disabled(false)
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .rol(roleAdmin)
+                    .build();
+
+            UsuarioEntity userAmbar= UsuarioEntity.builder()
+                    .email("ambar@gmail.com")
+                    .password(passwordEncoder.encode("112233"))
+                    .disabled(false)
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .rol(roleCliente)
+                    .build();
+
+            UsuarioEntity userIsabella = UsuarioEntity.builder()
+                    .email("isabella@gmail.com")
+                    .password(passwordEncoder.encode("112233"))
+                    .disabled(false)
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .rol(roleEmpleado)
+                    .build();
+
+            UsuarioEntity userMaiten = UsuarioEntity.builder()
+                    .email("maiten@gmail.com")
+                    .password(passwordEncoder.encode("112233"))
+                    .disabled(false)
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .rol(roleEmpleado)
+                    .build();
+
+
+            /* CREATE CLIENTES */
+
+            DomicilioEntity domicilio = DomicilioEntity.builder()
+                    .numero(123)
+                    .calle("Alberto rodriguez")
+                    .codigoPostal("5555")
+                    .localidad(godoyCruz)
+                    .build();
+
+            ClienteEntity cliente1 = ClienteEntity.builder()
+                    .nombre("Ambar")
+                    .apellido("Gonzalez")
+                    .telefono("123456789")
+                    .usuario(userAmbar)
+                    .domicilio(List.of(domicilio)) // opcional, si no tenés domicilios
+                    .listaPedido(new ArrayList<>()) // opcional, si no hay pedidos
+                    .build();
+
+            ClienteEntity cliente2 = ClienteEntity.builder()
+                    .nombre("Juan")
+                    .apellido("Perez")
+                    .telefono("987654321")
+                    .usuario(userJuan)
+                    .domicilio(new ArrayList<>())
+                    .listaPedido(new ArrayList<>())
+                    .build();
+
+            /* CREATE EMPLEADOS */
+            EmpleadoEntity empleado1 = EmpleadoEntity.builder()
+                    .nombre("Isabella")
+                    .apellido("Lopez")
+                    .telefono("555111222")
+                    .usuario(userIsabella)
+                    .sucursal(null) // asigná una sucursal si tenés
+                    .build();
+
+            EmpleadoEntity empleado2 = EmpleadoEntity.builder()
+                    .nombre("Maiten")
+                    .apellido("Fernandez")
+                    .telefono("444333222")
+                    .usuario(userMaiten)
+                    .sucursal(null) // asigná una sucursal si tenés
+                    .build();
+
+            /* GUARDAR TODO CON UN SOLO saveAll */
+            personaRepository.saveAll(List.of(cliente1, cliente2, empleado1, empleado2));
         };
 
     }

@@ -32,12 +32,12 @@ public abstract class DetallePedidoMapper {
 
         List<ArticuloEntity> articulos = articuloRepository.findAll();
 
-        for (ArticuloEntity art : articulos) {
-            System.out.println("ID: " + art.getId() + ", tipo real: " + art.getClass().getSimpleName());
-        }
         ArticuloEntity articulo = articuloRepository.findById(articuloId)
                 .orElseThrow(() -> new IllegalArgumentException("No se encontró un artículo con id: " + articuloId));
 
         entity.setArticulo(articulo);
     }
+
+    @Mapping(target = "articuloId" , source = "articulo.id")
+    public abstract DetallePedidoDto toDto(DetallePedidoEntity detallePedidoEntity);
 }

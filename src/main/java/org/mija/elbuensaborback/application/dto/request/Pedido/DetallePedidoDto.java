@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public record DetallePedidoDto(
         Long id,
         Integer cantidad,
-        BigDecimal subtotal,
+        BigDecimal subTotal,
         Long articuloId
 ) {
 }

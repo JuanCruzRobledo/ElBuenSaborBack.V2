@@ -15,7 +15,7 @@ import java.util.List;
 @Entity(name = "cliente")
 public class ClienteEntity extends PersonaEntity {
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "cliente_domicilio",
             joinColumns = @JoinColumn(
