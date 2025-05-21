@@ -2,16 +2,39 @@ package org.mija.elbuensaborback.application.service;
 
 
 import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.client.payment.PaymentClient;
+import com.mercadopago.client.preference.*;
+import com.mercadopago.exceptions.MPApiException;
+import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.payment.Payment;
+import com.mercadopago.resources.preference.Preference;
+import org.mija.elbuensaborback.application.dto.request.Pedido.DetallePedidoDto;
+import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.PreferenceResponseDto;
+import org.mija.elbuensaborback.domain.enums.EstadoEnum;
+import org.mija.elbuensaborback.domain.enums.EstadoPagoEnum;
+import org.mija.elbuensaborback.domain.enums.FormaPagoEnum;
+import org.mija.elbuensaborback.domain.enums.TipoEnvioEnum;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PedidoRepositoryImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-/*
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+
 @Service
 public class PaymentService {
     private final PedidoRepositoryImpl pedidoRepository;
-    //private final InstrumentoRepository instrumentoRepository;
+    private final ArticuloRepositoryImpl articuloRepository;
 
     @Value("${mercadopago.access.token}")
     private String mercadoPagoAccessToken;
@@ -19,64 +42,64 @@ public class PaymentService {
     @Value("${url.ngrok}")
     private String urlNgrok;
 
-    public PaymentService(PedidoRepositoryImpl pedidoRepository) {
+    public PaymentService(PedidoRepositoryImpl pedidoRepository, ArticuloRepositoryImpl articuloRepository) {
         this.pedidoRepository = pedidoRepository;
+        this.articuloRepository = articuloRepository;
     }
 
 
-    public PreferenceResponseDTO crearPedidoYPreferencia(PedidoDTO pedidoRequest) throws MPException, MPApiException {
+    public PreferenceResponseDto crearPedidoYPreferencia(PedidoCreatedRequest pedidoRequest) throws MPException, MPApiException {
         // Inicializar SDK
         MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
         // Crear entidad Pedido
-        Pedido newPedido = Pedido.builder()
+        PedidoEntity newPedido = PedidoEntity.builder()
                 .fechaPedido(LocalDate.now())
-                .pedidoDetalle(new ArrayList<>())
-                .estadoPedido(EstadoPedido.PENDIENTE)
+                .horaEstimadaFinalizacion(LocalTime.MIN) //calcular
+                //.total() calcular despues
+                .gastosEnvio(new BigDecimal(22))
+                .estadoEnum(EstadoEnum.PENDIENTE)
+                .estadoPagoEnum(EstadoPagoEnum.PENDIENTE)
+                .tipoEnvioEnum(TipoEnvioEnum.valueOf(pedidoRequest.tipoEnvioEnum().name()))
+                .formaPagoEnum(FormaPagoEnum.valueOf(pedidoRequest.formaPagoEnum().name()))
+                .domicilio(DomicilioEntity.builder().id(pedidoRequest.domicilioId()).build())
+                .cliente(ClienteEntity.builder().id(pedidoRequest.clienteId()).build())
+                .sucursal(SucursalEntity.builder().id(1L).build())
+                .listaDetalle(new ArrayList<>())
                 .build();
 
-        Set<Long> instrumentosContados = new HashSet<>();
+
         double costoEnvios = 0.0;
 
-        for (PedidoDetalleRequestDTO detalle : pedidoRequest.pedidoDetalle()) {
-            Instrumento instrumento = instrumentoRepository.findById(detalle.instrumentoId())
-                    .orElseThrow(() -> new RuntimeException("Instrumento no encontrado"));
+        for (DetallePedidoDto detalle : pedidoRequest.listaDetalle()) {
+            ArticuloEntity articulo = articuloRepository.findById(detalle.id())
+                    .orElseThrow(() -> new RuntimeException("Articulo no encontrado"));
 
             // Agregar detalle
-            PedidoDetalle newDetalle = PedidoDetalle.builder()
-                    .instrumento(instrumento)
+            DetallePedidoEntity newDetalle = DetallePedidoEntity.builder()
                     .cantidad(detalle.cantidad())
+                    .subTotal(detalle.subTotal())
+                    .articulo(articulo)
                     .pedido(newPedido)
                     .build();
-            newPedido.getPedidoDetalle().add(newDetalle);
+            newPedido.getListaDetalle().add(newDetalle);
 
-            // Calcular costo de envío solo una vez por instrumento
-            if (instrumentosContados.add(instrumento.getId())) {
-                String costoEnvioStr = instrumento.getCostoEnvio();
-                if (!"G".equalsIgnoreCase(costoEnvioStr)) {
-                    try {
-                        costoEnvios += Double.parseDouble(costoEnvioStr);
-                    } catch (NumberFormatException e) {
-                        throw new RuntimeException("Costo de envío inválido para instrumento ID " + instrumento.getId() + ": " + costoEnvioStr);
-                    }
-                }
-            }
         }
 
-        newPedido.calcularTotal(costoEnvios);
+        //newPedido.calcularTotal(costoEnvios);
 
         // Guardar Pedido en BD
-        Pedido pedidoGuardado = pedidoRepository.save(newPedido);
+        PedidoEntity pedidoGuardado = pedidoRepository.save(newPedido);
 
         // Crear preferencia de Mercado Pago
         PreferenceClient preferenceClient = new PreferenceClient();
 
         // Crear lista de ítems de instrumentos
-        List<PreferenceItemRequest> items = pedidoGuardado.getPedidoDetalle().stream()
+        List<PreferenceItemRequest> items = pedidoGuardado.getListaDetalle().stream()
                 .map(detalle -> PreferenceItemRequest.builder()
-                        .title(detalle.getInstrumento().getInstrumento())
+                        .title(detalle.getArticulo().getDenominacion())
                         .quantity(detalle.getCantidad())
-                        .unitPrice(BigDecimal.valueOf(detalle.getInstrumento().getPrecio()))
+                        .unitPrice(detalle.getArticulo().getPrecioVenta())
                         .build())
                 .toList();
 
@@ -114,7 +137,7 @@ public class PaymentService {
 
         Preference preference = preferenceClient.create(preferenceRequest);
 
-        return new PreferenceResponseDTO(preference.getId(), pedidoGuardado.getId(), pedidoGuardado.getTotalPedido());
+        return new PreferenceResponseDto(preference.getId(), pedidoGuardado.getId(), pedidoGuardado.getTotal());
     }
 
 
@@ -137,13 +160,13 @@ public class PaymentService {
 
             Long pedidoId = Long.parseLong(externalReference);
 
-            Pedido pedido = pedidoRepository.findById(pedidoId)
+            PedidoEntity pedido = pedidoRepository.findById(pedidoId)
                     .orElseThrow(() -> new RuntimeException("Pedido no encontrado con ID: " + pedidoId));
 
             if ("approved".equals(status)) {
-                pedido.setEstadoPedido(EstadoPedido.APROBADO);
+                pedido.setEstadoPagoEnum(EstadoPagoEnum.PAGADO);
             } else if ("rejected".equals(status)) {
-                pedido.setEstadoPedido(EstadoPedido.RECHAZADO);
+                pedido.setEstadoPagoEnum(EstadoPagoEnum.RECHAZADO);
             }
 
             pedidoRepository.save(pedido);
@@ -160,12 +183,11 @@ public class PaymentService {
     }
 
     public void rechazarPedido(Long id) {
-        Pedido pedido = pedidoRepository.findById(id)
+        PedidoEntity pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
-        pedido.setEstadoPedido(EstadoPedido.RECHAZADO);
+        pedido.setEstadoPagoEnum(EstadoPagoEnum.RECHAZADO);
         pedidoRepository.save(pedido);
     }
 
 
 }
- */

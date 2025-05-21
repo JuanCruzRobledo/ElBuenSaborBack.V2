@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mija.elbuensaborback.domain.enums.EstadoEnum;
+import org.mija.elbuensaborback.domain.enums.EstadoPagoEnum;
 import org.mija.elbuensaborback.domain.enums.FormaPagoEnum;
 import org.mija.elbuensaborback.domain.enums.TipoEnvioEnum;
 
@@ -29,6 +30,8 @@ public class PedidoEntity {
 
     @Enumerated(EnumType.STRING)
     private EstadoEnum estadoEnum;
+    @Enumerated(EnumType.STRING)
+    private EstadoPagoEnum estadoPagoEnum;
     @Enumerated(EnumType.STRING)
     private TipoEnvioEnum tipoEnvioEnum;
     @Enumerated(EnumType.STRING)
