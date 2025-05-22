@@ -13,6 +13,7 @@ import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.Pe
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class PedidoServiceImpl implements PedidoService {
         PedidoEntity pedido = pedidoMapper.toEntity(pedidoCreatedRequest);
         pedido.setHoraEstimadaFinalizacion(LocalTime.MIN);//calcular
         pedido.setTotal(BigDecimal.ZERO);
+        pedido.setFechaPedido(LocalDate.now());
         pedido.setGastosEnvio(new BigDecimal(22));
         pedido.setEstadoEnum(EstadoEnum.PENDIENTE);
         pedido.setEstadoPagoEnum(EstadoPagoEnum.PENDIENTE);
