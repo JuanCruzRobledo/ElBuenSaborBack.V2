@@ -2,7 +2,6 @@ package org.mija.elbuensaborback.infrastructure.web.controller;
 
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
-import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.PreferenceResponseDto;
 import org.mija.elbuensaborback.application.service.PaymentService;
 import org.springframework.http.HttpStatus;
@@ -24,9 +23,9 @@ public class PaymentController {
     }
 
     @PostMapping("/create-preference")
-    public ResponseEntity<?> createPreference(@RequestBody PedidoCreatedRequest pedido) {
+    public ResponseEntity<?> createPreference(@RequestBody Long pedidoId) {
         try {
-            PreferenceResponseDto preferenceResponseDTO = paymentService.crearPedidoYPreferencia(pedido);
+            PreferenceResponseDto preferenceResponseDTO = paymentService.crearPreferencia(pedidoId);
             return ResponseEntity.ok(preferenceResponseDTO);
         } catch (MPException | MPApiException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

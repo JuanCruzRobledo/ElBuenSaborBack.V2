@@ -5,10 +5,15 @@ import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequ
 import org.mija.elbuensaborback.application.dto.response.PedidoResponse;
 import org.mija.elbuensaborback.application.mapper.PedidoMapper;
 import org.mija.elbuensaborback.application.service.contratos.PedidoService;
+import org.mija.elbuensaborback.domain.enums.EstadoEnum;
+import org.mija.elbuensaborback.domain.enums.EstadoPagoEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PedidoRepositoryImpl;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,7 +31,14 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoResponse crearPedido(PedidoCreatedRequest pedidoCreatedRequest) {
         PedidoEntity pedido = pedidoMapper.toEntity(pedidoCreatedRequest);
+        pedido.setHoraEstimadaFinalizacion(LocalTime.MIN);//calcular
+        pedido.setTotal(BigDecimal.ZERO);
+        pedido.setGastosEnvio(new BigDecimal(22));
+        pedido.setEstadoEnum(EstadoEnum.PENDIENTE);
+        pedido.setEstadoPagoEnum(EstadoPagoEnum.PENDIENTE);
+        pedido.setSucursal(SucursalEntity.builder().id(1L).build());
         pedido = pedidoRepository.save(pedido);
+
         return pedidoMapper.toResponse(pedido);
     }
 

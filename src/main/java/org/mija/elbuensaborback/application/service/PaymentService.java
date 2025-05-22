@@ -8,6 +8,7 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.preference.Preference;
+import jakarta.persistence.EntityNotFoundException;
 import org.mija.elbuensaborback.application.dto.request.Pedido.DetallePedidoDto;
 import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.PreferenceResponseDto;
@@ -48,48 +49,13 @@ public class PaymentService {
     }
 
 
-    public PreferenceResponseDto crearPedidoYPreferencia(PedidoCreatedRequest pedidoRequest) throws MPException, MPApiException {
+    public PreferenceResponseDto crearPreferencia(Long id) throws MPException, MPApiException {
+
         // Inicializar SDK
         MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
         // Crear entidad Pedido
-        PedidoEntity newPedido = PedidoEntity.builder()
-                .fechaPedido(LocalDate.now())
-                .horaEstimadaFinalizacion(LocalTime.MIN) //calcular
-                //.total() calcular despues
-                .gastosEnvio(new BigDecimal(22))
-                .estadoEnum(EstadoEnum.PENDIENTE)
-                .estadoPagoEnum(EstadoPagoEnum.PENDIENTE)
-                .tipoEnvioEnum(TipoEnvioEnum.valueOf(pedidoRequest.tipoEnvioEnum().name()))
-                .formaPagoEnum(FormaPagoEnum.valueOf(pedidoRequest.formaPagoEnum().name()))
-                .domicilio(DomicilioEntity.builder().id(pedidoRequest.domicilioId()).build())
-                .cliente(ClienteEntity.builder().id(pedidoRequest.clienteId()).build())
-                .sucursal(SucursalEntity.builder().id(1L).build())
-                .listaDetalle(new ArrayList<>())
-                .build();
-
-
-        double costoEnvios = 0.0;
-
-        for (DetallePedidoDto detalle : pedidoRequest.listaDetalle()) {
-            ArticuloEntity articulo = articuloRepository.findById(detalle.id())
-                    .orElseThrow(() -> new RuntimeException("Articulo no encontrado"));
-
-            // Agregar detalle
-            DetallePedidoEntity newDetalle = DetallePedidoEntity.builder()
-                    .cantidad(detalle.cantidad())
-                    .subTotal(detalle.subTotal())
-                    .articulo(articulo)
-                    .pedido(newPedido)
-                    .build();
-            newPedido.getListaDetalle().add(newDetalle);
-
-        }
-
-        //newPedido.calcularTotal(costoEnvios);
-
-        // Guardar Pedido en BD
-        PedidoEntity pedidoGuardado = pedidoRepository.save(newPedido);
+        PedidoEntity pedidoGuardado = pedidoRepository.findById(1L).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el pedido al que se quiere pagar"));
 
         // Crear preferencia de Mercado Pago
         PreferenceClient preferenceClient = new PreferenceClient();
@@ -105,11 +71,12 @@ public class PaymentService {
 
         // Si hay costo de envío, agregarlo como ítem adicional
         List<PreferenceItemRequest> itemsConEnvio = new ArrayList<>(items);
-        if (costoEnvios > 0) {
+
+        if (pedidoGuardado.getGastosEnvio().doubleValue() >0 ) {
             PreferenceItemRequest envioItem = PreferenceItemRequest.builder()
                     .title("Costo de Envío")
                     .quantity(1)
-                    .unitPrice(BigDecimal.valueOf(costoEnvios))
+                    .unitPrice(pedidoGuardado.getGastosEnvio())
                     .build();
             itemsConEnvio.add(envioItem);
         }
@@ -121,8 +88,8 @@ public class PaymentService {
                 .build();
 
         PreferencePayerRequest payer = PreferencePayerRequest.builder()
-                .name("Jorgito")
-                .email("jorgito@example.com")
+                .name(pedidoGuardado.getCliente().getNombre())
+                .email(pedidoGuardado.getCliente().getUsuario().getEmail())
                 .build();
 
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
