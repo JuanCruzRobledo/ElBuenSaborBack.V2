@@ -58,6 +58,7 @@ public class SucursalEntity {
     @JoinColumn(name = "empresa_id", nullable = false)
     private EmpresaEntity empresa;
 
+    /*
     @ManyToMany
     @JoinTable(
             name = "sucursal_persona",
@@ -68,7 +69,7 @@ public class SucursalEntity {
                     name = "persona_id"
             )
     )
-    private List<PersonaEntity> listaPersona;
+    private List<PersonaEntity> listaPersona;*/
 
     @OneToMany(mappedBy = "sucursal")
     private List<PedidoEntity> listaPedido;

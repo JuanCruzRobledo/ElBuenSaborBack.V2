@@ -43,14 +43,6 @@ public abstract class ArticuloEntity {
     @JoinColumn(name = "sucursal_id")
     private SucursalEntity sucursal;
 
-    /*
-    RELACION VIEJA
-    @ManyToOne
-    @JoinColumn(name = "rubro_id")
-    private Rubro rubro;
+    public abstract void descontarStock(int cantidad);
 
-    @ManyToOne
-    @JoinColumn(name = "subrubro_id")
-    private SubRubro subrubro;
-    */
 }

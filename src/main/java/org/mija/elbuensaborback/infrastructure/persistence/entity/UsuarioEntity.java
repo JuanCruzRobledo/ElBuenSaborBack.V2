@@ -28,7 +28,7 @@ public class UsuarioEntity {
     private boolean credentialsExpired;
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity rol;
 

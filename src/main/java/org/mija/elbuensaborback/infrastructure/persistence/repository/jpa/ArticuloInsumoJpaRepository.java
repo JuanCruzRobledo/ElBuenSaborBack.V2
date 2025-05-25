@@ -11,4 +11,6 @@ public interface ArticuloInsumoJpaRepository extends JpaRepository<ArticuloInsum
 
     @Query("SELECT new org.mija.elbuensaborback.application.dto.response.ArticuloInsumoBasicResponse(a.id, a.denominacion)  FROM articulo_insumo a")
     List<ArticuloInsumoBasicResponse> basicFindAll();
+
+    ArticuloInsumoEntity findByDenominacion(String denominacion);
 }

@@ -4,4 +4,5 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.LocalidadEntit
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LocalidadJpaRepository extends JpaRepository<LocalidadEntity, Long> {
+    LocalidadEntity findByNombre (String nombre);
 }

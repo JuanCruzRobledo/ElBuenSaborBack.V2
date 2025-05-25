@@ -9,9 +9,6 @@ import org.mija.elbuensaborback.application.service.contratos.CategoriaService;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.CategoriaEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.CategoriaRepositoryImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

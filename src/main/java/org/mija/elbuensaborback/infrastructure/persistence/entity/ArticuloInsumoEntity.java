@@ -29,4 +29,13 @@ public class ArticuloInsumoEntity extends ArticuloEntity {
     private Boolean esParaPreparar;
     //Este insumo se puede vender?
     private Boolean esVendible; //True en ensaladas preparadas o jugos preparados o asi
+
+    @Override
+    public void descontarStock(int cantidad) {
+        double nuevoStock = this.getStockActual() - cantidad;
+        if (nuevoStock < 0) {
+            throw new RuntimeException("Stock insuficiente para el insumo: " + getDenominacion());
+        }
+        this.setStockActual(nuevoStock);
+    }
 }

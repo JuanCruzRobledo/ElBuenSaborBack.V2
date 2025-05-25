@@ -1,6 +1,8 @@
 package org.mija.elbuensaborback.domain.enums;
 
 public enum UnidadMedidaEnum {
+    UNIDAD,
+
     // Peso
     MG,    // Miligramo
     GR,    // Gramo

@@ -12,4 +12,6 @@ public interface CategoriaJpaRepository extends JpaRepository<CategoriaEntity, L
     Optional<CategoriaEntity> findWithSubcategoriasById(Long id);
 
     List<CategoriaEntity> findByCategoriaPadreIsNull();
+
+    CategoriaEntity findByDenominacion(String denominacion);
 }

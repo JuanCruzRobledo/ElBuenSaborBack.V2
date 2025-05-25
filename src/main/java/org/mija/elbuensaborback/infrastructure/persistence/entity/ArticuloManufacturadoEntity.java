@@ -42,6 +42,14 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
     }
 
     @Override
+    public void descontarStock(int cantidad) {
+        for (ArticuloManufacturadoDetalleEntity detalle : this.getArticuloManufacturadoDetalle()) {
+            detalle.getArticuloInsumo().descontarStock((int)(detalle.getCantidad() * cantidad));
+        }
+    }
+
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("ArticuloManufacturadoEntity {");
