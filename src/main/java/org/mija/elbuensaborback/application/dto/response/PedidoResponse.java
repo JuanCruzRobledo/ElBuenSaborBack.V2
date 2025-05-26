@@ -20,7 +20,9 @@ public record PedidoResponse(
         FormaPagoEnum formaPagoEnum,
         LocalDate fechaPedido,
         Long clienteId,
+        String nombreCompleto,
         Long domicilioId,
+        String indicaciones,
         List<DetallePedidoDto> listaDetalle
         //FACTURA
 ) {

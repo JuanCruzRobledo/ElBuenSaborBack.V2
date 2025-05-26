@@ -10,6 +10,7 @@ public record PedidoCreatedRequest(
         FormaPagoEnum formaPagoEnum,
         Long clienteId,
         Long domicilioId,
+        String indicaciones,
         List<DetallePedidoDto> listaDetalle
 ) {
 }

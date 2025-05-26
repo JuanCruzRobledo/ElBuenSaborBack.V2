@@ -30,6 +30,10 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
         return pedidoJpaRepository.findByClienteId(id);
     }
 
+    public Optional<PedidoEntity> findByIdConCliente(Long aLong) {
+        return pedidoJpaRepository.findByIdWithCliente(aLong);
+    }
+
     @Override
     public PedidoEntity save(PedidoEntity entity) {
         return pedidoJpaRepository.save(entity);

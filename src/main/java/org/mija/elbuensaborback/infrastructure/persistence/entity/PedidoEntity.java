@@ -27,6 +27,7 @@ public class PedidoEntity {
     private LocalTime horaEstimadaFinalizacion;
     private BigDecimal total;
     private BigDecimal gastosEnvio;
+    private String indicaciones;
 
     @Enumerated(EnumType.STRING)
     private EstadoEnum estadoEnum;
@@ -49,7 +50,7 @@ public class PedidoEntity {
     @JoinColumn(name = "domicilio_id")
     private DomicilioEntity domicilio;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")
     private ClienteEntity cliente;
 

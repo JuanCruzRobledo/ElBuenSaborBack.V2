@@ -39,5 +39,6 @@ public abstract class DetallePedidoMapper {
     }
 
     @Mapping(target = "articuloId" , source = "articulo.id")
+    @Mapping(target = "articuloDenominacion" , source = "articulo.denominacion")
     public abstract DetallePedidoDto toDto(DetallePedidoEntity detallePedidoEntity);
 }

@@ -48,6 +48,11 @@ public class PedidoServiceImpl implements PedidoService {
         procesarStock(pedido.getListaDetalle());
 
         pedido = pedidoRepository.save(pedido);
+
+        // Volvés a buscar el pedido con el cliente cargado (usá un JOIN FETCH si querés evitar LAZY)
+        pedido = pedidoRepository.findByIdConCliente(pedido.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado"));
+
         return pedidoMapper.toResponse(pedido);
     }
 
@@ -59,7 +64,9 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public PedidoResponse obtenerPedido(Long id) {
-        return pedidoMapper.toResponse(pedidoRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se encontro el pedido con el id "+ id)));
+        PedidoEntity pedido = pedidoRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se encontro el pedido con el id "+ id));
+
+        return pedidoMapper.toResponse(pedido);
     }
 
     @Override

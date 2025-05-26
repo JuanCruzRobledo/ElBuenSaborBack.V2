@@ -6,6 +6,7 @@ public record DetallePedidoDto(
         Long id,
         Integer cantidad,
         BigDecimal subTotal,
-        Long articuloId
+        Long articuloId,
+        String articuloDenominacion
 ) {
 }
