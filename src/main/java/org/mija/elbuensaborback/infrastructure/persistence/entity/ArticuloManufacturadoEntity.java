@@ -25,20 +25,21 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
     @OneToMany(mappedBy = "articuloManufacturado", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticuloManufacturadoDetalleEntity> articuloManufacturadoDetalle = new ArrayList<>();;
 
-    public boolean sePuedePreparar(){
-        return null != articuloManufacturadoDetalle;
+    public boolean sePuedePreparar() {
+        return articuloManufacturadoDetalle != null && !articuloManufacturadoDetalle.isEmpty();
     }
 
     public BigDecimal precioCostoCalculado(){
         return null == precioCosto ? BigDecimal.ZERO : precioCosto;
     }
 
-    public void addDetalle(ArticuloManufacturadoDetalleEntity detalle) {
-        if (this.articuloManufacturadoDetalle == null) {
-            this.articuloManufacturadoDetalle = new ArrayList<>();
+    public void tiempoEstimadoCalculado(int tiempoBase){
+        Double tiempoDetalle = 0.00;
+
+        for( ArticuloManufacturadoDetalleEntity detalle : articuloManufacturadoDetalle){
+            tiempoDetalle += detalle.getCantidad() * detalle.getArticuloInsumo().getTiempoEstimadoMinutos();
         }
-        this.articuloManufacturadoDetalle.add(detalle);
-        detalle.setArticuloManufacturado(this);
+        setTiempoEstimadoMinutos(tiempoBase + tiempoDetalle.intValue());
     }
 
     @Override

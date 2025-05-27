@@ -1,8 +1,10 @@
 package org.mija.elbuensaborback.infrastructure.configuration.security;
 
 
+import org.mija.elbuensaborback.infrastructure.security.service.CustomOAuth2UserService;
 import org.mija.elbuensaborback.infrastructure.security.service.CustomUserDetailsService;
 import org.mija.elbuensaborback.infrastructure.security.filters.JwtAuthenticationFilter;
+import org.mija.elbuensaborback.infrastructure.security.service.OAuth2SuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -30,9 +32,13 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtFilter;
+    private final OAuth2SuccessHandler successHandler;
+    private final CustomOAuth2UserService oAuth2UserService;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtFilter) {
+    public SecurityConfig(JwtAuthenticationFilter jwtFilter, OAuth2SuccessHandler successHandler, CustomOAuth2UserService oAuth2UserService) {
         this.jwtFilter = jwtFilter;
+        this.successHandler = successHandler;
+        this.oAuth2UserService = oAuth2UserService;
     }
 
     @Bean
@@ -45,9 +51,14 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(
                         authorizeRequests ->{
-                            authorizeRequests.requestMatchers("/auth/**").permitAll() // permitir login y register
+                            authorizeRequests.requestMatchers("/auth/**", "/oauth2/**").permitAll()
                                     .anyRequest().authenticated();
                         }
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(oAuth2UserService))
+                        .successHandler(successHandler)
                 )
                 .build();
     }

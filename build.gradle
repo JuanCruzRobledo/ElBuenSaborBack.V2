@@ -27,7 +27,8 @@ dependencies {
     // === DEPENDENCIAS PRINCIPALES DE SPRING BOOT ===
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA (Hibernate) para acceso a base de datos
     implementation 'org.springframework.boot:spring-boot-starter-security' // Spring Security para autenticación y autorización
-    implementation 'org.springframework.boot:spring-boot-starter-web' // Web (REST API, controllers, etc.)
+    implementation 'org.springframework.boot:spring-boot-starter-web'   //
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'// Web (REST API, controllers, etc.)
 // implementation 'org.springframework.boot:spring-boot-starter-validation' // Validación con anotaciones (descomentá si vas a usar @Valid)
 
 // === BASE DE DATOS ===

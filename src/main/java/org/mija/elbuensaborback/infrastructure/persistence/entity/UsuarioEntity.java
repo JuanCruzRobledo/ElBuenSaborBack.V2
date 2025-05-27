@@ -18,9 +18,12 @@ public class UsuarioEntity {
     private Long id;
     private String email;
 
-    //usuario OAuth2
-    //private String oauth2Id;
-    //private AuthProviderEnum authProviderEnum;
+    // Para autenticación OAuth2
+    private String oauth2Id;
+
+    @Enumerated(EnumType.STRING)
+    private AuthProviderEnum authProviderEnum;
+
     //usuario Local
     private boolean disabled;
     private boolean accountExpired;
