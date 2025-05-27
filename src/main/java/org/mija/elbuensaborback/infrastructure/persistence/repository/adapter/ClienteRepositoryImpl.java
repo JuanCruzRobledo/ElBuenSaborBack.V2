@@ -40,4 +40,8 @@ public class ClienteRepositoryImpl implements ClienteRepositoryPort {
     public List<ClienteEntity> saveAll(List<ClienteEntity> entities) {
         return List.of();
     }
+
+    public ClienteEntity findByUsuarioEmail(String email) {
+        return clienteJpaRepository.findByUsuarioEmail(email);
+    }
 }

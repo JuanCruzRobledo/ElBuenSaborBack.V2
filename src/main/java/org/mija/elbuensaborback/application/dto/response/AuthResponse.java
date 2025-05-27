@@ -1,4 +1,7 @@
 package org.mija.elbuensaborback.application.dto.response;
 
 // AuthResponse.java
-public record AuthResponse(String token) {}
+public record AuthResponse(
+        String token,
+        ClienteBasicResponse cliente
+) {}

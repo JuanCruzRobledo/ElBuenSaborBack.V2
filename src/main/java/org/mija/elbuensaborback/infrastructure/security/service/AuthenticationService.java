@@ -3,6 +3,7 @@ package org.mija.elbuensaborback.infrastructure.security.service;
 import org.mija.elbuensaborback.application.dto.request.auth.AuthRequest;
 import org.mija.elbuensaborback.application.dto.request.auth.RegisterRequest;
 import org.mija.elbuensaborback.application.dto.response.AuthResponse;
+import org.mija.elbuensaborback.application.mapper.ClienteMapper;
 import org.mija.elbuensaborback.domain.enums.RolEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.RoleEntity;
@@ -28,8 +29,9 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final RoleRepositoryImpl roleRepository;
     private final ClienteRepositoryImpl clienteRepository;
+    private final ClienteMapper clienteMapper;
 
-    public AuthenticationService(AuthenticationManager authManager, CustomUserDetailsService userDetailsService, UsuarioRepositoryImpl usuarioRepository, PasswordEncoder passwordEncoder, JwtService jwtService, RoleRepositoryImpl roleRepository, ClienteRepositoryImpl clienteRepository) {
+    public AuthenticationService(AuthenticationManager authManager, CustomUserDetailsService userDetailsService, UsuarioRepositoryImpl usuarioRepository, PasswordEncoder passwordEncoder, JwtService jwtService, RoleRepositoryImpl roleRepository, ClienteRepositoryImpl clienteRepository, ClienteMapper clienteMapper) {
         this.authManager = authManager;
         this.userDetailsService = userDetailsService;
         this.usuarioRepository = usuarioRepository;
@@ -37,6 +39,7 @@ public class AuthenticationService {
         this.jwtService = jwtService;
         this.roleRepository = roleRepository;
         this.clienteRepository = clienteRepository;
+        this.clienteMapper = clienteMapper;
     }
 
     public AuthResponse login(AuthRequest request) {
@@ -46,7 +49,9 @@ public class AuthenticationService {
 
         UserDetails user = (UserDetails) authentication.getPrincipal();
         String token = jwtService.generateToken(user);
-        return new AuthResponse(token);
+
+        ClienteEntity cliente = clienteRepository.findByUsuarioEmail(request.email());
+        return new AuthResponse(token,clienteMapper.toResponse(cliente));
     }
 
 
@@ -87,6 +92,7 @@ public class AuthenticationService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
         String token = jwtService.generateToken(userDetails);
 
-        return new AuthResponse(token);
+        ClienteEntity clienteGuardado = clienteRepository.findByUsuarioEmail(nuevoUsuario.email());
+        return new AuthResponse(token,clienteMapper.toResponse(cliente));
     }
 }
