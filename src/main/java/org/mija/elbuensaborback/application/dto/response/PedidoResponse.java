@@ -2,6 +2,7 @@ package org.mija.elbuensaborback.application.dto.response;
 
 import org.mija.elbuensaborback.application.dto.request.Pedido.DetallePedidoDto;
 import org.mija.elbuensaborback.domain.enums.EstadoEnum;
+import org.mija.elbuensaborback.domain.enums.EstadoPagoEnum;
 import org.mija.elbuensaborback.domain.enums.FormaPagoEnum;
 import org.mija.elbuensaborback.domain.enums.TipoEnvioEnum;
 
@@ -12,10 +13,11 @@ import java.util.List;
 
 public record PedidoResponse(
         Long id,
-        LocalTime horaEstimadaFinalizacion,
+        Integer tiempoEstimadoFinalizacion,
         BigDecimal total,
         BigDecimal gastosEnvio,
         EstadoEnum estadoEnum,
+        EstadoPagoEnum estadoPagoEnum,
         TipoEnvioEnum tipoEnvioEnum,
         FormaPagoEnum formaPagoEnum,
         LocalDate fechaPedido,
