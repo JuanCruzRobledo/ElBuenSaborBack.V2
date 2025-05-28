@@ -23,7 +23,7 @@ public class LocalidadRepositoryImpl implements LocalidadRepositoryPort {
 
     @Override
     public List<LocalidadEntity> findAll() {
-        return List.of();
+        return localidadJpaRepository.findAll();
     }
 
     @Override

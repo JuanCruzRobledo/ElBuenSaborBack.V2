@@ -4,7 +4,6 @@ import org.mija.elbuensaborback.application.dto.request.domicilio.DomicilioCreat
 import org.mija.elbuensaborback.application.dto.request.domicilio.DomicilioUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.DomicilioResponse;
 import org.mija.elbuensaborback.application.service.DomicilioServiceImpl;
-import org.mija.elbuensaborback.application.service.contratos.DomicilioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,4 +43,6 @@ public class DomicilioController {
         domicilioService.eliminarDomicilio(idDomicilio);
         return ResponseEntity.noContent().build();
     }
+
+
 }

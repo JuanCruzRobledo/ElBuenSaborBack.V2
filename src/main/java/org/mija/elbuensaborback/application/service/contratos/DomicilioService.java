@@ -5,6 +5,7 @@ import org.mija.elbuensaborback.application.dto.request.domicilio.DomicilioCreat
 import org.mija.elbuensaborback.application.dto.request.domicilio.DomicilioUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.CategoriaWithSubcategoriasResponse;
 import org.mija.elbuensaborback.application.dto.response.DomicilioResponse;
+import org.mija.elbuensaborback.application.dto.response.LocalidadResponse;
 
 import java.util.Set;
 

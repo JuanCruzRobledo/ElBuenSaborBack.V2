@@ -4,7 +4,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.mija.elbuensaborback.application.dto.request.domicilio.DomicilioCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.domicilio.DomicilioUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.DomicilioResponse;
+import org.mija.elbuensaborback.application.dto.response.LocalidadResponse;
 import org.mija.elbuensaborback.application.mapper.DomicilioMapper;
+import org.mija.elbuensaborback.application.mapper.LocalidadMapper;
 import org.mija.elbuensaborback.application.service.contratos.DomicilioService;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.DomicilioEntity;
@@ -26,14 +28,16 @@ public class DomicilioServiceImpl implements DomicilioService {
     private final DomicilioRepositoryImpl domicilioRepository;
     private final LocalidadRepositoryImpl localidadRepository;
     private final DomicilioMapper domicilioMapper;
+    private final LocalidadMapper localidadMapper;
 
     public DomicilioServiceImpl(ClienteRepositoryImpl clienteRepository,
                                 DomicilioRepositoryImpl domicilioRepository, LocalidadRepositoryImpl localidadRepository,
-                                DomicilioMapper domicilioMapper) {
+                                DomicilioMapper domicilioMapper, LocalidadMapper localidadMapper) {
         this.clienteRepository = clienteRepository;
         this.domicilioRepository = domicilioRepository;
         this.localidadRepository = localidadRepository;
         this.domicilioMapper = domicilioMapper;
+        this.localidadMapper = localidadMapper;
     }
 
     @Override
