@@ -18,7 +18,7 @@ public class LocalidadRepositoryImpl implements LocalidadRepositoryPort {
 
     @Override
     public Optional<LocalidadEntity> findById(Long id) {
-        return Optional.empty();
+        return localidadJpaRepository.findById(id);
     }
 
     @Override

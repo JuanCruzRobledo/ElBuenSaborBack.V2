@@ -17,7 +17,7 @@ public class ProvinciaEntity {
     private Long id;
     private String nombre;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pais_id", nullable = false)
     private PaisEntity pais;
 }

@@ -18,7 +18,8 @@ public class DomicilioEntity {
     private String calle;
     private Integer numero;
     private String codigoPostal;
-    @OneToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "localidad_id", referencedColumnName = "id", nullable = false)
     private LocalidadEntity localidad;
 }

@@ -18,7 +18,7 @@ public class DomicilioRepositoryImpl implements DomicilioRepositoryPort {
 
     @Override
     public Optional<DomicilioEntity> findById(Long aLong) {
-        return Optional.empty();
+        return domicilioJpaRepository.findById(aLong);
     }
 
     @Override
@@ -28,12 +28,15 @@ public class DomicilioRepositoryImpl implements DomicilioRepositoryPort {
 
     @Override
     public DomicilioEntity save(DomicilioEntity entity) {
-        return null;
+        return domicilioJpaRepository.save(entity);
     }
 
     @Override
     public void deleteById(Long aLong) {
+    }
 
+    public void delete(DomicilioEntity entity) {
+        domicilioJpaRepository.delete(entity);
     }
 
     @Override

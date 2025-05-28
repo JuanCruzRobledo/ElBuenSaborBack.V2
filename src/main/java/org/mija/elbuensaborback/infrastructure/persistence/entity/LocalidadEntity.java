@@ -17,7 +17,7 @@ public class LocalidadEntity {
     private Long id;
     private String nombre;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "provincia_id" , referencedColumnName = "id", nullable = false)
     private ProvinciaEntity provincia;
 }

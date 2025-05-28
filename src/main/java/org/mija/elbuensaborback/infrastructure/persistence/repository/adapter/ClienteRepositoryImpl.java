@@ -2,6 +2,7 @@ package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
 import org.mija.elbuensaborback.domain.repository.ClienteRepositoryPort;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.DomicilioEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.ClienteJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +19,7 @@ public class ClienteRepositoryImpl implements ClienteRepositoryPort {
 
     @Override
     public Optional<ClienteEntity> findById(Long aLong) {
-        return Optional.empty();
+        return clienteJpaRepository.findById(aLong);
     }
 
     @Override
@@ -43,5 +44,12 @@ public class ClienteRepositoryImpl implements ClienteRepositoryPort {
 
     public ClienteEntity findByUsuarioEmail(String email) {
         return clienteJpaRepository.findByUsuarioEmail(email);
+    }
+
+    public List<DomicilioEntity> findDomiciliosByClienteId(Long clienteId) {
+        return clienteJpaRepository.findDomiciliosByClienteId(clienteId);
+    }
+    public List<ClienteEntity> findAllByDomicilioContains(DomicilioEntity domicilio){
+      return clienteJpaRepository.findAllByDomicilioContains(domicilio);
     }
 }
