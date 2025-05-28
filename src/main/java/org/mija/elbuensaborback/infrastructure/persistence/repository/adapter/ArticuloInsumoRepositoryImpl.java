@@ -42,6 +42,10 @@ public class ArticuloInsumoRepositoryImpl implements ArticuloInsumoRepositoryPor
         articuloInsumoJpaRepository.deleteById(aLong);
     }
 
+    public List<ArticuloInsumoEntity> findAllById(List<Long> ids){
+        return articuloInsumoJpaRepository.findAllById(ids);
+    }
+
     @Override
     public List<ArticuloInsumoEntity> saveAll(List<ArticuloInsumoEntity> entities) {
         return List.of();

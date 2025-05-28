@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,22 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
             tiempoDetalle += detalle.getCantidad() * detalle.getArticuloInsumo().getTiempoEstimadoMinutos();
         }
         setTiempoEstimadoMinutos(tiempoBase + tiempoDetalle.intValue());
+    }
+
+    public void costoMinimoCalculado() {
+        BigDecimal costoTotal = BigDecimal.ZERO;
+
+        for (ArticuloManufacturadoDetalleEntity detalle : articuloManufacturadoDetalle) {
+            BigDecimal precio = detalle.getArticuloInsumo().getPrecioVenta();
+            BigDecimal cantidad = BigDecimal.valueOf(detalle.getCantidad());
+            BigDecimal precioPorCantidad = precio
+                    .divide(BigDecimal.valueOf(1000), 4, RoundingMode.HALF_UP)
+                    .multiply(cantidad);
+            costoTotal = costoTotal.add(precioPorCantidad);
+        }
+
+        setPrecioCosto(costoTotal);
+        setPrecioVenta(costoTotal.multiply(BigDecimal.valueOf(1.3)));
     }
 
     @Override

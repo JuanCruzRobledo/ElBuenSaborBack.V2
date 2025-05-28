@@ -1,21 +1,22 @@
 package org.mija.elbuensaborback.application.service;
+import org.mija.elbuensaborback.application.dto.global.manufacturado.ArticuloManufacturadoDetalleDto;
 import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoResponse;
 import org.mija.elbuensaborback.application.mapper.ArticuloManufacturadoMapper;
 import org.mija.elbuensaborback.application.service.contratos.ArticuloManufacturadoService;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoDetalleEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.CategoriaEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloInsumoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloManufacturadoDetalleRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloManufacturadoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.CategoriaRepositoryImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,12 +26,14 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
     private final CategoriaRepositoryImpl categoriaRepository;
     private final ArticuloManufacturadoDetalleRepositoryImpl articuloManufacturadoDetalleRepository;
     private final ArticuloManufacturadoMapper articuloManufacturadoMapper;
+    private final ArticuloInsumoRepositoryImpl articuloInsumoRepository;
 
-    public ArticuloManufacturadoServiceImpl(ArticuloManufacturadoRepositoryImpl articuloManufacturadoRepository, CategoriaRepositoryImpl categoriaRepository, ArticuloManufacturadoDetalleRepositoryImpl articuloManufacturadoDetalleRepository, ArticuloManufacturadoMapper articuloManufacturadoMapper) {
+    public ArticuloManufacturadoServiceImpl(ArticuloManufacturadoRepositoryImpl articuloManufacturadoRepository, CategoriaRepositoryImpl categoriaRepository, ArticuloManufacturadoDetalleRepositoryImpl articuloManufacturadoDetalleRepository, ArticuloManufacturadoMapper articuloManufacturadoMapper, ArticuloInsumoRepositoryImpl articuloInsumoRepository) {
         this.articuloManufacturadoRepository = articuloManufacturadoRepository;
         this.categoriaRepository = categoriaRepository;
         this.articuloManufacturadoDetalleRepository = articuloManufacturadoDetalleRepository;
         this.articuloManufacturadoMapper = articuloManufacturadoMapper;
+        this.articuloInsumoRepository = articuloInsumoRepository;
     }
 
 
@@ -45,6 +48,9 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
         SucursalEntity sucursal = SucursalEntity.builder().id(1L).build();
         articuloEntity.setSucursal(sucursal);
 
+        articuloEntity.costoMinimoCalculado();
+        articuloEntity.tiempoEstimadoCalculado(articulo.tiempoEstimadoMinutos());
+
         articuloEntity = articuloManufacturadoRepository.save(articuloEntity);
 
         List<ArticuloManufacturadoDetalleEntity> listaDetalles =
@@ -57,8 +63,6 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
 
     @Override
     public ArticuloManufacturadoResponse actualizarArticulo(Long id, ArticuloManufacturadoUpdateRequest articulo) {
-        ArticuloManufacturadoEntity articuloEntity = articuloManufacturadoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Artículo no encontrado con ID: " + id));
         /*System.out.println("TIENE DETALLES LA ENTIDAD TRAIDA? : ");
         articuloEntity.getArticuloManufacturadoDetalle().forEach(articuloManufacturadoDetalle -> {
             System.out.println("ID: " + articuloManufacturadoDetalle.getId());
@@ -67,10 +71,40 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
             System.out.println("ArticuloInsumo: " + articuloManufacturadoDetalle.getArticuloInsumo().getId());
             System.out.println("ArticuloManufacturado: " + articuloManufacturadoDetalle.getArticuloManufacturado().getId());
         });*/
-        articuloManufacturadoMapper.updateEntityWithDetalles(articulo, articuloEntity);
 
+        // 1. Buscar el artículo existente
+        ArticuloManufacturadoEntity articuloEntity = articuloManufacturadoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Artículo no encontrado con ID: " + id));
+
+        // 2. Buscar la categoría
+        CategoriaEntity categoria = categoriaRepository.findById(articulo.categoriaId())
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada con ID: " + articulo.categoriaId()));
+
+        // 3. Obtener todos los IDs de insumos mencionados en los detalles
+        List<Long> insumoIds = articulo.articuloManufacturadoDetalle().stream()
+                .map(ArticuloManufacturadoDetalleDto::articuloInsumoId)
+                .distinct()
+                .toList();
+
+        // 4. Buscar todos los insumos y armar un Map por ID
+        Map<Long, ArticuloInsumoEntity> insumos = articuloInsumoRepository.findAllById(insumoIds).stream()
+                .collect(Collectors.toMap(ArticuloInsumoEntity::getId, Function.identity()));
+
+        // 5. Validar que no falte ninguno
+        if (insumos.size() != insumoIds.size()) {
+            throw new RuntimeException("Uno o más insumos no existen en la base de datos.");
+        }
+
+        // 6. Mapear datos desde el DTO hacia la entidad
+        articuloManufacturadoMapper.updateEntityWithDetalles(articulo, articuloEntity, insumos);
+
+        // 7. Setear la nueva categoría
+        articuloEntity.setCategoria(categoria);
+
+        // 8. Guardar cambios
         ArticuloManufacturadoEntity actualizado = articuloManufacturadoRepository.save(articuloEntity);
 
+        // 9. Devolver respuesta mapeada
         return articuloManufacturadoMapper.toResponse(actualizado);
     }
 

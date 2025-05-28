@@ -13,8 +13,10 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumo
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoDetalleEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenArticuloEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = {ArticuloManufacturadoDetalleMapper.class, ImagenArticuloMapper.class })
@@ -59,51 +61,74 @@ public abstract class ArticuloManufacturadoMapper {
     @Mapping(target = "articuloManufacturadoDetalle", ignore = true)
     public abstract void updateEntityFromDto(ArticuloManufacturadoUpdateRequest dto, @MappingTarget ArticuloManufacturadoEntity entity);
 
-    public void updateEntityWithDetalles(ArticuloManufacturadoUpdateRequest updateDto, @MappingTarget ArticuloManufacturadoEntity entity) {
-        // Mapeo básico de campos
+    public void updateEntityWithDetalles(
+            ArticuloManufacturadoUpdateRequest updateDto,
+            @MappingTarget ArticuloManufacturadoEntity entity,
+            Map<Long, ArticuloInsumoEntity> insumos
+    ) {
+        // 1. Mapeo de campos básicos (excepto detalles)
         updateEntityFromDto(updateDto, entity);
 
+        // 2. Obtener lista original
         List<ArticuloManufacturadoDetalleEntity> existentes = entity.getArticuloManufacturadoDetalle();
-
-        // Map para acceso rápido por ID
         Map<Long, ArticuloManufacturadoDetalleEntity> existentesMap = existentes.stream()
                 .filter(d -> d.getId() != null)
-                .collect(Collectors.toMap(ArticuloManufacturadoDetalleEntity::getId, d -> d));
+                .collect(Collectors.toMap(ArticuloManufacturadoDetalleEntity::getId, Function.identity()));
 
-        // Lista final que conservará la referencia original
+        // 3. Agrupar detalles del DTO por articuloInsumoId (sumando cantidades si hay repetidos)
+        Map<Long, ArticuloManufacturadoDetalleDto> detallesUnificados = new HashMap<>();
+
+        for (ArticuloManufacturadoDetalleDto dto : updateDto.articuloManufacturadoDetalle()) {
+            detallesUnificados.merge(dto.articuloInsumoId(), dto,
+                    (existente, nuevo) -> new ArticuloManufacturadoDetalleDto(
+                            existente.id() != null ? existente.id() : nuevo.id(),
+                            existente.cantidad() + nuevo.cantidad(),
+                            existente.articuloInsumoId(),
+                            existente.articuloDenominacion()
+                    )
+            );
+        }
+
+        // 4. Construir nueva lista de detalles con objetos reales de insumo
         List<ArticuloManufacturadoDetalleEntity> nuevosDetalles = new ArrayList<>();
 
-        for (ArticuloManufacturadoDetalleDto dtoDetalle : updateDto.articuloManufacturadoDetalle()) {
+        for (ArticuloManufacturadoDetalleDto dto : detallesUnificados.values()) {
             ArticuloManufacturadoDetalleEntity detalle;
 
-            if (dtoDetalle.id() != null && existentesMap.containsKey(dtoDetalle.id())) {
+            if (dto.id() != null && existentesMap.containsKey(dto.id())) {
                 // Actualizar existente
-                detalle = existentesMap.get(dtoDetalle.id());
-                detalle.setCantidad(dtoDetalle.cantidad());
+                detalle = existentesMap.get(dto.id());
             } else {
                 // Crear nuevo
                 detalle = new ArticuloManufacturadoDetalleEntity();
-                detalle.setCantidad(dtoDetalle.cantidad());
-                detalle.setArticuloInsumo(ArticuloInsumoEntity.builder().id(dtoDetalle.articuloInsumoId()).build());
-                detalle.setArticuloManufacturado(entity);
             }
+
+            detalle.setCantidad(dto.cantidad());
+            detalle.setArticuloInsumo(insumos.get(dto.articuloInsumoId())); // ✔️ insumo real desde DB
+            detalle.setArticuloManufacturado(entity);
 
             nuevosDetalles.add(detalle);
         }
 
-        // Eliminar los que ya no están (in-place, sin reemplazar la colección)
+        // 5. Limpieza de eliminados
         existentes.removeIf(existing ->
                 existing.getId() != null &&
                         nuevosDetalles.stream().noneMatch(nuevo ->
-                                nuevo.getId() != null && nuevo.getId().equals(existing.getId()))
+                                nuevo.getId() != null && nuevo.getId().equals(existing.getId())
+                        )
         );
 
-        // Agregar los nuevos que no están ya
+        // 6. Agregar nuevos si no están
         for (ArticuloManufacturadoDetalleEntity nuevo : nuevosDetalles) {
-            if (!existentes.contains(nuevo)) {
+            if (nuevo.getId() == null || existentes.stream().noneMatch(e ->
+                    e.getId() != null && e.getId().equals(nuevo.getId()))) {
                 existentes.add(nuevo);
             }
         }
+
+        // 7. Recalcular costo y tiempo estimado (con insumos completos)
+        entity.costoMinimoCalculado();
+        entity.tiempoEstimadoCalculado(updateDto.tiempoEstimadoMinutos());
     }
 
     // ======================= RESPONSE =======================
