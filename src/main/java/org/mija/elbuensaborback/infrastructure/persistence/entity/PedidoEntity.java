@@ -24,7 +24,7 @@ public class PedidoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalTime horaEstimadaFinalizacion;
+    private BigDecimal tiempoEstimadoFinalizacion;
     private BigDecimal total;
     private BigDecimal gastosEnvio;
     private String indicaciones;

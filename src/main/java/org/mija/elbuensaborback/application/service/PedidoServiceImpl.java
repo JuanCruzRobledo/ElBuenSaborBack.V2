@@ -36,11 +36,11 @@ public class PedidoServiceImpl implements PedidoService {
     @Transactional
     public PedidoResponse crearPedido(PedidoCreatedRequest pedidoCreatedRequest) {
         PedidoEntity pedido = pedidoMapper.toEntity(pedidoCreatedRequest);
-        pedido.setHoraEstimadaFinalizacion(LocalTime.MIN);
+        pedido.setTiempoEstimadoFinalizacion(new BigDecimal(35));
         pedido.setTotal(BigDecimal.ZERO);
         pedido.setFechaPedido(LocalDate.now());
         pedido.setGastosEnvio(new BigDecimal(22));
-        pedido.setEstadoEnum(EstadoEnum.PENDIENTE);
+        /*pedido.setEstadoEnum(EstadoEnum.PENDIENTE);*/
         pedido.setEstadoPagoEnum(EstadoPagoEnum.PENDIENTE);
         pedido.setSucursal(SucursalEntity.builder().id(1L).build());
 
