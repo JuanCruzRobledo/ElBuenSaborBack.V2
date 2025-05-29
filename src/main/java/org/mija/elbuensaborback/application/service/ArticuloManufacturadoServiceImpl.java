@@ -123,6 +123,8 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
     public Set<ArticuloManufacturadoResponse> listarArticulos() {
 
         List<ArticuloManufacturadoEntity> articulos = articuloManufacturadoRepository.findAll();
+        System.out.println("IMAGENES");
+        articulos.get(0).getImagenesUrls().forEach(image -> System.out.println(image));
         return articulos.stream().map(articuloManufacturadoMapper::toResponse).collect(Collectors.toSet());
     }
 

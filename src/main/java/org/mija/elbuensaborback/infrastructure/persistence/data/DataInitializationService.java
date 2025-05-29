@@ -96,7 +96,7 @@ public class DataInitializationService {
         CategoriaEntity manufacturado = CategoriaEntity.builder().denominacion("Manufacturado").build();
         CategoriaEntity insumo = CategoriaEntity.builder().denominacion("Insumo").build();
 
-        CategoriaEntity snacks = CategoriaEntity.builder().denominacion("Snacks").categoriaPadre(manufacturado).build();
+        CategoriaEntity snacks = CategoriaEntity.builder().denominacion("Sides").categoriaPadre(manufacturado).build();
         CategoriaEntity comidas = CategoriaEntity.builder().denominacion("Comidas").categoriaPadre(manufacturado).build();
         CategoriaEntity pizzas = CategoriaEntity.builder().denominacion("Pizzas").categoriaPadre(comidas).build();
         CategoriaEntity hamburguesas = CategoriaEntity.builder().denominacion("Hamburguesas").categoriaPadre(comidas).build();

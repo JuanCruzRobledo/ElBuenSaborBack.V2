@@ -182,17 +182,20 @@ public class ArticuloManufacturadoData {
             List<ArticuloManufacturadoDetalleEntity> detalles
     ) {
         ArticuloManufacturadoEntity articulo = ArticuloManufacturadoEntity.builder()
+                .productoActivo(true)
                 .denominacion(denominacion)
                 .descripcion(descripcion)
                 .precioVenta(precio)
                 .tiempoEstimadoMinutos(tiempo)
-                .imagenesUrls(Set.of(ImagenArticuloEntity.builder().url(imagen).build()))
                 .categoria(categoria)
                 .sucursal(sucursal)
                 .build();
 
         detalles.forEach(d -> d.setArticuloManufacturado(articulo));
         articulo.setArticuloManufacturadoDetalle(detalles);
+        articulo.setImagenesUrls(Set.of(ImagenArticuloEntity.builder().url(imagen).articulo(articulo).build()));
+        articulo.tiempoEstimadoCalculado(5);
+        articulo.costoMinimoCalculado();
         return articulo;
     }
 }
