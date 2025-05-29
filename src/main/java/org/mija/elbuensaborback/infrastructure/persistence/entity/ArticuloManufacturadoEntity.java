@@ -38,7 +38,7 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
         Double tiempoDetalle = 0.00;
 
         for( ArticuloManufacturadoDetalleEntity detalle : articuloManufacturadoDetalle){
-            tiempoDetalle += detalle.getCantidad() * detalle.getArticuloInsumo().getTiempoEstimadoMinutos();
+            tiempoDetalle += detalle.getArticuloInsumo().getTiempoEstimadoMinutos();
         }
         setTiempoEstimadoMinutos(tiempoBase + tiempoDetalle.intValue());
     }
