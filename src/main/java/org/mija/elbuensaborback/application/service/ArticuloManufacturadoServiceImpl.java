@@ -49,7 +49,7 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
         articuloEntity.setSucursal(sucursal);
 
         articuloEntity.costoMinimoCalculado();
-        articuloEntity.tiempoEstimadoCalculado(articulo.tiempoEstimadoMinutos());
+        articuloEntity.setTiempoEstimadoMinutos(articulo.tiempoEstimadoMinutos());
 
         articuloEntity = articuloManufacturadoRepository.save(articuloEntity);
 
