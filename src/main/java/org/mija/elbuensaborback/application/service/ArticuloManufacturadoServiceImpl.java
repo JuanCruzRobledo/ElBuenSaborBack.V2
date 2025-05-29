@@ -49,7 +49,7 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
         articuloEntity.setSucursal(sucursal);
 
         articuloEntity.costoMinimoCalculado();
-        articuloEntity.setTiempoEstimadoMinutos(articulo.tiempoEstimadoMinutos());
+        articuloEntity.tiempoEstimadoCalculado(articulo.tiempoEstimadoMinutos());
 
         articuloEntity = articuloManufacturadoRepository.save(articuloEntity);
 
@@ -116,7 +116,7 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
 
     @Override
     public void eliminarArticulo(Long id) {
-        articuloManufacturadoRepository.deleteById(id);
+        articuloManufacturadoRepository.findById(id);
     }
 
     @Override

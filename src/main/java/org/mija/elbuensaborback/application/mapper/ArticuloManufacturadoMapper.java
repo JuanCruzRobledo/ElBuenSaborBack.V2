@@ -126,9 +126,10 @@ public abstract class ArticuloManufacturadoMapper {
             }
         }
 
-        // 7. Recalcular costo y tiempo estimado (con insumos completos)
+        /* 7. Recalcular costo y tiempo estimado (con insumos completos)
         entity.costoMinimoCalculado();
         entity.setTiempoEstimadoMinutos(updateDto.tiempoEstimadoMinutos());
+         */
 
         //8. Mapear Imagenes
         entity.getImagenesUrls().forEach(image ->{
