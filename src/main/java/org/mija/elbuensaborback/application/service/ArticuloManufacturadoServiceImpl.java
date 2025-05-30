@@ -50,9 +50,8 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
 
         articuloEntity.calcularPrecioCosto();
 
-        if (articuloEntity.getPrecioCosto() != articulo.precioCosto()){
-            throw new RuntimeException("Precio costo insuficiente");
-        }
+        System.out.println("COSTO CALCULADO: "+ articuloEntity.getPrecioCosto());
+        System.out.println("COSTO RECIBIDO: "+ articulo.precioCosto());
 
         articuloEntity.setPrecioCosto(articulo.precioCosto());
         articuloEntity.setPrecioVenta(articulo.precioVenta());
