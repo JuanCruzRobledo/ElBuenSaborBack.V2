@@ -12,6 +12,7 @@ import java.util.Set;
 public record ArticuloManufacturadoUpdateRequest(
         String denominacion,
         BigDecimal precioVenta,
+        BigDecimal precioCosto,
         Boolean productoActivo,
         Integer tiempoEstimadoMinutos,
         Set<ImagenDto> imagenesUrls,

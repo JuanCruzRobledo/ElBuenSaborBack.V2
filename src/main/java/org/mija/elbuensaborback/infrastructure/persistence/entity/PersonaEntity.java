@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Getter
 @Setter
-//@DiscriminatorColumn(name = "tipo_persona") // opcional
+@DiscriminatorColumn(name = "tipo_persona")
 public abstract class PersonaEntity {
 
     @Id

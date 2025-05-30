@@ -48,7 +48,14 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
         SucursalEntity sucursal = SucursalEntity.builder().id(1L).build();
         articuloEntity.setSucursal(sucursal);
 
-        articuloEntity.costoMinimoCalculado();
+        articuloEntity.calcularPrecioCosto();
+
+        if (articuloEntity.getPrecioCosto() != articulo.precioCosto()){
+            throw new RuntimeException("Precio costo insuficiente");
+        }
+
+        articuloEntity.setPrecioCosto(articulo.precioCosto());
+        articuloEntity.setPrecioVenta(articulo.precioVenta());
         articuloEntity.setTiempoEstimadoMinutos(articulo.tiempoEstimadoMinutos());
 
         articuloEntity = articuloManufacturadoRepository.save(articuloEntity);
@@ -97,6 +104,13 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
 
         // 6. Mapear datos desde el DTO hacia la entidad
         articuloManufacturadoMapper.updateEntityWithDetalles(articulo, articuloEntity, insumos);
+
+        if (articuloEntity.getPrecioCosto() != articulo.precioCosto()){
+            throw new RuntimeException("Precio costo insuficiente");
+        }
+        articuloEntity.setPrecioCosto(articulo.precioCosto());
+        articuloEntity.setPrecioVenta(articulo.precioVenta());
+        articuloEntity.setTiempoEstimadoMinutos(articulo.tiempoEstimadoMinutos());
 
         // 7. Setear la nueva categoría
         articuloEntity.setCategoria(categoria);

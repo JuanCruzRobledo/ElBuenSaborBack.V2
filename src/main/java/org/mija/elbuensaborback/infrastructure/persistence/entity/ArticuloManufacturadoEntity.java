@@ -43,7 +43,7 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
         setTiempoEstimadoMinutos(tiempoBase + tiempoDetalle.intValue());
     }
 
-    public void costoMinimoCalculado() {
+    public void calcularPrecioCosto() {
         BigDecimal costoTotal = BigDecimal.ZERO;
 
         for (ArticuloManufacturadoDetalleEntity detalle : articuloManufacturadoDetalle) {
