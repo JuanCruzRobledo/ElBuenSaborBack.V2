@@ -36,9 +36,9 @@ public abstract class DetallePedidoMapper {
 
         entity.setArticulo(articulo);
 
-        double subTotal = cantidad * articuloId;
+        BigDecimal subTotal = articulo.getPrecioVenta().multiply(BigDecimal.valueOf(cantidad));
 
-        entity.setSubTotal(new BigDecimal(subTotal));
+        entity.setSubTotal(subTotal);
     }
 
     @Mapping(target = "articuloId" , source = "articulo.id")
