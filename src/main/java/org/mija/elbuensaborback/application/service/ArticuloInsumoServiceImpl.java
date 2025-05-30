@@ -1,6 +1,7 @@
 package org.mija.elbuensaborback.application.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloActualizarStockPrecioRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoBasicResponse;
@@ -12,7 +13,6 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.CategoriaEntit
 import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloInsumoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.CategoriaRepositoryImpl;
-import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.SucursalRepositoryImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -75,6 +75,24 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
         List<ArticuloInsumoEntity> articuloInsumoEntities = articuloInsumoRepository.findAll();
 
         return articuloInsumoEntities.stream().map(articuloInsumoMapper::toResponse).collect(Collectors.toSet()) ;
+    }
+
+    @Override
+    public ArticuloInsumoResponse actualizarPrecioYStock(Long id, ArticuloActualizarStockPrecioRequest request) {
+        ArticuloInsumoEntity articulo = articuloInsumoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Artículo no encontrado con ID: " + id));
+
+        if (request.precioCompra() != null) {
+            articulo.setPrecioCompra(request.precioCompra());
+        }
+
+        if (request.stockActual() != null) {
+            articulo.setStockActual(request.stockActual());
+        }
+
+        articuloInsumoRepository.save(articulo);
+
+        return articuloInsumoMapper.toResponse(articulo);
     }
 
 

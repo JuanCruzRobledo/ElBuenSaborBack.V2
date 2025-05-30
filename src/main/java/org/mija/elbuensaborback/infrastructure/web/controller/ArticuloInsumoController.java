@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
+import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloActualizarStockPrecioRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoResponse;
@@ -75,4 +76,19 @@ public class ArticuloInsumoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
     }
+
+    // En tu controlador ArticuloInsumoController
+    @PatchMapping("/{id}/precio-stock")
+    public ResponseEntity<?> actualizarPrecioYStock(
+            @PathVariable Long id,
+            @RequestBody ArticuloActualizarStockPrecioRequest request
+    ) {
+        try {
+            ArticuloInsumoResponse actualizado = articuloInsumoService.actualizarPrecioYStock(id, request);
+            return ResponseEntity.ok(actualizado);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 }
