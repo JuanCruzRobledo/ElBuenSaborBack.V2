@@ -13,7 +13,7 @@ import java.util.List;
 
 public record PedidoResponse(
         Long id,
-        Integer tiempoEstimadoFinalizacion,
+        LocalTime horaEstimadaFinalizacion,
         BigDecimal total,
         BigDecimal gastosEnvio,
         EstadoEnum estadoEnum,

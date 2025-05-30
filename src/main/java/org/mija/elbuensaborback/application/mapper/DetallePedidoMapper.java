@@ -13,8 +13,8 @@ import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.Ar
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-import java.util.Optional;
+import java.math.BigDecimal;
+
 
 @Mapper(componentModel = "spring")
 public abstract class DetallePedidoMapper {
@@ -29,13 +29,16 @@ public abstract class DetallePedidoMapper {
     protected void mapArticulo(@MappingTarget DetallePedidoEntity entity, DetallePedidoDto dto) {
 
         Long articuloId = dto.articuloId();
-
-        List<ArticuloEntity> articulos = articuloRepository.findAll();
+        Integer cantidad = dto.cantidad();
 
         ArticuloEntity articulo = articuloRepository.findById(articuloId)
                 .orElseThrow(() -> new IllegalArgumentException("No se encontró un artículo con id: " + articuloId));
 
         entity.setArticulo(articulo);
+
+        double subTotal = cantidad * articuloId;
+
+        entity.setSubTotal(new BigDecimal(subTotal));
     }
 
     @Mapping(target = "articuloId" , source = "articulo.id")

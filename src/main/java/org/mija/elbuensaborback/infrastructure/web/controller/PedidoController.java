@@ -3,7 +3,6 @@ package org.mija.elbuensaborback.infrastructure.web.controller;
 import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.PedidoResponse;
 import org.mija.elbuensaborback.application.service.PedidoServiceImpl;
-import org.mija.elbuensaborback.application.service.contratos.PedidoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

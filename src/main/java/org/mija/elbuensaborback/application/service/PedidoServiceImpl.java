@@ -36,11 +36,11 @@ public class PedidoServiceImpl implements PedidoService {
     @Transactional
     public PedidoResponse crearPedido(PedidoCreatedRequest pedidoCreatedRequest) {
         PedidoEntity pedido = pedidoMapper.toEntity(pedidoCreatedRequest);
-        pedido.setTiempoEstimadoFinalizacion(new BigDecimal(35));
+        pedido.setHoraEstimadaFinalizacion(LocalTime.MIN);
         pedido.setTotal(BigDecimal.ZERO);
         pedido.setFechaPedido(LocalDate.now());
         pedido.setGastosEnvio(new BigDecimal(22));
-        /*pedido.setEstadoEnum(EstadoEnum.PENDIENTE);*/
+        pedido.setEstadoEnum(EstadoEnum.PENDIENTE);
         pedido.setEstadoPagoEnum(EstadoPagoEnum.PENDIENTE);
         pedido.setSucursal(SucursalEntity.builder().id(1L).build());
 
@@ -49,7 +49,6 @@ public class PedidoServiceImpl implements PedidoService {
 
         pedido = pedidoRepository.save(pedido);
 
-        // Volvés a buscar el pedido con el cliente cargado (usá un JOIN FETCH si querés evitar LAZY)
         pedido = pedidoRepository.findByIdConCliente(pedido.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado"));
 
