@@ -26,6 +26,7 @@ public class PedidoEntity {
     private Long id;
     private LocalTime horaEstimadaFinalizacion;
     private BigDecimal total;
+    private BigDecimal costoTotal;
     private BigDecimal gastosEnvio;
     private String indicaciones;
 
@@ -69,11 +70,40 @@ public class PedidoEntity {
         }
 
         if (tipoEnvioEnum.compareTo(TipoEnvioEnum.TAKEAWAY) < 0) {
-            total = total.multiply(BigDecimal.valueOf(0.9));
-        } else {
             total = total.add(getGastosEnvio());
+        } else {
+            total = total.multiply(BigDecimal.valueOf(0.9));
         }
 
         this.total = total;
     }
+
+    public void calcularCostoTotalPedido() {
+        BigDecimal costo = BigDecimal.ZERO;
+
+        for (DetallePedidoEntity detalle : listaDetalle) {
+            ArticuloEntity articulo = detalle.getArticulo();
+            BigDecimal costoUnitario;
+
+            if (articulo instanceof ArticuloManufacturadoEntity manufacturado) {
+                costoUnitario = manufacturado.getPrecioCosto();
+            } else if (articulo instanceof ArticuloInsumoEntity insumo) {
+                costoUnitario = insumo.getPrecioCompra();
+            } else {
+                throw new IllegalStateException("Tipo de artículo no soportado para cálculo de costo.");
+            }
+
+            if (costoUnitario == null) {
+                throw new RuntimeException("El artículo '" + articulo.getDenominacion() + "' no tiene precio de costo definido.");
+            }
+
+            BigDecimal cantidad = BigDecimal.valueOf(detalle.getCantidad());
+            BigDecimal costoParcial = costoUnitario.multiply(cantidad);
+
+            costo = costo.add(costoParcial);
+        }
+
+        this.costoTotal = costo;
+    }
+
 }

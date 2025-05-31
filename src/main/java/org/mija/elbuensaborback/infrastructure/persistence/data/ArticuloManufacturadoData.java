@@ -195,7 +195,7 @@ public class ArticuloManufacturadoData {
         articulo.setArticuloManufacturadoDetalle(detalles);
         articulo.setImagenesUrls(Set.of(ImagenArticuloEntity.builder().url(imagen).articulo(articulo).build()));
         articulo.tiempoEstimadoCalculado(5);
-        articulo.precioCostoCalculado();
+        articulo.calcularPrecioCosto();
         return articulo;
     }
 }

@@ -7,6 +7,7 @@ import org.mija.elbuensaborback.application.mapper.PedidoMapper;
 import org.mija.elbuensaborback.application.service.contratos.PedidoService;
 import org.mija.elbuensaborback.domain.enums.EstadoEnum;
 import org.mija.elbuensaborback.domain.enums.EstadoPagoEnum;
+import org.mija.elbuensaborback.domain.enums.TipoEnvioEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.DetallePedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
@@ -38,10 +39,15 @@ public class PedidoServiceImpl implements PedidoService {
         PedidoEntity pedido = pedidoMapper.toEntity(pedidoCreatedRequest);
         pedido.setHoraEstimadaFinalizacion(LocalTime.MIN);
         pedido.setFechaPedido(LocalDate.now());
-        pedido.setGastosEnvio(new BigDecimal(1999));
         pedido.setEstadoEnum(EstadoEnum.PENDIENTE);
         pedido.setEstadoPagoEnum(EstadoPagoEnum.PENDIENTE);
         pedido.setSucursal(SucursalEntity.builder().id(1L).build());
+
+        if (pedidoCreatedRequest.tipoEnvioEnum().compareTo(TipoEnvioEnum.TAKEAWAY) == 0 ){
+            pedido.setGastosEnvio(new BigDecimal(0));
+        } else {
+            pedido.setGastosEnvio(new BigDecimal(1999));
+        }
 
         Integer max = 0;
         for (DetallePedidoEntity detalle : pedido.getListaDetalle()){
@@ -52,6 +58,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setHoraEstimadaFinalizacion(LocalTime.now().plusMinutes(max));
 
         pedido.calcularTotalPedido();
+        pedido.calcularCostoTotalPedido();
 
         // Procesar stock
         procesarStock(pedido.getListaDetalle());

@@ -3,8 +3,11 @@ package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 import org.mija.elbuensaborback.domain.repository.PedidoRepositoryPort;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.PedidoJpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,5 +50,13 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
     @Override
     public List<PedidoEntity> saveAll(List<PedidoEntity> entities) {
         return List.of();
+    }
+
+    public List<PedidoEntity> findByFechaPedidoBetween(LocalDateTime desde, LocalDateTime hasta) {
+        return pedidoJpaRepository.findByFechaPedidoBetween(desde, hasta);
+    }
+
+    public List<PedidoEntity> findByFechaPedido(LocalDate fechaPedido){
+        return pedidoJpaRepository.findByFechaPedido(fechaPedido);
     }
 }
