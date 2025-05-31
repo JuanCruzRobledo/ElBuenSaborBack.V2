@@ -59,6 +59,21 @@ public class PedidoEntity {
     @JoinColumn(name = "sucursal_id")
     private SucursalEntity sucursal;
 
-    //ID DE SUCURSAL EN INFRAESTRUCTURE
     //METODO GENERATE FACTURA QUE GENERE Y HAGA UN SET A LA FACTURA
+
+    public void calcularTotalPedido() {
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (DetallePedidoEntity detallePedidoEntity : listaDetalle) {
+            total = total.add(detallePedidoEntity.getSubTotal());
+        }
+
+        if (tipoEnvioEnum.compareTo(TipoEnvioEnum.TAKEAWAY) < 0) {
+            total = total.multiply(BigDecimal.valueOf(0.9));
+        } else {
+            total = total.add(getGastosEnvio());
+        }
+
+        this.total = total;
+    }
 }

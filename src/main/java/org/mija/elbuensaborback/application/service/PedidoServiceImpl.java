@@ -37,12 +37,21 @@ public class PedidoServiceImpl implements PedidoService {
     public PedidoResponse crearPedido(PedidoCreatedRequest pedidoCreatedRequest) {
         PedidoEntity pedido = pedidoMapper.toEntity(pedidoCreatedRequest);
         pedido.setHoraEstimadaFinalizacion(LocalTime.MIN);
-        pedido.setTotal(BigDecimal.ZERO);
         pedido.setFechaPedido(LocalDate.now());
-        pedido.setGastosEnvio(new BigDecimal(22));
+        pedido.setGastosEnvio(new BigDecimal(1999));
         pedido.setEstadoEnum(EstadoEnum.PENDIENTE);
         pedido.setEstadoPagoEnum(EstadoPagoEnum.PENDIENTE);
         pedido.setSucursal(SucursalEntity.builder().id(1L).build());
+
+        Integer max = 0;
+        for (DetallePedidoEntity detalle : pedido.getListaDetalle()){
+            if (detalle.getArticulo().getTiempoEstimadoMinutos() > max){
+                max = detalle.getArticulo().getTiempoEstimadoMinutos();
+            }
+        }
+        pedido.setHoraEstimadaFinalizacion(LocalTime.now().plusMinutes(max));
+
+        pedido.calcularTotalPedido();
 
         // Procesar stock
         procesarStock(pedido.getListaDetalle());
