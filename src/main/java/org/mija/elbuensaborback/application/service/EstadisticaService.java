@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +26,6 @@ public class EstadisticaService {
 
 
     // Ejecuta todos los días a las 2:00 AM
-    @Scheduled(cron = "0 0 2 * * ?")
     @Scheduled(cron = "0 0 2 * * ?")
     public void generarEstadisticasDelDiaAnterior() {
         LocalDate ayer = LocalDate.now().minusDays(1);
