@@ -18,7 +18,7 @@ public class EmpleadoRepositoryImpl implements EmpleadoRepositoryPort {
 
     @Override
     public Optional<EmpleadoEntity> findById(Long aLong) {
-        return Optional.empty();
+        return empleadoJpaRepository.findById(aLong);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class EmpleadoRepositoryImpl implements EmpleadoRepositoryPort {
 
     @Override
     public EmpleadoEntity save(EmpleadoEntity entity) {
-        return null;
+        return empleadoJpaRepository.save(entity);
     }
 
     @Override
@@ -39,5 +39,8 @@ public class EmpleadoRepositoryImpl implements EmpleadoRepositoryPort {
     @Override
     public List<EmpleadoEntity> saveAll(List<EmpleadoEntity> entities) {
         return List.of();
+    }
+    public EmpleadoEntity findByEmail(String email) {
+        return empleadoJpaRepository.findByUsuarioEmail(email);
     }
 }

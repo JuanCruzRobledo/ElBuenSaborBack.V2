@@ -61,7 +61,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.calcularCostoTotalPedido();
 
         // Procesar stock
-        procesarStock(pedido.getListaDetalle());
+        //procesarStock(pedido.getListaDetalle());
 
         pedido = pedidoRepository.save(pedido);
 

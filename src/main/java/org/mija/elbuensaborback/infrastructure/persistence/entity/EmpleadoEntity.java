@@ -5,8 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+
+@Getter
+@Setter
 @SuperBuilder
 @Entity(name = "empleado")
 @NoArgsConstructor
