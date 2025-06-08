@@ -1,6 +1,8 @@
 package org.mija.elbuensaborback.application.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.mija.elbuensaborback.application.dto.request.Pedido.EstadoPedidoDto;
 import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.PedidoResponse;
 import org.mija.elbuensaborback.application.mapper.PedidoMapper;
@@ -12,6 +14,7 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.DetallePedidoE
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PedidoRepositoryImpl;
+import org.mija.elbuensaborback.infrastructure.web.controller.PedidoWebSocketController;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,15 +26,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PedidoServiceImpl implements PedidoService {
 
     private final PedidoRepositoryImpl pedidoRepository;
     private final PedidoMapper pedidoMapper;
+    private final PedidoWebSocketController webSocketController;
 
-    public PedidoServiceImpl(PedidoRepositoryImpl pedidoRepository, PedidoMapper pedidoMapper) {
-        this.pedidoRepository = pedidoRepository;
-        this.pedidoMapper = pedidoMapper;
-    }
 
     @Override
     @Transactional
@@ -61,7 +62,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.calcularCostoTotalPedido();
 
         // Procesar stock
-        //procesarStock(pedido.getListaDetalle());
+        procesarStock(pedido.getListaDetalle());
 
         pedido = pedidoRepository.save(pedido);
 
@@ -97,5 +98,17 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Set<PedidoResponse> listarPedidoCliente(Long id) {
         return pedidoRepository.findAllByCliente(id).stream().map(pedidoMapper::toResponse).collect(Collectors.toSet());
+    }
+
+    public void cambiarEstadoPedido(Long pedidoId, EstadoEnum nuevoEstado) {
+        PedidoEntity pedido = pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
+        pedido.setEstadoEnum(nuevoEstado);
+        pedido = pedidoRepository.save(pedido);
+
+        EstadoPedidoDto dto = new EstadoPedidoDto(pedido.getId(), nuevoEstado);
+
+        webSocketController.notificarCambioEstado(dto);
     }
 }

@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
+import org.mija.elbuensaborback.application.dto.request.Pedido.EstadoPedidoDto;
 import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.PedidoResponse;
 import org.mija.elbuensaborback.application.service.PedidoServiceImpl;
@@ -47,5 +48,14 @@ public class PedidoController {
     public ResponseEntity<Set<PedidoResponse>> listarPedidoCliente(@PathVariable Long id) {
         Set<PedidoResponse> pedidos = pedidoService.listarPedidoCliente(id);
         return ResponseEntity.ok(pedidos);
+    }
+
+    @PutMapping("/{id}/estado")
+    public ResponseEntity<Void> actualizarEstado(
+            @PathVariable Long id,
+            @RequestBody EstadoPedidoDto dto) {
+
+        pedidoService.cambiarEstadoPedido(id, dto.nuevoEstado());
+        return ResponseEntity.ok().build();
     }
 }
