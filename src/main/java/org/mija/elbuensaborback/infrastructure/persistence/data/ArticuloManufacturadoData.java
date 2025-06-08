@@ -64,11 +64,11 @@ public class ArticuloManufacturadoData {
                 "https://res.cloudinary.com/drqdadlel/image/upload/v1726104199/delish1_x3s5yl.png",
                 hamburguesas, sucursal,
                 List.of(
-                        detalle(carne, 120),         // 120g de carne
-                        detalle(cheddar, 25),        // 25g de queso
-                        detalle(bacon, 20),          // 20g de bacon
-                        detalle(panArtesanal, 90),   // 90g de pan
-                        detalle(salsaEspecial, 15)   // 15g de salsa
+                        detalle(carne, 120),
+                        detalle(cheddar, 25),
+                        detalle(bacon, 20),
+                        detalle(panArtesanal, 90),
+                        detalle(salsaEspecial, 15)
                 )
         ));
 

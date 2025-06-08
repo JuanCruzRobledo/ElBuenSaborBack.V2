@@ -95,12 +95,13 @@ public class DataInitializationService {
     public void initCategorias() {
         CategoriaEntity manufacturado = CategoriaEntity.builder().denominacion("Manufacturado").build();
         CategoriaEntity insumo = CategoriaEntity.builder().denominacion("Insumo").build();
+        CategoriaEntity combos = CategoriaEntity.builder().denominacion("Combos").build();
 
-        CategoriaEntity snacks = CategoriaEntity.builder().denominacion("Sides").categoriaPadre(manufacturado).build();
+        CategoriaEntity sides = CategoriaEntity.builder().denominacion("Sides").categoriaPadre(manufacturado).build();
+        CategoriaEntity hamburguesas = CategoriaEntity.builder().denominacion("Hamburguesas").categoriaPadre(manufacturado).build();
+//        CategoriaEntity hamburguesasVeganas = CategoriaEntity.builder().denominacion("Hamburguesas Veganas").categoriaPadre(hamburguesas).build();
 //        CategoriaEntity comidas = CategoriaEntity.builder().denominacion("Comidas").categoriaPadre(manufacturado).build();
 //        CategoriaEntity pizzas = CategoriaEntity.builder().denominacion("Pizzas").categoriaPadre(comidas).build();
-        CategoriaEntity hamburguesas = CategoriaEntity.builder().denominacion("Hamburguesas").categoriaPadre(manufacturado).build();
-        CategoriaEntity hamburguesasVeganas = CategoriaEntity.builder().denominacion("Hamburguesas Veganas").categoriaPadre(hamburguesas).build();
 //        CategoriaEntity empanadas = CategoriaEntity.builder().denominacion("Empanadas").categoriaPadre(comidas).build();
 //        CategoriaEntity pastas = CategoriaEntity.builder().denominacion("Pastas").categoriaPadre(comidas).build();
 
@@ -110,8 +111,8 @@ public class DataInitializationService {
 //        CategoriaEntity flanes = CategoriaEntity.builder().denominacion("Flanes y Budines").categoriaPadre(postres).build();
 
 //        CategoriaEntity combos = CategoriaEntity.builder().denominacion("Combos").categoriaPadre(manufacturado).build();
-//        CategoriaEntity comboFamiliar = CategoriaEntity.builder().denominacion("Combo Familiar").categoriaPadre(combos).build();
-//        CategoriaEntity comboIndividual = CategoriaEntity.builder().denominacion("Combo Individual").categoriaPadre(combos).build();
+          CategoriaEntity comboFamiliar = CategoriaEntity.builder().denominacion("Combo Familiar").categoriaPadre(combos).build();
+          CategoriaEntity comboIndividual = CategoriaEntity.builder().denominacion("Combo Individual").categoriaPadre(combos).build();
 
 //        CategoriaEntity ensaladas = CategoriaEntity.builder().denominacion("Ensaladas").categoriaPadre(manufacturado).build();
 //        CategoriaEntity ensaladasClasicas = CategoriaEntity.builder().denominacion("Clásicas").categoriaPadre(ensaladas).build();
@@ -132,9 +133,9 @@ public class DataInitializationService {
 
         categoriaRepository.saveAll(List.of(
                 manufacturado, insumo,
-                hamburguesas, hamburguesasVeganas,
+                hamburguesas,
                 salsas, panaderia, lacteos, verduras, carnes, condimentos,
-                bebidas, gaseosas, aguas, cervezas, jugos,snacks
+                bebidas, gaseosas, aguas, cervezas, jugos,sides, combos, comboIndividual, comboFamiliar
 //                manufacturado, insumo,
 //                comidas, pizzas, hamburguesas, hamburguesasVeganas, empanadas, pastas,
 //                postres, helados, tortas, flanes,
