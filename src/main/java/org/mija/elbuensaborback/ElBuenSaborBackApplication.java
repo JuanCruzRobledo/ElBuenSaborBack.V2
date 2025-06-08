@@ -1,8 +1,6 @@
 package org.mija.elbuensaborback;
 
-import org.mija.elbuensaborback.infrastructure.persistence.data.ArticuloManufacturadoData;
-import org.mija.elbuensaborback.infrastructure.persistence.data.DataInitializationService;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.EmpresaEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.data.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,16 +15,10 @@ public class ElBuenSaborBackApplication {
 
 
     @Bean
-    CommandLineRunner init(DataInitializationService dataService, ArticuloManufacturadoData manufacturadoData) {
+    CommandLineRunner init(DataInitializationService dataService) {
 
         return args -> {
-            dataService.initPaisesProvinciasLocalidades();
-            dataService.initEmpresaYSucursal();
-            dataService.initCategorias();
-            dataService.initArticulosInsumos();
-            dataService.initRoleAndPermission();
-            dataService.initClientWithUsers();
-            manufacturadoData.initArticulosManufacturados();
+            dataService.init();
         };
 
     }
