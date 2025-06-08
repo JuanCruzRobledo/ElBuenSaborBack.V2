@@ -471,13 +471,70 @@ public class DataInitializationService {
                 .categoria(categoriaRepository.findByDenominacion("salsas"))
                 .sucursal(sucursalEntity1)
                 .build();
+        //BEBIDAS
 
+        ArticuloInsumoEntity cocaCola = ArticuloInsumoEntity.builder()
+                .denominacion("Coca Cola 500ml")
+                .precioCompra(new BigDecimal("1500"))
+                .precioVenta(new BigDecimal("2000"))
+                .unidadMedidaEnum(UnidadMedidaEnum.UNIDAD)
+                .stockActual(400.00)
+                .stockMaximo(400.00)
+                .stockMinimo(100.00)
+                .tiempoEstimadoMinutos(0)
+                .esParaPreparar(false)
+                .esVendible(true)
+                .productoActivo(true)
+                .categoria(categoriaRepository.findByDenominacion("gaseosas"))
+                .sucursal(sucursalEntity1)
+                .imagenesUrls(Set.of(
+                        ImagenArticuloEntity.builder().url("https://res.cloudinary.com/drqdadlel/image/upload/v1746571979/cocacola_s4s5rg.png").build()
+                ))
+                .build();
+
+        ArticuloInsumoEntity cerveza = ArticuloInsumoEntity.builder()
+                .denominacion("Cerveza 375ml")
+                .precioCompra(new BigDecimal("2000"))
+                .precioVenta(new BigDecimal("2500"))
+                .unidadMedidaEnum(UnidadMedidaEnum.UNIDAD)
+                .stockActual(400.00)
+                .stockMaximo(400.00)
+                .stockMinimo(100.00)
+                .tiempoEstimadoMinutos(2)
+                .esParaPreparar(false)
+                .esVendible(true)
+                .productoActivo(true)
+                .categoria(categoriaRepository.findByDenominacion("cervezas"))
+                .sucursal(sucursalEntity1)
+                .imagenesUrls(Set.of(
+                        ImagenArticuloEntity.builder().url("https://res.cloudinary.com/drqdadlel/image/upload/v1746571980/cerveza_dzrpj9.png").build()
+                ))
+                .build();
+
+        ArticuloInsumoEntity aguaMineral = ArticuloInsumoEntity.builder()
+                .denominacion("Agua Mineral 473ml")
+                .precioCompra(new BigDecimal("1000"))
+                .precioVenta(new BigDecimal("1500"))
+                .unidadMedidaEnum(UnidadMedidaEnum.UNIDAD)
+                .stockActual(400.00)
+                .stockMaximo(400.00)
+                .stockMinimo(100.00)
+                .tiempoEstimadoMinutos(0)
+                .esParaPreparar(false)
+                .esVendible(true)
+                .productoActivo(true)
+                .categoria(categoriaRepository.findByDenominacion("aguas"))
+                .sucursal(sucursalEntity1)
+                .imagenesUrls(Set.of(
+                        ImagenArticuloEntity.builder().url("https://res.cloudinary.com/drqdadlel/image/upload/v1746571980/aguamineral_gtoc1a.png").build()
+                ))
+                .build();
 
         articuloInsumoRepository.saveAll(List.of(bacon, panArtesanal, cebollaCaramelizada, queso,
                 salsaBarbacoa, cebollaFresca, cebollaCrujiente,
                 salsaEspecial, batatas, papas, nachos, guacamole,
                 panHamburguesa, medallonCarne, quesoCheddar,
-                lechuga, tomate, mayonesa, mostaza, sal
+                lechuga, tomate, mayonesa, mostaza, sal, aguaMineral, cerveza, cocaCola
         ));
     }
 
