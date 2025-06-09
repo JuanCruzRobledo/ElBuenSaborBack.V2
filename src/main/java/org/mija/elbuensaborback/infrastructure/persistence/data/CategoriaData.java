@@ -16,7 +16,7 @@ public class CategoriaData {
     public void initCategorias() {
         CategoriaEntity manufacturado = CategoriaEntity.builder().denominacion("Manufacturado").build();
         CategoriaEntity insumo = CategoriaEntity.builder().denominacion("Insumo").build();
-        CategoriaEntity combos = CategoriaEntity.builder().denominacion("Combos").build();
+//        CategoriaEntity combos = CategoriaEntity.builder().denominacion("Combos").build();
 
         CategoriaEntity sides = CategoriaEntity.builder().denominacion("Sides").categoriaPadre(manufacturado).build();
         CategoriaEntity hamburguesas = CategoriaEntity.builder().denominacion("Hamburguesas").categoriaPadre(manufacturado).build();
@@ -32,8 +32,8 @@ public class CategoriaData {
 //        CategoriaEntity flanes = CategoriaEntity.builder().denominacion("Flanes y Budines").categoriaPadre(postres).build();
 
 //        CategoriaEntity combos = CategoriaEntity.builder().denominacion("Combos").categoriaPadre(manufacturado).build();
-        CategoriaEntity comboFamiliar = CategoriaEntity.builder().denominacion("Combo Familiar").categoriaPadre(combos).build();
-        CategoriaEntity comboIndividual = CategoriaEntity.builder().denominacion("Combo Individual").categoriaPadre(combos).build();
+//        CategoriaEntity comboFamiliar = CategoriaEntity.builder().denominacion("Combo Familiar").categoriaPadre(combos).build();
+//        CategoriaEntity comboIndividual = CategoriaEntity.builder().denominacion("Combo Individual").categoriaPadre(combos).build();
 
 //        CategoriaEntity ensaladas = CategoriaEntity.builder().denominacion("Ensaladas").categoriaPadre(manufacturado).build();
 //        CategoriaEntity ensaladasClasicas = CategoriaEntity.builder().denominacion("Clásicas").categoriaPadre(ensaladas).build();
@@ -57,7 +57,8 @@ public class CategoriaData {
                 manufacturado, insumo,
                 hamburguesas,
                 salsas, panaderia, lacteos, verduras, carnes, condimentos,snacks,
-                bebidas, gaseosas, aguas, cervezas, jugos,sides, combos, comboIndividual, comboFamiliar
+                bebidas, gaseosas, aguas, cervezas, jugos,sides
+//                combos, comboIndividual, comboFamiliar
 //                manufacturado, insumo,
 //                comidas, pizzas, hamburguesas, hamburguesasVeganas, empanadas, pastas,
 //                postres, helados, tortas, flanes,

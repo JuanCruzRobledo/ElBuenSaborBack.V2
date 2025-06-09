@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/articulo-manufacturado")
+@CrossOrigin("*")
+
 public class ArticuloManufacturadoController {
     private final ArticuloManufacturadoServiceImpl articuloManufacturadoService;
 

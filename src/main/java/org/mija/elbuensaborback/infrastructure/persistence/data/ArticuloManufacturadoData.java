@@ -58,7 +58,7 @@ public class ArticuloManufacturadoData {
 
         List<ArticuloManufacturadoEntity> articulos = new ArrayList<>();
 
-        articulos.add(crearArticuloManufacturado("delish",
+        articulos.add(crearArticuloManufacturado("Delish",
                 "Hamburguesa jugosa con queso cheddar, bacon crujiente y una salsa especial.",
                 new BigDecimal("8000"), 15,
                 "https://res.cloudinary.com/drqdadlel/image/upload/v1726104199/delish1_x3s5yl.png",
@@ -86,10 +86,10 @@ public class ArticuloManufacturadoData {
                 )
         ));
 
-        articulos.add(crearArticuloManufacturado("classic",
+        articulos.add(crearArticuloManufacturado("Classic",
                 "Hamburguesa clásica con lechuga, tomate, queso cheddar y mayonesa.",
                 new BigDecimal("7800"), 14,
-                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104199/classic_bsdz9q.png",
+                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104199/classic_a9kzyk.png",
                 hamburguesas, sucursal,
                 List.of(
                         detalle(carne, 120),
@@ -101,10 +101,10 @@ public class ArticuloManufacturadoData {
                 )
         ));
 
-        articulos.add(crearArticuloManufacturado("soft mayo",
+        articulos.add(crearArticuloManufacturado("Soft Mayo",
                 "Hamburguesa suave con mayonesa, queso y carne de res.",
                 new BigDecimal("7500"), 13,
-                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104200/softmayo_fd9xos.png",
+                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104199/softMayo_sopgd7.png",
                 hamburguesas, sucursal,
                 List.of(
                         detalle(carne, 120),
@@ -114,10 +114,10 @@ public class ArticuloManufacturadoData {
                 )
         ));
 
-        articulos.add(crearArticuloManufacturado("crispy onion",
+        articulos.add(crearArticuloManufacturado("Crispy Onion",
                 "Hamburguesa con carne, cebolla crujiente y mostaza.",
                 new BigDecimal("8200"), 14,
-                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104199/crispy_kjv0r5.png",
+                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104199/crispyOnion_iarzpq.png",
                 hamburguesas, sucursal,
                 List.of(
                         detalle(carne, 120),
@@ -127,10 +127,10 @@ public class ArticuloManufacturadoData {
                 )
         ));
 
-        articulos.add(crearArticuloManufacturado("batatas",
+        articulos.add(crearArticuloManufacturado("Batatas",
                 "Porción de batatas fritas con sal.",
                 new BigDecimal("3000"), 8,
-                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104200/batatas_bajyaj.png",
+                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104198/batatas_pnzcgu.png",
                 sides, sucursal,
                 List.of(
                         detalle(batatas, 150),
@@ -138,10 +138,10 @@ public class ArticuloManufacturadoData {
                 )
         ));
 
-        articulos.add(crearArticuloManufacturado("papas fritas",
+        articulos.add(crearArticuloManufacturado("Papas Fritas",
                 "Porción de papas fritas crocantes con sal.",
                 new BigDecimal("2500"), 8,
-                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104200/papas_hus6re.png",
+                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104198/papasSimples_rnms3w.png",
                 sides, sucursal,
                 List.of(
                         detalle(papas, 150),
@@ -149,10 +149,10 @@ public class ArticuloManufacturadoData {
                 )
         ));
 
-        articulos.add(crearArticuloManufacturado("nachos",
+        articulos.add(crearArticuloManufacturado("Nachos",
                 "Nachos crocantes acompañados de guacamole y queso.",
                 new BigDecimal("4000"), 10,
-                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104200/nachos_keg1uu.png",
+                "https://res.cloudinary.com/drqdadlel/image/upload/v1726104198/nachos_rbbtca.png",
                 sides, sucursal,
                 List.of(
                         detalle(nachos, 100),
