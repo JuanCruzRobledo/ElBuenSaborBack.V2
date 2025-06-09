@@ -15,7 +15,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Entity(name = "factura")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class FacturaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +25,8 @@ public class FacturaEntity {
     private BigDecimal totalVenta;
     private LocalDate fechaFacturacion;
     private Long numeroComprobante;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private DatosMercadoPagoEntity datosMercado;
 
 }

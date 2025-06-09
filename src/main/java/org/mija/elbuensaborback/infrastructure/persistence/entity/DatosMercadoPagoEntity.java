@@ -3,13 +3,16 @@ package org.mija.elbuensaborback.infrastructure.persistence.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@EqualsAndHashCode(callSuper = true)
+
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
-@Entity(name = "factura_mercadopago")
-public class FacturaMercadoPagoEntity extends FacturaEntity {
-
+@Builder
+@Entity(name = "datos_mercadopago")
+public class DatosMercadoPagoEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Integer mpPaymentId;
     private Integer mpMerchantOrderId;
     private String mpPreferenceId;

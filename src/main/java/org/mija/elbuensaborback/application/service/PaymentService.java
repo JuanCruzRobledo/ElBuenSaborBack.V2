@@ -9,33 +9,28 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.resources.preference.Preference;
 import jakarta.persistence.EntityNotFoundException;
-import org.mija.elbuensaborback.application.dto.request.Pedido.DetallePedidoDto;
-import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.response.PreferenceResponseDto;
-import org.mija.elbuensaborback.domain.enums.EstadoEnum;
 import org.mija.elbuensaborback.domain.enums.EstadoPagoEnum;
-import org.mija.elbuensaborback.domain.enums.FormaPagoEnum;
-import org.mija.elbuensaborback.domain.enums.TipoEnvioEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PedidoRepositoryImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class PaymentService {
     private final PedidoRepositoryImpl pedidoRepository;
     private final ArticuloRepositoryImpl articuloRepository;
+    private ComprobanteService comprobanteService;
 
     @Value("${mercadopago.access.token}")
     private String mercadoPagoAccessToken;
@@ -43,10 +38,6 @@ public class PaymentService {
     @Value("${url.ngrok}")
     private String urlNgrok;
 
-    public PaymentService(PedidoRepositoryImpl pedidoRepository, ArticuloRepositoryImpl articuloRepository) {
-        this.pedidoRepository = pedidoRepository;
-        this.articuloRepository = articuloRepository;
-    }
 
 
     public PreferenceResponseDto crearPreferencia(Long id) throws MPException, MPApiException {
@@ -94,6 +85,7 @@ public class PaymentService {
 
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                 .payer(payer)
+                ///webhook?token=secreto123 ESTO SE DEBERIA HACER REALMENTE
                 .notificationUrl(urlNgrok+"/payment/webhook")
                 .items(itemsConEnvio) // Usamos la lista con envío incluido si aplica
                 .backUrls(preferenceBackUrls)
@@ -108,6 +100,7 @@ public class PaymentService {
     }
 
 
+    @Transactional
     public void procesarPago(Long paymentId) {
         try {
             System.out.println("🔄 Iniciando proceso de verificación del pago: " + paymentId);
@@ -132,10 +125,18 @@ public class PaymentService {
 
             if ("approved".equals(status)) {
                 pedido.setEstadoPagoEnum(EstadoPagoEnum.PAGADO);
+                Long numeroComprobante = comprobanteService.generarNumeroComprobante("FACTURA");
+                // Crear datos Mercado Pago
+                DatosMercadoPagoEntity datosMP = DatosMercadoPagoEntity.builder()
+                        .mpPaymentId(payment.getId().intValue())
+                        .mpMerchantOrderId(payment.getOrder().getId().intValue())
+                        .mpPreferenceId(payment.getMetadata().get("preference_id").toString())
+                        .mpPaymentType(payment.getPaymentTypeId())
+                        .build();
+                pedido.generarFactura(numeroComprobante, datosMP);
             } else if ("rejected".equals(status)) {
                 pedido.setEstadoPagoEnum(EstadoPagoEnum.RECHAZADO);
             }
-
             pedidoRepository.save(pedido);
             System.out.println("Pedido actualizado y guardado");
 

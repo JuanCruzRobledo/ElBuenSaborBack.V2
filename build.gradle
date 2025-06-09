@@ -59,6 +59,8 @@ dependencies {
 
 // === WEB SOCKETS ===
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+// === JASPER REPORTS ===
+    implementation 'net.sf.jasperreports:jasperreports:6.21.3'
 }
 
 tasks.named('test') {

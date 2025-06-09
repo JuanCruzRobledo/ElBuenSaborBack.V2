@@ -43,7 +43,7 @@ public class PedidoEntity {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL , orphanRemoval = true, fetch = FetchType.EAGER)
     private List<DetallePedidoEntity> listaDetalle;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "factura_id", referencedColumnName = "id")
     private FacturaEntity factura;
 
@@ -104,6 +104,18 @@ public class PedidoEntity {
         }
 
         this.costoTotal = costo;
+    }
+
+    public void generarFactura(Long numeroComprobante, DatosMercadoPagoEntity datosMP) {
+        FacturaEntity factura = FacturaEntity.builder()
+                .formaPagoEnum(this.formaPagoEnum)
+                .totalVenta(this.total)
+                .fechaFacturacion(LocalDate.now())
+                .numeroComprobante(numeroComprobante)
+                .datosMercado(this.formaPagoEnum == FormaPagoEnum.MERCADOPAGO ? datosMP : null)
+                .build();
+
+        this.factura = factura;
     }
 
 }

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="factura" pageWidth="595" pageHeight="842" columnWidth="555"
+              leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20"
+              uuid="d8f3a7f7-3a4c-4b21-8d55-e2e8a1e8f7f7">
+
+    <!-- Parámetros -->
+    <parameter name="nombreCliente" class="java.lang.String"/>
+    <parameter name="numeroFactura" class="java.lang.Long"/>
+    <parameter name="fecha" class="java.util.Date"/>
+    <parameter name="total" class="java.math.BigDecimal"/>
+
+    <!-- Campos para el detalle -->
+    <field name="cantidad" class="java.lang.Integer"/>
+    <field name="subTotal" class="java.math.BigDecimal"/>
+    <field name="articulo" class="org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloEntity"/>
+
+    <title>
+        <band height="80">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="30" uuid="b8bf418a-5f14-4e4f-8b3d-95c287b92c3b"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="20" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Factura]]></text>
+            </staticText>
+
+            <textField>
+                <reportElement x="0" y="40" width="555" height="20" uuid="8d5f3a4a-0e48-432d-94ca-4e3b1f6e40a1"/>
+                <textElement>
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Cliente: " + $P{nombreCliente}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="0" y="60" width="250" height="20" uuid="2e4bbf7f-35d0-4a7d-91db-54c39a712716"/>
+                <textFieldExpression><![CDATA["Factura N°: " + $P{numeroFactura}]]></textFieldExpression>
+            </textField>
+
+            <textField pattern="dd/MM/yyyy">
+                <reportElement x="300" y="60" width="255" height="20" uuid="9a417a2e-6df7-4b7a-a197-1e5f2ec65a8d"/>
+                <textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="20">
+            <staticText>
+                <reportElement x="0" y="0" width="200" height="20" uuid="96f2a2e3-65a0-48ea-8e84-93f48cc45b8c"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+                <text><![CDATA[Producto]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="200" y="0" width="80" height="20" uuid="d78fa62f-5e36-4a24-8f2f-33c78acb843d"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <text><![CDATA[Cant.]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="280" y="0" width="120" height="20" uuid="91e68e2c-b4f7-4845-a8f4-10564e0a0f9d"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <text><![CDATA[Precio Unitario]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="400" y="0" width="155" height="20" uuid="6c2700d6-89a2-4b02-8ac8-b4685f936f7f"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <text><![CDATA[Subtotal]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="20">
+            <!-- Nombre artículo -->
+            <textField>
+                <reportElement x="0" y="0" width="200" height="20" uuid="c5a86787-b71d-4a51-874e-44f6f2d51a22"/>
+                <textFieldExpression><![CDATA[$F{articulo}.getDenominacion()]]></textFieldExpression>
+            </textField>
+
+            <!-- Cantidad -->
+            <textField pattern="###">
+                <reportElement x="200" y="0" width="80" height="20" uuid="de55157f-b77e-49b3-ae2e-4f0f272c5e3f"/>
+                <textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+            </textField>
+
+            <!-- Precio unitario calculado -->
+            <textField pattern="$ #,##0.00">
+                <reportElement x="280" y="0" width="120" height="20" uuid="570ff12e-97b3-4c44-b67f-3d7ae019b671"/>
+                <textFieldExpression><![CDATA[$F{subTotal}.doubleValue() / $F{cantidad}.doubleValue()]]></textFieldExpression>
+            </textField>
+
+            <!-- Subtotal -->
+            <textField pattern="$ #,##0.00">
+                <reportElement x="400" y="0" width="155" height="20" uuid="d113b993-840f-4d28-9d4f-0c6f97d6f464"/>
+                <textFieldExpression><![CDATA[$F{subTotal}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <summary>
+        <band height="40">
+            <line>
+                <reportElement x="0" y="0" width="555" height="1" uuid="e1f326e6-4ec8-4e25-bc0e-8bbfa3a0498f"/>
+            </line>
+
+            <staticText>
+                <reportElement x="280" y="10" width="120" height="20" uuid="e737dd1b-8ae7-4d6d-9c1d-cd6a5d1f1b6d"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <text><![CDATA[Total:]]></text>
+            </staticText>
+
+            <textField pattern="$ #,##0.00">
+                <reportElement x="400" y="10" width="155" height="20" uuid="f8e50454-8414-40fc-bf1d-f3c1973c427f"/>
+                <textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
+            </textField>
+        </band>
+    </summary>
+
+</jasperReport>

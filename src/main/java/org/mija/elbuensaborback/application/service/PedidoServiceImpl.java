@@ -32,7 +32,7 @@ public class PedidoServiceImpl implements PedidoService {
     private final PedidoRepositoryImpl pedidoRepository;
     private final PedidoMapper pedidoMapper;
     private final PedidoWebSocketController webSocketController;
-
+    private final ComprobanteService comprobanteService;
 
     @Override
     @Transactional
@@ -110,5 +110,19 @@ public class PedidoServiceImpl implements PedidoService {
         EstadoPedidoDto dto = new EstadoPedidoDto(pedido.getId(), nuevoEstado);
 
         webSocketController.notificarCambioEstado(dto);
+    }
+
+    public PedidoResponse pagarPedido(Long id){
+        PedidoEntity pedido = pedidoRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se encontro el pedido con el id "+ id));
+
+        pedido.setEstadoPagoEnum(EstadoPagoEnum.PAGADO);
+
+        Long nro = comprobanteService.generarNumeroComprobante("FACTURA");
+        pedido.generarFactura(nro,null);
+
+        pedido = pedidoRepository.save(pedido);
+
+
+        return pedidoMapper.toResponse(pedido);
     }
 }

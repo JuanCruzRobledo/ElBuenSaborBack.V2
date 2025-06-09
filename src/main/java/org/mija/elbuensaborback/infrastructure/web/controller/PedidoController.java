@@ -58,4 +58,9 @@ public class PedidoController {
         pedidoService.cambiarEstadoPedido(id, dto.nuevoEstado());
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/pagar/{id}")
+    public ResponseEntity<?> pagarPedido(@PathVariable Long id){
+        return ResponseEntity.ok(pedidoService.pagarPedido(id));
+    }
 }

@@ -1,7 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
 import org.mija.elbuensaborback.domain.repository.FacturaMercadoPagoRepositoryPort;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.FacturaMercadoPagoEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.DatosMercadoPagoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.FacturaMercadoPagoJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,17 +17,17 @@ public class FacturaMercadoPagoRepositoryImpl implements FacturaMercadoPagoRepos
     }
 
     @Override
-    public Optional<FacturaMercadoPagoEntity> findById(Long aLong) {
+    public Optional<DatosMercadoPagoEntity> findById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public List<FacturaMercadoPagoEntity> findAll() {
+    public List<DatosMercadoPagoEntity> findAll() {
         return List.of();
     }
 
     @Override
-    public FacturaMercadoPagoEntity save(FacturaMercadoPagoEntity entity) {
+    public DatosMercadoPagoEntity save(DatosMercadoPagoEntity entity) {
         return null;
     }
 
@@ -37,7 +37,7 @@ public class FacturaMercadoPagoRepositoryImpl implements FacturaMercadoPagoRepos
     }
 
     @Override
-    public List<FacturaMercadoPagoEntity> saveAll(List<FacturaMercadoPagoEntity> entities) {
+    public List<DatosMercadoPagoEntity> saveAll(List<DatosMercadoPagoEntity> entities) {
         return List.of();
     }
 }
