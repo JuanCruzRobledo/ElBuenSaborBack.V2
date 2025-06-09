@@ -12,15 +12,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOriginPatterns("*");
-        registry.addEndpoint("/ws-pedidos").setAllowedOriginPatterns("*");
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
     }
 
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // Prefijos para enviar y recibir mensajes
-        registry.setApplicationDestinationPrefixes("/app"); // para enviar
-        registry.enableSimpleBroker("/topic"); // para recibir
+        registry.setApplicationDestinationPrefixes("/app"); // mensajes del cliente → backend
+        registry.enableSimpleBroker("/topic"); // mensajes del backend → cliente
     }
 }

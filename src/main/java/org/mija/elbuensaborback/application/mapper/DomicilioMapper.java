@@ -5,7 +5,6 @@ import org.mapstruct.Mapping;
 import org.mija.elbuensaborback.application.dto.request.domicilio.DomicilioCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.DomicilioResponse;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.DomicilioEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.LocalidadEntity;
 
 @Mapper(componentModel = "spring", uses = {LocalidadMapper.class})
 public interface DomicilioMapper {

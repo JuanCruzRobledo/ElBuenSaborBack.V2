@@ -47,7 +47,7 @@ public class PedidoEntity {
     @JoinColumn(name = "factura_id", referencedColumnName = "id")
     private FacturaEntity factura;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "domicilio_id")
     private DomicilioEntity domicilio;
 

@@ -23,7 +23,7 @@ public class EmpleadoRepositoryImpl implements EmpleadoRepositoryPort {
 
     @Override
     public List<EmpleadoEntity> findAll() {
-        return List.of();
+        return empleadoJpaRepository.findAll();
     }
 
     @Override

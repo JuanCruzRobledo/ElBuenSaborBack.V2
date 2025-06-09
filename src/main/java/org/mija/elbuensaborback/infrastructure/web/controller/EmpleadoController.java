@@ -7,23 +7,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/empleado")
+@RequestMapping("/empleados")
 @RequiredArgsConstructor
 public class EmpleadoController {
+
     private final EmpleadoServiceImpl empleadoService;
 
     @PostMapping
-    public ResponseEntity<?> registrarEmpleado(@RequestBody EmpleadoCreatedRequest empleadoCreatedRequest){
+    public ResponseEntity<?> crearEmpleado(@RequestBody EmpleadoCreatedRequest empleadoCreatedRequest) {
         return ResponseEntity.ok(empleadoService.crearEmpleado(empleadoCreatedRequest));
     }
 
-    @GetMapping("id/{id}")
-    public ResponseEntity<?> buscarEmpleadoPorId(@PathVariable Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerEmpleadoPorId(@PathVariable Long id) {
         return ResponseEntity.ok(empleadoService.buscarEmpleadoPorId(id));
     }
 
-    @GetMapping("email/{email}")
-    public ResponseEntity<?> buscarEmpleadoPorEmail(@PathVariable String email){
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> obtenerEmpleadoPorEmail(@PathVariable String email) {
         return ResponseEntity.ok(empleadoService.buscarEmpleadoPorEmail(email));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> obtenerTodosLosEmpleados() {
+        return ResponseEntity.ok(empleadoService.listarEmpleados());
     }
 }

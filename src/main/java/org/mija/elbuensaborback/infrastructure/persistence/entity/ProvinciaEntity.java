@@ -20,4 +20,13 @@ public class ProvinciaEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pais_id", nullable = false)
     private PaisEntity pais;
+
+    @Override
+    public String toString() {
+        return "ProvinciaEntity{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", pais=" + pais +
+                '}';
+    }
 }

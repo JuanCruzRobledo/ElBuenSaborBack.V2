@@ -10,6 +10,8 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.EmpleadoRepositoryImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class EmpleadoServiceImpl implements EmpleadoService {
@@ -33,5 +35,11 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     @Override
     public EmpleadoResponse buscarEmpleadoPorEmail(String email) {
         return empleadoMapper.toResponse(empleadoRepository.findByEmail(email));
+    }
+
+    @Override
+    public List<EmpleadoResponse> listarEmpleados() {
+        List<EmpleadoEntity> listaEmpleados = empleadoRepository.findAll();
+        return listaEmpleados.stream().map(empleadoMapper::toResponse).toList();
     }
 }

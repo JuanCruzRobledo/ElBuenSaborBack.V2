@@ -9,7 +9,7 @@ import org.mija.elbuensaborback.application.dto.response.PedidoResponse;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 
-@Mapper(componentModel = "spring", uses = {DetallePedidoMapper.class})
+@Mapper(componentModel = "spring", uses = {DetallePedidoMapper.class, DomicilioMapper.class})
 public abstract class PedidoMapper {
 
     @Mapping(target = "cliente.id", source = "clienteId")
@@ -27,6 +27,7 @@ public abstract class PedidoMapper {
     @Mapping(target = "domicilioId", source = "domicilio.id")
     @Mapping(target = "nombreCompleto", expression = "java(concatenarNombreApellido(pedidoEntity.getCliente()))")
     @Mapping(target = "listaDetalle", source = "listaDetalle") //EXPLICITAMENTE
+    @Mapping(target = "domicilio", source = "domicilio")
     public abstract PedidoResponse toResponse(PedidoEntity pedidoEntity);
 
     protected String concatenarNombreApellido(ClienteEntity cliente) {

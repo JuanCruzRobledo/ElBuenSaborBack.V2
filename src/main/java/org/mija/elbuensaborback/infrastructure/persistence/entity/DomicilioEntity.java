@@ -1,10 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @Data
@@ -22,4 +19,15 @@ public class DomicilioEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "localidad_id", referencedColumnName = "id", nullable = false)
     private LocalidadEntity localidad;
+
+    @Override
+    public String toString() {
+        return "DomicilioEntity{" +
+                "id=" + id +
+                ", calle='" + calle + '\'' +
+                ", numero=" + numero +
+                ", codigoPostal='" + codigoPostal + '\'' +
+                ", localidad=" + localidad +
+                '}';
+    }
 }

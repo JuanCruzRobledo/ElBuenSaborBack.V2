@@ -22,4 +22,12 @@ public class PaisEntity {
 
     @OneToMany(mappedBy = "pais", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProvinciaEntity> provincia;
+
+    @Override
+    public String toString() {
+        return "PaisEntity{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                '}';
+    }
 }

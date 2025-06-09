@@ -24,6 +24,7 @@ public record PedidoResponse(
         Long clienteId,
         String nombreCompleto,
         Long domicilioId,
+        DomicilioResponse domicilio,
         String indicaciones,
         List<DetallePedidoDto> listaDetalle
         //FACTURA
