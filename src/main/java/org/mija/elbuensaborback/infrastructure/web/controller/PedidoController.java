@@ -55,7 +55,7 @@ public class PedidoController {
             @PathVariable Long id,
             @RequestBody EstadoPedidoDto dto) {
 
-        pedidoService.cambiarEstadoPedido(id, dto.nuevoEstado());
+        pedidoService.cambiarEstadoPedido(id, dto);
         return ResponseEntity.ok().build();
     }
 

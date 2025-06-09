@@ -100,14 +100,33 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoRepository.findAllByCliente(id).stream().map(pedidoMapper::toResponse).collect(Collectors.toSet());
     }
 
-    public void cambiarEstadoPedido(Long pedidoId, EstadoEnum nuevoEstado) {
+    public void cambiarEstadoPedido(Long pedidoId, EstadoPedidoDto actualizacionPedido) {
         PedidoEntity pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
-        pedido.setEstadoEnum(nuevoEstado);
+        if (actualizacionPedido.nuevoEstado() != null){
+            pedido.setEstadoEnum(actualizacionPedido.nuevoEstado());
+        }
+        if (actualizacionPedido.estadoPagoEnum() != null){
+            pedido.setEstadoPagoEnum(actualizacionPedido.estadoPagoEnum());
+        }
+        if (actualizacionPedido.horaEstimadaFinalizacion() != null){
+            pedido.setHoraEstimadaFinalizacion(actualizacionPedido.horaEstimadaFinalizacion());
+        }
+        if (actualizacionPedido.tipoEnvioEnum() != null){
+            pedido.setTipoEnvioEnum(actualizacionPedido.tipoEnvioEnum());
+        }
+
+
         pedido = pedidoRepository.save(pedido);
 
-        EstadoPedidoDto dto = new EstadoPedidoDto(pedido.getId(), nuevoEstado);
+        EstadoPedidoDto dto = new EstadoPedidoDto(
+                pedido.getId(),
+                pedido.getEstadoEnum(),
+                pedido.getEstadoPagoEnum(),
+                pedido.getHoraEstimadaFinalizacion(),
+                pedido.getTipoEnvioEnum()
+        );
 
         webSocketController.notificarCambioEstado(dto);
     }
