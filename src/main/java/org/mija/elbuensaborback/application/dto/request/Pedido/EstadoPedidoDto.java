@@ -9,7 +9,7 @@ import java.time.LocalTime;
 public record EstadoPedidoDto(
         Long pedidoId,
         EstadoEnum nuevoEstado,
-        EstadoPagoEnum estadoPagoEnum,
+       // EstadoPagoEnum estadoPagoEnum,
         LocalTime horaEstimadaFinalizacion,
         TipoEnvioEnum tipoEnvioEnum
 ) {

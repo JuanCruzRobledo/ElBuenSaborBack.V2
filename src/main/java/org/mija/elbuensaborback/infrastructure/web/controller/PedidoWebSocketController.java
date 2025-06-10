@@ -13,9 +13,12 @@ public class PedidoWebSocketController {
     private final SimpMessagingTemplate messagingTemplate;
 
     public void notificarCambioEstado(EstadoPedidoDto estadoPedidoDTO) {
-        messagingTemplate.convertAndSend("/topic/estado-pedido", estadoPedidoDTO);
+        messagingTemplate.convertAndSend("/topic/pedido-estado", estadoPedidoDTO);
     }
     public void notificarPedidoNuevo(PedidoResponse pedidoResponse) {
         messagingTemplate.convertAndSend("/topic/pedido-nuevo", pedidoResponse);
+    }
+    public void notificarPagado(PedidoResponse pedidoResponse) {
+        messagingTemplate.convertAndSend("/topic/pedido-pagado", pedidoResponse);
     }
 }

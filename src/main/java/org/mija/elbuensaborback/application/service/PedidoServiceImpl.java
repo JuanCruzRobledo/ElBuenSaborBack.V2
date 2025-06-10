@@ -103,6 +103,7 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoRepository.findAllByCliente(id).stream().map(pedidoMapper::toResponse).collect(Collectors.toSet());
     }
 
+
     public void cambiarEstadoPedido(Long pedidoId, EstadoPedidoDto actualizacionPedido) {
         PedidoEntity pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
@@ -110,9 +111,11 @@ public class PedidoServiceImpl implements PedidoService {
         if (actualizacionPedido.nuevoEstado() != null){
             pedido.setEstadoEnum(actualizacionPedido.nuevoEstado());
         }
+        /*
         if (actualizacionPedido.estadoPagoEnum() != null){
             pedido.setEstadoPagoEnum(actualizacionPedido.estadoPagoEnum());
-        }
+        }*/
+
         if (actualizacionPedido.horaEstimadaFinalizacion() != null){
             pedido.setHoraEstimadaFinalizacion(actualizacionPedido.horaEstimadaFinalizacion());
         }
@@ -126,7 +129,7 @@ public class PedidoServiceImpl implements PedidoService {
         EstadoPedidoDto dto = new EstadoPedidoDto(
                 pedido.getId(),
                 pedido.getEstadoEnum(),
-                pedido.getEstadoPagoEnum(),
+                //pedido.getEstadoPagoEnum(),
                 pedido.getHoraEstimadaFinalizacion(),
                 pedido.getTipoEnvioEnum()
         );
@@ -134,6 +137,7 @@ public class PedidoServiceImpl implements PedidoService {
         webSocketController.notificarCambioEstado(dto);
     }
 
+    @Transactional
     public PedidoResponse pagarPedido(Long id){
         PedidoEntity pedido = pedidoRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se encontro el pedido con el id "+ id));
 
@@ -144,7 +148,10 @@ public class PedidoServiceImpl implements PedidoService {
 
         pedido = pedidoRepository.save(pedido);
 
+        PedidoResponse respuesta = pedidoMapper.toResponse(pedido);
 
-        return pedidoMapper.toResponse(pedido);
+        webSocketController.notificarPagado(respuesta);
+
+        return respuesta;
     }
 }
