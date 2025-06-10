@@ -13,12 +13,16 @@ public class PedidoWebSocketController {
     private final SimpMessagingTemplate messagingTemplate;
 
     public void notificarCambioEstado(EstadoPedidoDto estadoPedidoDTO) {
+        System.out.println("DEBUG - Notificando ESTADO: " + estadoPedidoDTO.pedidoId());
         messagingTemplate.convertAndSend("/topic/pedido-estado", estadoPedidoDTO);
     }
-    public void notificarPedidoNuevo(PedidoResponse pedidoResponse) {
-        messagingTemplate.convertAndSend("/topic/pedido-nuevo", pedidoResponse);
-    }
     public void notificarPagado(PedidoResponse pedidoResponse) {
+        System.out.println("DEBUG - Notificando PAGADO: " + pedidoResponse.id());
         messagingTemplate.convertAndSend("/topic/pedido-pagado", pedidoResponse);
+    }
+
+    public void notificarPedidoNuevo(PedidoResponse pedidoResponse) {
+        System.out.println("DEBUG - Notificando NUEVO: " + pedidoResponse.id());
+        messagingTemplate.convertAndSend("/topic/pedido-nuevo", pedidoResponse);
     }
 }
