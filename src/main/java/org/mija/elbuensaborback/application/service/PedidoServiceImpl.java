@@ -69,7 +69,10 @@ public class PedidoServiceImpl implements PedidoService {
         pedido = pedidoRepository.findByIdConCliente(pedido.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado"));
 
-        return pedidoMapper.toResponse(pedido);
+        PedidoResponse respuesta = pedidoMapper.toResponse(pedido);
+        webSocketController.notificarPedidoNuevo(respuesta);
+
+        return respuesta;
     }
 
     private void procesarStock(List<DetallePedidoEntity> detalles) {
