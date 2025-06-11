@@ -46,6 +46,10 @@ public class ArticuloInsumoRepositoryImpl implements ArticuloInsumoRepositoryPor
         return articuloInsumoJpaRepository.findAllById(ids);
     }
 
+    public List<ArticuloInsumoEntity> findAllByCategoria(String categoria){
+        return articuloInsumoJpaRepository.findAllByCategoriaDenominacion(categoria);
+    }
+
     @Override
     public List<ArticuloInsumoEntity> saveAll(List<ArticuloInsumoEntity> entities) {
         return List.of();

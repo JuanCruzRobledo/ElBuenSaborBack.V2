@@ -53,4 +53,8 @@ public class CategoriaRepositoryImpl implements CategoriaRepositoryPort {
         return categoriaJpaRepository.findWithSubcategoriasById(id);
     }
 
+    public CategoriaEntity findByDenominacion(String denominacion) {
+        return categoriaJpaRepository.findByDenominacion(denominacion);
+    }
+
 }

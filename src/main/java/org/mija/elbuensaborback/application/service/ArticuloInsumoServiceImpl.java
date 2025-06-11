@@ -15,6 +15,7 @@ import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.Ar
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.CategoriaRepositoryImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -95,9 +96,22 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
         return articuloInsumoMapper.toResponse(articulo);
     }
 
-
+    @Override
     public List<ArticuloInsumoBasicResponse> listarBasicArticulosInsumo() {
         return articuloInsumoRepository.basicFindAll();
+    }
+
+    public List<ArticuloInsumoResponse> obtenerBebidas(String denominacion) {
+        CategoriaEntity categoriaPadre = categoriaRepository.findByDenominacion(denominacion);
+        List<ArticuloInsumoEntity> listaDeBebidas = new ArrayList<>();
+
+        for (CategoriaEntity categoria : categoriaPadre.getSubcategorias()) {
+            List<ArticuloInsumoEntity> bebidas =  articuloInsumoRepository.findAllByCategoria(categoria.getDenominacion());
+            listaDeBebidas.addAll(bebidas);
+        }
+
+
+        return listaDeBebidas.stream().map(articuloInsumoMapper::toResponse).toList();
     }
 
 }

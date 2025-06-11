@@ -14,4 +14,6 @@ public interface ArticuloInsumoJpaRepository extends JpaRepository<ArticuloInsum
 
     ArticuloInsumoEntity findByDenominacion(String denominacion);
 
+    List<ArticuloInsumoEntity> findAllByCategoriaDenominacion(String denominacion);
+
 }

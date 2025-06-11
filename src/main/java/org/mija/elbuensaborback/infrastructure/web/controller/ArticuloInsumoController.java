@@ -68,7 +68,25 @@ public class ArticuloInsumoController {
         }
     }
 
-    @GetMapping("basic/getAll")
+    @GetMapping("bebidas/getAll")
+    public ResponseEntity<?> obtenerBebidas(){
+        try{
+            return ResponseEntity.ok(articuloInsumoService.obtenerBebidas("bebidas"));
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+        }
+    }
+
+    @GetMapping("{categoria}/getAll")
+    public ResponseEntity<?> obtenerBebidasPorCategoria(@PathVariable String categoria){
+        try{
+            return ResponseEntity.ok(articuloInsumoService.obtenerBebidas(categoria));
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+        }
+    }
+
+    @GetMapping("/basic/getAll")
     public ResponseEntity<?> obtenerTodosBasicArticuloInsumo(){
         try{
             return ResponseEntity.ok(articuloInsumoService.listarBasicArticulosInsumo());
@@ -77,7 +95,6 @@ public class ArticuloInsumoController {
         }
     }
 
-    // En tu controlador ArticuloInsumoController
     @PatchMapping("/{id}/precio-stock")
     public ResponseEntity<?> actualizarPrecioYStock(
             @PathVariable Long id,
