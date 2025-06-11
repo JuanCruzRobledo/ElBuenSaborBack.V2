@@ -46,7 +46,7 @@ public class PaymentService {
         MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
         // Crear entidad Pedido
-        PedidoEntity pedidoGuardado = pedidoRepository.findById(1L).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el pedido al que se quiere pagar"));
+        PedidoEntity pedidoGuardado = pedidoRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el pedido al que se quiere pagar"));
 
         // Crear preferencia de Mercado Pago
         PreferenceClient preferenceClient = new PreferenceClient();
@@ -127,6 +127,10 @@ public class PaymentService {
                 pedido.setEstadoPagoEnum(EstadoPagoEnum.PAGADO);
                 Long numeroComprobante = comprobanteService.generarNumeroComprobante("FACTURA");
                 // Crear datos Mercado Pago
+                System.out.println("DATOS DE MERCADO PAGO: ");
+                System.out.println("INT VALUE"+ payment.getId().intValue());
+                System.out.println("getMetadata: "+ payment.getMetadata().get("preference_id").toString());
+                System.out.println("getPaymentTypeId: "+ payment.getPaymentTypeId());
                 DatosMercadoPagoEntity datosMP = DatosMercadoPagoEntity.builder()
                         .mpPaymentId(payment.getId().intValue())
                         .mpMerchantOrderId(payment.getOrder().getId().intValue())
