@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloActualizarStockPrecioRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoUpdateRequest;
@@ -7,20 +8,17 @@ import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoResponse;
 import org.mija.elbuensaborback.application.service.ArticuloInsumoServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/articulo-insumo")
-//@CrossOrigin("*")
+@RequiredArgsConstructor
 public class ArticuloInsumoController {
 
     private final ArticuloInsumoServiceImpl articuloInsumoService;
 
-    public ArticuloInsumoController(ArticuloInsumoServiceImpl articuloInsumoService) {
-        this.articuloInsumoService = articuloInsumoService;
-    }
-
-
+    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<?> crearArticuloInsumo(@RequestBody ArticuloInsumoCreatedRequest articuloInsumoCreatedRequest) {
         try{
@@ -30,6 +28,7 @@ public class ArticuloInsumoController {
         }
     }
 
+    //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> editarArticuloInsumo(@RequestBody ArticuloInsumoUpdateRequest articuloManufacturadoCreatedRequest, @PathVariable Long id ){
         try{
@@ -40,6 +39,7 @@ public class ArticuloInsumoController {
         }
     }
 
+    //@PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarArticuloInsumo(@PathVariable Long id){
         try{
@@ -50,6 +50,7 @@ public class ArticuloInsumoController {
         }
     }
 
+    //@PreAuthorize("hasAnyRole('ADMIN', 'COCINERO')")
     @GetMapping("/get/{id}")
     public ResponseEntity<?> obtenerArticuloInsumo(@PathVariable Long id){
         try{
@@ -59,6 +60,7 @@ public class ArticuloInsumoController {
         }
     }
 
+    //@PreAuthorize("hasAnyRole('ADMIN', 'COCINERO')")
     @GetMapping("/getAll")
     public ResponseEntity<?> obtenerTodosArticuloInsumo(){
         try{

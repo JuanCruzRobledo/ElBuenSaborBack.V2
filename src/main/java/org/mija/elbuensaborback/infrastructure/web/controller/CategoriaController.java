@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/categoria")
-@CrossOrigin("*")
 public class CategoriaController {
 
     private final CategoriaServiceImpl categoriaService;

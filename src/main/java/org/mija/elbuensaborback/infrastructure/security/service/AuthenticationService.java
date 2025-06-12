@@ -3,7 +3,9 @@ package org.mija.elbuensaborback.infrastructure.security.service;
 import org.mija.elbuensaborback.application.dto.request.auth.AuthRequest;
 import org.mija.elbuensaborback.application.dto.request.auth.RegisterRequest;
 import org.mija.elbuensaborback.application.dto.response.AuthResponse;
+import org.mija.elbuensaborback.application.dto.response.ClienteBasicResponse;
 import org.mija.elbuensaborback.application.mapper.ClienteMapper;
+import org.mija.elbuensaborback.domain.enums.AuthProviderEnum;
 import org.mija.elbuensaborback.domain.enums.RolEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.RoleEntity;
@@ -17,6 +19,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -70,6 +74,7 @@ public class AuthenticationService {
         UsuarioEntity usuario = UsuarioEntity.builder()
                 .email(nuevoUsuario.email())
                 .password(passwordEncoder.encode(nuevoUsuario.password()))
+                .authProviderEnum(AuthProviderEnum.LOCAL)
                 .rol(role)
                 .disabled(false)
                 .accountLocked(false)
@@ -92,7 +97,28 @@ public class AuthenticationService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
         String token = jwtService.generateToken(userDetails);
 
-        ClienteEntity clienteGuardado = clienteRepository.findByUsuarioEmail(nuevoUsuario.email());
         return new AuthResponse(token,clienteMapper.toResponse(cliente));
     }
+
+    public AuthResponse oauth2Login(OAuth2AuthenticationToken authToken) {
+        OAuth2User oAuth2User = authToken.getPrincipal();
+        String email = oAuth2User.getAttribute("email");
+
+        UsuarioEntity usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        ClienteEntity cliente = clienteRepository.findByUsuarioEmail(usuario.getEmail());
+
+        String jwt = jwtService.generateToken(oAuth2User);
+
+        ClienteBasicResponse clienteResponse = new ClienteBasicResponse(
+                cliente.getId(),
+                cliente.getNombre(),
+                cliente.getApellido(),
+                cliente.getTelefono(),
+                usuario.getEmail()
+        );
+        return new AuthResponse(jwt, clienteResponse);
+    }
+
 }
