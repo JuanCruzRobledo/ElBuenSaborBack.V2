@@ -22,7 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -30,7 +32,7 @@ import java.util.List;
 public class PaymentService {
     private final PedidoRepositoryImpl pedidoRepository;
     private final ArticuloRepositoryImpl articuloRepository;
-    private ComprobanteService comprobanteService;
+    private final ComprobanteService comprobanteService;
 
     @Value("${mercadopago.access.token}")
     private String mercadoPagoAccessToken;
@@ -129,12 +131,12 @@ public class PaymentService {
                 // Crear datos Mercado Pago
                 System.out.println("DATOS DE MERCADO PAGO: ");
                 System.out.println("INT VALUE"+ payment.getId().intValue());
-                System.out.println("getMetadata: "+ payment.getMetadata().get("preference_id").toString());
+                System.out.println("getMetadata: "+ payment.getExternalReference());
                 System.out.println("getPaymentTypeId: "+ payment.getPaymentTypeId());
                 DatosMercadoPagoEntity datosMP = DatosMercadoPagoEntity.builder()
                         .mpPaymentId(payment.getId().intValue())
                         .mpMerchantOrderId(payment.getOrder().getId().intValue())
-                        .mpPreferenceId(payment.getMetadata().get("preference_id").toString())
+                        .mpPreferenceId(payment.getExternalReference())
                         .mpPaymentType(payment.getPaymentTypeId())
                         .build();
                 pedido.generarFactura(numeroComprobante, datosMP);
