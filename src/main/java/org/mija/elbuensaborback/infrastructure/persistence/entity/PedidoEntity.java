@@ -88,7 +88,7 @@ public class PedidoEntity {
             if (articulo instanceof ArticuloManufacturadoEntity manufacturado) {
                 costoUnitario = manufacturado.getPrecioCosto();
             } else if (articulo instanceof ArticuloInsumoEntity insumo) {
-                costoUnitario = insumo.getPrecioCompra();
+                costoUnitario = insumo.getPrecioCosto();
             } else {
                 throw new IllegalStateException("Tipo de artículo no soportado para cálculo de costo.");
             }

@@ -83,8 +83,8 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
         ArticuloInsumoEntity articulo = articuloInsumoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Artículo no encontrado con ID: " + id));
 
-        if (request.precioCompra() != null) {
-            articulo.setPrecioCompra(request.precioCompra());
+        if (request.precioCosto() != null) {
+            articulo.setPrecioCosto(request.precioCosto());
         }
 
         if (request.stockActual() != null) {

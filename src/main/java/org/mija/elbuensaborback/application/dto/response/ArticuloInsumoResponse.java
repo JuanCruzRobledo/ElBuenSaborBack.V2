@@ -14,7 +14,7 @@ public record ArticuloInsumoResponse(
         Set<ImagenDto> imagenesUrls,
         Long categoriaId,
         String categoriaDenominacion,
-        BigDecimal precioCompra,
+        BigDecimal precioCosto,
         UnidadMedidaEnum unidadMedidaEnum,
         Double stockActual,
         Double stockMaximo,

@@ -12,7 +12,7 @@ public record ArticuloInsumoCreatedRequest(
         Integer tiempoEstimadoMinutos,
         Set<String> imagenesUrls,
         Long categoriaId,
-        BigDecimal precioCompra,
+        BigDecimal precioCosto,
         UnidadMedidaEnum unidadMedidaEnum,
         Double stockActual,
         Double stockMaximo,
