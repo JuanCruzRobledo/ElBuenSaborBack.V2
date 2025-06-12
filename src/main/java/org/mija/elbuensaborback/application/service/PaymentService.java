@@ -11,6 +11,7 @@ import com.mercadopago.resources.preference.Preference;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.response.PreferenceResponseDto;
+import org.mija.elbuensaborback.domain.enums.EstadoEnum;
 import org.mija.elbuensaborback.domain.enums.EstadoPagoEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloRepositoryImpl;
@@ -142,6 +143,7 @@ public class PaymentService {
                 pedido.generarFactura(numeroComprobante, datosMP);
             } else if ("rejected".equals(status)) {
                 pedido.setEstadoPagoEnum(EstadoPagoEnum.RECHAZADO);
+                pedido.setEstadoEnum(EstadoEnum.CANCELADO);
             }
             pedidoRepository.save(pedido);
             System.out.println("Pedido actualizado y guardado");
@@ -160,6 +162,8 @@ public class PaymentService {
         PedidoEntity pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
         pedido.setEstadoPagoEnum(EstadoPagoEnum.RECHAZADO);
+        pedido.setEstadoEnum(EstadoEnum.CANCELADO);
+
         pedidoRepository.save(pedido);
     }
 

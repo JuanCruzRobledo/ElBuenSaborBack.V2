@@ -59,8 +59,13 @@ public class PedidoController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/pagar/{id}")
+    @PutMapping("/pagar/{id}")
     public ResponseEntity<?> pagarPedido(@PathVariable Long id){
         return ResponseEntity.ok(pedidoService.pagarPedido(id));
+    }
+
+    @PutMapping("/cancelar/{id}")
+    public ResponseEntity<?> cancelarPedido(@PathVariable Long id){
+        return ResponseEntity.ok(pedidoService.cancelarPedido(id));
     }
 }

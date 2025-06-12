@@ -154,4 +154,29 @@ public class PedidoServiceImpl implements PedidoService {
 
         return respuesta;
     }
+
+    public PedidoResponse cancelarPedido(Long id){
+        PedidoEntity pedido = pedidoRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se encontro el pedido con el id "+ id));
+
+        pedido.setEstadoPagoEnum(EstadoPagoEnum.RECHAZADO);
+        pedido.setEstadoEnum(EstadoEnum.CANCELADO);
+
+
+        pedido = pedidoRepository.save(pedido);
+
+        PedidoResponse respuesta = pedidoMapper.toResponse(pedido);
+
+        EstadoPedidoDto dto = new EstadoPedidoDto(
+                pedido.getId(),
+                pedido.getEstadoEnum(),
+                //pedido.getEstadoPagoEnum(),
+                pedido.getHoraEstimadaFinalizacion(),
+                pedido.getTipoEnvioEnum()
+        );
+
+        webSocketController.notificarCambioEstado(dto);
+
+        return respuesta;
+    }
+
 }
