@@ -19,7 +19,7 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @Value("${url.front}")
+    @Value("${url.front.client}")
     private String urlFront;
 
     public PaymentController(PaymentService paymentService) {
