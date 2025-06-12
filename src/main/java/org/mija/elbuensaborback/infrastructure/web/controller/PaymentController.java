@@ -4,6 +4,7 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import org.mija.elbuensaborback.application.dto.response.PreferenceResponseDto;
 import org.mija.elbuensaborback.application.service.PaymentService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,9 @@ import java.util.Map;
 public class PaymentController {
 
     private final PaymentService paymentService;
+
+    @Value("${url.front}")
+    private String urlFront;
 
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
@@ -61,26 +65,34 @@ public class PaymentController {
     }
 
     @GetMapping("/rechazar/{id}")
-    public RedirectView rechazarPedido(
-            @PathVariable Long id,
-            @RequestParam Map<String, String> params
-    ) {
-        System.out.println("Pago rechazado para el pedido ID: " + id);
-        System.out.println("Parámetros recibidos: " + params);
-
+    public RedirectView rechazarPedido(@PathVariable Long id, @RequestParam Map<String, String> params) {
         paymentService.rechazarPedido(id);
-        return new RedirectView("http://localhost:5173/pago-rechazado");
+
+        StringBuilder redirectUrl = new StringBuilder(urlFront+"/cart?");
+
+        params.forEach((key, value) -> redirectUrl.append(key).append("=").append(value).append("&"));
+
+        redirectUrl.setLength(redirectUrl.length() - 1);
+
+        return new RedirectView(redirectUrl.toString());
     }
 
+
     @GetMapping("/aprobar/{id}")
-    public RedirectView aprobarPedido(
-            @PathVariable Long id,
-            @RequestParam Map<String, String> params
-    ) {
+    public RedirectView aprobarPedido(@PathVariable Long id, @RequestParam Map<String, String> params) {
         System.out.println("Pago aprobado para el pedido ID: " + id);
         System.out.println("Parámetros recibidos: " + params);
 
-        return new RedirectView("http://localhost:5173/pago-aprobado/"+id);
+        // Construir URL con los parámetros recibidos
+        StringBuilder redirectUrl = new StringBuilder(urlFront+"/cart?");
+
+        // Agregar todos los parámetros a la URL
+        params.forEach((key, value) -> redirectUrl.append(key).append("=").append(value).append("&"));
+
+        // Eliminar el último &
+        redirectUrl.setLength(redirectUrl.length() - 1);
+
+        return new RedirectView(redirectUrl.toString());
     }
 }
 

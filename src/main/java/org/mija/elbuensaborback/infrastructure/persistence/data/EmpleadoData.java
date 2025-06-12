@@ -30,8 +30,17 @@ public class EmpleadoData {
                 .accountExpired(false)
                 .accountLocked(false)
                 .credentialsExpired(false)
-                .rol(roleRepository.findByRolEnum(RolEnum.EMPLEADO).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Rol")))
+                .rol(roleRepository.findByRolEnum(RolEnum.CAJERO).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Rol")))
                 .build();
+
+        EmpleadoEntity empleado1 = EmpleadoEntity.builder()
+                .nombre("Isabella")
+                .apellido("Lopez")
+                .telefono("555111222")
+                .usuario(userIsabella)
+                .sucursal(sucursal)
+                .build();
+
 
         UsuarioEntity userMaiten = UsuarioEntity.builder()
                 .email("maiten@gmail.com")
@@ -40,25 +49,37 @@ public class EmpleadoData {
                 .accountExpired(false)
                 .accountLocked(false)
                 .credentialsExpired(false)
-                .rol(roleRepository.findByRolEnum(RolEnum.EMPLEADO).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Rol")))
+                .rol(roleRepository.findByRolEnum(RolEnum.COCINERO).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Rol")))
                 .build();
 
-        EmpleadoEntity empleado1 = EmpleadoEntity.builder()
-                .nombre("Isabella")
-                .apellido("Lopez")
-                .telefono("555111222")
-                .usuario(userIsabella)
-                .sucursal(sucursal) // asigná una sucursal si tenés
-                .build();
 
         EmpleadoEntity empleado2 = EmpleadoEntity.builder()
                 .nombre("Maiten")
                 .apellido("Fernandez")
                 .telefono("444333222")
                 .usuario(userMaiten)
-                .sucursal(sucursal) // asigná una sucursal si tenés
+                .sucursal(sucursal)
                 .build();
 
-        empleadoRepository.saveAll(List.of(empleado1, empleado2));
+        UsuarioEntity userEmiliano = UsuarioEntity.builder()
+                .email("emiliano@gmail.com")
+                .password(passwordEncoder.encode("112233"))
+                .disabled(false)
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .rol(roleRepository.findByRolEnum(RolEnum.DELIVERY).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Rol")))
+                .build();
+
+
+        EmpleadoEntity empleado3 = EmpleadoEntity.builder()
+                .nombre("Emiliano")
+                .apellido("Chavez")
+                .telefono("23545222")
+                .usuario(userEmiliano)
+                .sucursal(sucursal)
+                .build();
+
+        empleadoRepository.saveAll(List.of(empleado1, empleado2, empleado3));
     }
 }

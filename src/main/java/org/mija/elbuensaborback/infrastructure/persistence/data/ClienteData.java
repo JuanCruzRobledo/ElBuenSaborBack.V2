@@ -24,15 +24,11 @@ public class ClienteData {
 
     public void initClientWithUsers(){
 
-        /* CREATE USERS */
-        UsuarioEntity userJuan = UsuarioEntity.builder()
-                .email("juan@gmail.com")
-                .password(passwordEncoder.encode("112233"))
-                .disabled(false)
-                .accountExpired(false)
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .rol(roleRepository.findByRolEnum(RolEnum.ADMIN).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Rol")))
+        DomicilioEntity domicilio1 = DomicilioEntity.builder()
+                .numero(123)
+                .calle("Av. Jorgito ")
+                .codigoPostal("1111")
+                .localidad(localidadRepository.findByNombre("Godoy Cruz"))
                 .build();
 
         UsuarioEntity userAmbar= UsuarioEntity.builder()
@@ -45,30 +41,40 @@ public class ClienteData {
                 .rol(roleRepository.findByRolEnum(RolEnum.CLIENTE).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Rol")))
                 .build();
 
-        /* CREATE CLIENTES */
+        ClienteEntity cliente1 = ClienteEntity.builder()
+                .nombre("Ambar")
+                .apellido("Gonzalez")
+                .telefono("123456789")
+                .usuario(userAmbar)
+                .domicilio(List.of(domicilio1))
+                .listaPedido(new ArrayList<>())
+                .build();
 
-        DomicilioEntity domicilio = DomicilioEntity.builder()
+        /* CREATE CLIENTES */
+        DomicilioEntity domicilio2 = DomicilioEntity.builder()
                 .numero(123)
                 .calle("Av. San Martin")
                 .codigoPostal("5555")
                 .localidad(localidadRepository.findByNombre("Godoy Cruz"))
                 .build();
 
-        ClienteEntity cliente1 = ClienteEntity.builder()
-                .nombre("Ambar")
-                .apellido("Gonzalez")
-                .telefono("123456789")
-                .usuario(userAmbar)
-                .domicilio(List.of(domicilio)) // opcional, si no tenés domicilios
-                .listaPedido(new ArrayList<>()) // opcional, si no hay pedidos
+        UsuarioEntity userJuan = UsuarioEntity.builder()
+                .email("juan@gmail.com")
+                .password(passwordEncoder.encode("112233"))
+                .disabled(false)
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .rol(roleRepository.findByRolEnum(RolEnum.ADMIN).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Rol")))
                 .build();
 
+
         ClienteEntity cliente2 = ClienteEntity.builder()
-                .nombre("Juan")
+                .nombre("")
                 .apellido("Perez")
                 .telefono("987654321")
                 .usuario(userJuan)
-                .domicilio(new ArrayList<>())
+                .domicilio(List.of(domicilio2))
                 .listaPedido(new ArrayList<>())
                 .build();
 

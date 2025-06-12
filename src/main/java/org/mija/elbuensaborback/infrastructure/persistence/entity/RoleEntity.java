@@ -7,9 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mija.elbuensaborback.domain.enums.RolEnum;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
@@ -23,12 +20,4 @@ public class RoleEntity {
     @Column(name = "role_name")
     @Enumerated(EnumType.STRING)
     private RolEnum rolEnum;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "role_permission",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
-    private Set<PermissionEntity> permisos = new HashSet<>();
 }

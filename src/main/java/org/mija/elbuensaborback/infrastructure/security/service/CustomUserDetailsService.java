@@ -26,9 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UsuarioEntity usuario = usuarioRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("Email "+email + " no encontrado"));
 
-        List<SimpleGrantedAuthority> listaAuthority = new ArrayList<>(usuario.getRol().getPermisos().stream().map((permiso) -> {
-            return new SimpleGrantedAuthority(permiso.getPermissionEnum().name());
-        }).toList());
+        List<SimpleGrantedAuthority> listaAuthority = new ArrayList<>();
 
         listaAuthority.add(new SimpleGrantedAuthority("ROLE_".concat(usuario.getRol().getRolEnum().name())));
 
