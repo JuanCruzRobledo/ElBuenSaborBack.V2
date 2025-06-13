@@ -27,14 +27,20 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
     @OneToMany(mappedBy = "articuloPromocion")
     private List<PromocionDetalleEntity> promocionDetalle;
 
-    /*
+
     public void descontarStock(int cantidad) {
-        for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
-            detalle.getArticulo().descontarStock(detalle.getCantidad() * cantidad);
+        for (int i = 0; i < cantidad ; i++) {
+            for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
+                if (detalle.getArticulo() instanceof ArticuloManufacturadoEntity) {
+                    ((ArticuloManufacturadoEntity) detalle.getArticulo()).descontarStock(detalle.getCantidad());
+                } else if (detalle.getArticulo() instanceof ArticuloInsumoEntity) {
+                    ((ArticuloInsumoEntity) detalle.getArticulo()).descontarStock(detalle.getCantidad().doubleValue());
+                }
+            }
         }
     }
 
-     */
+
 
 
     //@Id

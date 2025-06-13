@@ -124,6 +124,8 @@ public class PedidoEntity {
                 ((ArticuloManufacturadoEntity) detallePedidoEntity.getArticulo()).descontarStock(detallePedidoEntity.getCantidad());
             } else if (detallePedidoEntity.getArticulo() instanceof ArticuloInsumoEntity) {
                 ((ArticuloInsumoEntity) detallePedidoEntity.getArticulo()).descontarStock(detallePedidoEntity.getCantidad().doubleValue());
+            } else if (detallePedidoEntity.getArticulo() instanceof ArticuloPromocionEntity) {
+                ((ArticuloPromocionEntity) detallePedidoEntity.getArticulo()).descontarStock(detallePedidoEntity.getCantidad());
             }
         }
     }
