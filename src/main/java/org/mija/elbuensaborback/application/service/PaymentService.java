@@ -77,7 +77,7 @@ public class PaymentService {
 
         PreferenceBackUrlsRequest preferenceBackUrls = PreferenceBackUrlsRequest.builder()
                 .failure(urlNgrok+"/payment/rechazar/" + String.valueOf(pedidoGuardado.getId()))
-                .pending("https://google.com")
+                .pending(urlNgrok+"/payment/pendiente/" + String.valueOf(pedidoGuardado.getId()))
                 .success(urlNgrok+"/payment/aprobar/" + String.valueOf(pedidoGuardado.getId()))
                 .build();
 

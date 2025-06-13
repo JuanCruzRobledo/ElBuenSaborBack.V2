@@ -94,5 +94,22 @@ public class PaymentController {
 
         return new RedirectView(redirectUrl.toString());
     }
+
+    @GetMapping("/pendiente/{id}")
+    public RedirectView pedidoPendiente(@PathVariable Long id, @RequestParam Map<String, String> params) {
+        System.out.println("Pago aprobado para el pedido ID: " + id);
+        System.out.println("Parámetros recibidos: " + params);
+
+        // Construir URL con los parámetros recibidos
+        StringBuilder redirectUrl = new StringBuilder(urlFront+"/cart?");
+
+        // Agregar todos los parámetros a la URL
+        params.forEach((key, value) -> redirectUrl.append(key).append("=").append(value).append("&"));
+
+        // Eliminar el último &
+        redirectUrl.setLength(redirectUrl.length() - 1);
+
+        return new RedirectView(redirectUrl.toString());
+    }
 }
 
