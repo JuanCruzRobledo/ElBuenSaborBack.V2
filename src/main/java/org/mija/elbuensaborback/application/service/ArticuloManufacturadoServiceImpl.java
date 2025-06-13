@@ -1,4 +1,5 @@
 package org.mija.elbuensaborback.application.service;
+import jakarta.persistence.EntityNotFoundException;
 import org.mija.elbuensaborback.application.dto.global.manufacturado.ArticuloManufacturadoDetalleDto;
 import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoUpdateRequest;
@@ -129,7 +130,9 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
 
     @Override
     public void eliminarArticulo(Long id) {
-        articuloManufacturadoRepository.deleteById(id);
+        ArticuloManufacturadoEntity articuloManufacturado = articuloManufacturadoRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No se encontro el ArticuloManufacturado"));
+        articuloManufacturado.setProductoActivo(false);
+        articuloManufacturadoRepository.save(articuloManufacturado);
     }
 
     @Override

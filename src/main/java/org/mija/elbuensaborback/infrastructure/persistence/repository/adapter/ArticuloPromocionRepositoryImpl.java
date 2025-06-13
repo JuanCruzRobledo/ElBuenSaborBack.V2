@@ -18,12 +18,12 @@ public class ArticuloPromocionRepositoryImpl implements ArticuloPromocionReposit
 
     @Override
     public Optional<ArticuloPromocionEntity> findById(Long aLong) {
-        return Optional.empty();
+        return articuloPromocionJpaRepository.findById(aLong);
     }
 
     @Override
     public List<ArticuloPromocionEntity> findAll() {
-        return List.of();
+        return articuloPromocionJpaRepository.findAll();
     }
 
     @Override
