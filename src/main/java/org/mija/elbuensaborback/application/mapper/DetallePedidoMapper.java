@@ -5,9 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mija.elbuensaborback.application.dto.request.Pedido.DetallePedidoDto;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumoEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.DetallePedidoEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloInsumoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloManufacturadoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloRepositoryImpl;
@@ -36,7 +34,14 @@ public abstract class DetallePedidoMapper {
 
         entity.setArticulo(articulo);
 
-        BigDecimal subTotal = articulo.getPrecioVenta().multiply(BigDecimal.valueOf(cantidad));
+        BigDecimal subTotal;
+
+        if (articulo instanceof ArticuloPromocionEntity) {
+            subTotal = ((ArticuloPromocionEntity) articulo).getPrecioPromocional().multiply(BigDecimal.valueOf(cantidad));
+        } else{
+            subTotal = articulo.getPrecioVenta().multiply(BigDecimal.valueOf(cantidad));
+        }
+
 
         entity.setSubTotal(subTotal);
     }

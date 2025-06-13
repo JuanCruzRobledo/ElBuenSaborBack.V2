@@ -28,6 +28,7 @@ public abstract class ArticuloEntity {
     private BigDecimal precioVenta;
     private Boolean productoActivo; //Si se puede usar el producto o deshabilitar su uso para compra , preparacion de otros ,etc
     private Integer tiempoEstimadoMinutos;
+    private BigDecimal precioCosto;
 
 
     @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, orphanRemoval = true)

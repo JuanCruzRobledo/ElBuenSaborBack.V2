@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 @DiscriminatorValue("ARTICULO_INSUMO")
 public class ArticuloInsumoEntity extends ArticuloEntity {
 
-    private BigDecimal precioCosto;
     @Enumerated(EnumType.STRING)
     private UnidadMedidaEnum unidadMedidaEnum;
     private Double stockActual;

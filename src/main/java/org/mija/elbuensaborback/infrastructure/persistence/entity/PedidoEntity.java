@@ -85,13 +85,7 @@ public class PedidoEntity {
             ArticuloEntity articulo = detalle.getArticulo();
             BigDecimal costoUnitario;
 
-            if (articulo instanceof ArticuloManufacturadoEntity manufacturado) {
-                costoUnitario = manufacturado.getPrecioCosto();
-            } else if (articulo instanceof ArticuloInsumoEntity insumo) {
-                costoUnitario = insumo.getPrecioCosto();
-            } else {
-                throw new IllegalStateException("Tipo de artículo no soportado para cálculo de costo.");
-            }
+            costoUnitario = articulo.getPrecioCosto();
 
             if (costoUnitario == null) {
                 throw new RuntimeException("El artículo '" + articulo.getDenominacion() + "' no tiene precio de costo definido.");

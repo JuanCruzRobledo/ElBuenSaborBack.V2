@@ -19,7 +19,6 @@ import java.util.List;
 public class ArticuloManufacturadoEntity extends ArticuloEntity {
 
     private String descripcion;
-    private BigDecimal precioCosto;
 
     //private String preparacion; no se si iria
 
@@ -71,7 +70,7 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
         sb.append(",\n  denominacion='").append(getDenominacion()).append('\'');
         sb.append(",\n  descripcion='").append(descripcion).append('\'');
         sb.append(",\n  precioVenta=").append(getPrecioVenta());
-        sb.append(",\n  precioCosto=").append(precioCosto);
+        sb.append(",\n  precioCosto=").append(getPrecioCosto());
         sb.append(",\n  tiempoEstimadoMinutos=").append(getTiempoEstimadoMinutos());
         sb.append(",\n  productoActivo=").append(getProductoActivo());
 

@@ -38,6 +38,7 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional
     public PedidoResponse crearPedido(PedidoCreatedRequest pedidoCreatedRequest) {
+        //Se calcula el subtotal de cada detalle en el mapper de detalle
         PedidoEntity pedido = pedidoMapper.toEntity(pedidoCreatedRequest);
         pedido.setHoraEstimadaFinalizacion(LocalTime.MIN);
         pedido.setFechaPedido(LocalDate.now());

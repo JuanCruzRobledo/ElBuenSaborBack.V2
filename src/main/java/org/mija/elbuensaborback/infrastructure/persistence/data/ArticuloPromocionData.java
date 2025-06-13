@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.ArticuloJpaRepository;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.ArticuloPromocionJpaRepository;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.CategoriaJpaRepository;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.SucursalJpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,12 @@ public class ArticuloPromocionData {
     private final ArticuloPromocionJpaRepository articuloPromocionRepository;
     private final ArticuloJpaRepository articuloRepository;
     private final SucursalJpaRepository sucursalRepository;
+    private final CategoriaJpaRepository categoriaRepository;
 
     public void initPromociones() {
+        CategoriaEntity comboIndividual = categoriaRepository.findByDenominacion("Combo Individual");
+        CategoriaEntity comboFamiliar = categoriaRepository.findByDenominacion("Combo Familiar");
+
         SucursalEntity sucursal = sucursalRepository.findById(1L)
                 .orElseThrow(() -> new EntityNotFoundException("No se encontró la sucursal"));
 
@@ -44,10 +49,10 @@ public class ArticuloPromocionData {
         ArticuloEntity cerveza = articuloRepository.findByDenominacion("Cerveza 375ml")
                 .orElseThrow(() -> new RuntimeException("No se encontró Cerveza 375ml"));
 
-        ArticuloEntity nachos = articuloRepository.findByDenominacion("Nachos")
+        ArticuloEntity nachos = articuloRepository.findByDenominacion("Nachos con Guacamole")
                 .orElseThrow(() -> new RuntimeException("No se encontró Nachos"));
 
-        ArticuloEntity batatas = articuloRepository.findByDenominacion("Batatas")
+        ArticuloEntity batatas = articuloRepository.findByDenominacion("Batatas Crocantes")
                 .orElseThrow(() -> new RuntimeException("No se encontró Batatas"));
 
         ArticuloEntity softMayo = articuloRepository.findByDenominacion("Soft Mayo")
@@ -67,7 +72,8 @@ public class ArticuloPromocionData {
                 LocalDate.now(),
                 LocalDate.now().plusMonths(12),
                 LocalTime.of(0, 0),
-                LocalTime.of(23, 0)
+                LocalTime.of(23, 0),
+                comboIndividual
         );
         combo1.setImagenesUrls(crearImagenes(combo1, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838093/gwiq22zgfprwzknnsnru.webp"));
         promociones.add(combo1);
@@ -85,7 +91,8 @@ public class ArticuloPromocionData {
                 LocalDate.now(),
                 LocalDate.now().plusMonths(12),
                 LocalTime.of(11, 0),
-                LocalTime.of(23, 0)
+                LocalTime.of(23, 0),
+                comboFamiliar
         );
         combo2.setImagenesUrls(crearImagenes(combo2, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838093/kautfm8lturhgcsufeno.webp"));
         promociones.add(combo2);
@@ -102,7 +109,8 @@ public class ArticuloPromocionData {
                 LocalDate.now(),
                 LocalDate.now().plusMonths(12),
                 LocalTime.of(17, 0),
-                LocalTime.of(22, 0)
+                LocalTime.of(22, 0),
+                comboIndividual
         );
         combo3.setImagenesUrls(crearImagenes(combo3, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838093/estguhkiaxdaztpjw5ma.webp"));
         promociones.add(combo3);
@@ -120,7 +128,8 @@ public class ArticuloPromocionData {
                 LocalDate.now(),
                 LocalDate.now().plusMonths(12),
                 LocalTime.of(18, 0),
-                LocalTime.of(23, 59)
+                LocalTime.of(23, 59),
+                comboIndividual
         );
         combo4.setImagenesUrls(crearImagenes(combo4, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838092/wguftynzlcjwpxikbnaq.webp"));
         promociones.add(combo4);
@@ -156,20 +165,16 @@ public class ArticuloPromocionData {
             LocalDate desde,
             LocalDate hasta,
             LocalTime horaDesde,
-            LocalTime horaHasta
+            LocalTime horaHasta,
+            CategoriaEntity categoria
     ) {
-        // Calcular precio total base
-        BigDecimal precioBase = detalles.stream()
-                .map(d -> d.getArticulo().getPrecioVenta().multiply(BigDecimal.valueOf(d.getCantidad())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         // Crear la promoción
         ArticuloPromocionEntity promocion = ArticuloPromocionEntity.builder()
                 .denominacion(nombre)
                 .descripcionDescuento(descripcion)
-                .precioVenta(precioBase)
-                .precioPromocional(precioBase) // Si más adelante querés aplicar descuento, podés hacerlo aquí
                 .productoActivo(true)
+                .categoria(categoria)
                 .tiempoEstimadoMinutos(tiempoEstimado)
                 .fechaDesde(desde)
                 .fechaHasta(hasta)
@@ -181,6 +186,12 @@ public class ArticuloPromocionData {
         // Asociar detalles con la promoción
         detalles.forEach(d -> d.setArticuloPromocion(promocion));
         promocion.setPromocionDetalle(detalles);
+
+
+        promocion.tiempoEstimadoCalculado(5);
+        promocion.calcularPrecioCosto();
+        promocion.calcularPrecioVenta();
+        promocion.calcularPrecioPromocional();
 
         return promocion;
     }

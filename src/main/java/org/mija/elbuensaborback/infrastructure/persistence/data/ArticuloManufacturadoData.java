@@ -150,7 +150,7 @@ public class ArticuloManufacturadoData {
                 "https://res.cloudinary.com/drqdadlel/image/upload/v1726104198/nachos_rbbtca.png",
                 sides, sucursal,
                 List.of(
-                        detalle(nachos, 100),
+                        detalle(nachos, 150),
                         detalle(guacamole, 50),
                         detalle(queso, 30)
                 )

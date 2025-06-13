@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
-@Entity(name = "articulo_promocion")
+@Entity(name = "ARTICULO_PROMOCION")
 public class ArticuloPromocionEntity extends ArticuloEntity {
 
     private LocalDate fechaDesde;
@@ -41,4 +42,40 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
         }
     }
 
+    public void tiempoEstimadoCalculado(int tiempoBase){
+        Integer max = 0;
+        for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
+            if (detalle.getArticulo().getTiempoEstimadoMinutos() > max) {
+                max = detalle.getArticulo().getTiempoEstimadoMinutos();
+            }
+        }
+        this.setTiempoEstimadoMinutos(max + tiempoBase);
+    }
+
+    public void calcularPrecioCosto(){
+        BigDecimal costoTotal = BigDecimal.ZERO;
+
+        for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
+            BigDecimal precio = detalle.getArticulo().getPrecioCosto();
+            BigDecimal cantidad = BigDecimal.valueOf(detalle.getCantidad());
+            BigDecimal precioPorCantidad = precio.multiply(cantidad);
+            costoTotal = costoTotal.add(precioPorCantidad);
+        }
+        setPrecioCosto(costoTotal);
+    }
+    public void calcularPrecioPromocional(){
+        setPrecioPromocional(this.getPrecioVenta().multiply(BigDecimal.valueOf(0.9)));
+    }
+
+    public void calcularPrecioVenta(){
+        BigDecimal ventaTotal = BigDecimal.ZERO;
+
+        for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
+            BigDecimal precio = detalle.getArticulo().getPrecioVenta();
+            BigDecimal cantidad = BigDecimal.valueOf(detalle.getCantidad());
+            BigDecimal precioPorCantidad = precio.multiply(cantidad);
+            ventaTotal = ventaTotal.add(precioPorCantidad);
+        }
+        setPrecioVenta(ventaTotal);
+    }
 }

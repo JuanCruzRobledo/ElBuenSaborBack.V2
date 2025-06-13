@@ -332,8 +332,8 @@ public class ArticuloInsumoData {
 
         ArticuloInsumoEntity nachos = ArticuloInsumoEntity.builder()
                 .denominacion("Nachos")
-                .precioCosto(new BigDecimal("150"))
-                .precioVenta(new BigDecimal("0"))
+                .precioCosto(new BigDecimal("7100"))
+                .precioVenta(new BigDecimal("8300"))
                 .unidadMedidaEnum(UnidadMedidaEnum.GR)
                 .stockActual(4000.00)
                 .stockMaximo(10000.00)
@@ -348,8 +348,8 @@ public class ArticuloInsumoData {
 
         ArticuloInsumoEntity guacamole = ArticuloInsumoEntity.builder()
                 .denominacion("Guacamole")
-                .precioCosto(new BigDecimal("180"))
-                .precioVenta(new BigDecimal("0"))
+                .precioCosto(new BigDecimal("4300"))
+                .precioVenta(new BigDecimal("5500"))
                 .unidadMedidaEnum(UnidadMedidaEnum.ML)
                 .stockActual(4000.00)
                 .stockMaximo(10000.00)
