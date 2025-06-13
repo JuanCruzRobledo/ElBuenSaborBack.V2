@@ -22,6 +22,8 @@ public abstract class ArticuloEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true, nullable = false)
     private String denominacion;
     private BigDecimal precioVenta;
     private Boolean productoActivo; //Si se puede usar el producto o deshabilitar su uso para compra , preparacion de otros ,etc

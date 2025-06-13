@@ -1,6 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.data;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.ArticuloInsumoJpaRepository;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.ArticuloManufacturadoJpaRepository;
@@ -14,20 +15,13 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class ArticuloManufacturadoData {
 
     private final SucursalJpaRepository sucursalRepository;
     private final CategoriaJpaRepository categoriaRepository;
     private final ArticuloInsumoJpaRepository articuloInsumoRepository;
     private final ArticuloManufacturadoJpaRepository articuloManufacturadoRepository;
-
-    public ArticuloManufacturadoData(SucursalJpaRepository sucursalRepository, CategoriaJpaRepository categoriaRepository, ArticuloInsumoJpaRepository articuloInsumoRepository, ArticuloManufacturadoJpaRepository articuloManufacturadoRepository) {
-        this.sucursalRepository = sucursalRepository;
-        this.categoriaRepository = categoriaRepository;
-        this.articuloInsumoRepository = articuloInsumoRepository;
-        this.articuloManufacturadoRepository = articuloManufacturadoRepository;
-    }
-
 
     public void initArticulosManufacturados() {
         SucursalEntity sucursal = sucursalRepository.findById(1L)
@@ -38,6 +32,7 @@ public class ArticuloManufacturadoData {
 
         ArticuloInsumoEntity pan = articuloInsumoRepository.findByDenominacion("Pan de Hamburguesa");
         ArticuloInsumoEntity carne = articuloInsumoRepository.findByDenominacion("Medallón de carne");
+        //demas
         ArticuloInsumoEntity cheddar = articuloInsumoRepository.findByDenominacion("Queso Cheddar");
         ArticuloInsumoEntity lechuga = articuloInsumoRepository.findByDenominacion("Lechuga");
         ArticuloInsumoEntity tomate = articuloInsumoRepository.findByDenominacion("Tomate");
@@ -127,7 +122,7 @@ public class ArticuloManufacturadoData {
                 )
         ));
 
-        articulos.add(crearArticuloManufacturado("Batatas",
+        articulos.add(crearArticuloManufacturado("Batatas Crocantes",
                 "Porción de batatas fritas con sal.",
                 new BigDecimal("3000"), 8,
                 "https://res.cloudinary.com/drqdadlel/image/upload/v1726104198/batatas_pnzcgu.png",
@@ -149,7 +144,7 @@ public class ArticuloManufacturadoData {
                 )
         ));
 
-        articulos.add(crearArticuloManufacturado("Nachos",
+        articulos.add(crearArticuloManufacturado("Nachos con Guacamole",
                 "Nachos crocantes acompañados de guacamole y queso.",
                 new BigDecimal("4000"), 10,
                 "https://res.cloudinary.com/drqdadlel/image/upload/v1726104198/nachos_rbbtca.png",
