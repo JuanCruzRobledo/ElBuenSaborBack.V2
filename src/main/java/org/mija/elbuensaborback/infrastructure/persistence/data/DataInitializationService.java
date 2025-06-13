@@ -18,6 +18,7 @@ public class DataInitializationService {
     private final RolesPermisosData rolesPermisosData;
     private final ClienteData clienteData;
     private final EmpleadoData empleadoData;
+    private final ArticuloPromocionData articuloPromocionData;
 
 
     public void init(){
@@ -29,5 +30,6 @@ public class DataInitializationService {
         empleadoData.initEmpleadoWithUser();
         clienteData.initClientWithUsers();
         manufacturadoData.initArticulosManufacturados();
+        articuloPromocionData.initPromociones();
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -22,9 +23,9 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
     private LocalTime horaDesde;
     private LocalTime horaHasta;
     private String descripcionDescuento;
-    private String nombre;
+    private BigDecimal precioPromocional;
 
-    @OneToMany(mappedBy = "articuloPromocion")
+    @OneToMany(mappedBy = "articuloPromocion", cascade = CascadeType.ALL)
     private List<PromocionDetalleEntity> promocionDetalle;
 
 
@@ -40,15 +41,4 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
         }
     }
 
-
-
-
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    //private Long id;
-    //private String denominacion;
-    //private BigDecimal precioPromocional;
-    //private Articulo articulo; promocion de un articulo (manufacturado o insumo)??¿¿
-    //@OneToMany(mappedBy = "promocion")
-    //private List<Imagen> listaImagenes;
 }

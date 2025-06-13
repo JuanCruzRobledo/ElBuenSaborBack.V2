@@ -19,15 +19,12 @@ import java.util.Set;
 @DiscriminatorColumn(name = "DTYPE")
 public abstract class ArticuloEntity {
 
-    //TENDRIA QUE AGREGAR UN ATRIBUTO QUE DIGA SI ES VISIBLE
-    //productoActivo SERIA PARA CUANDO SI QUIERO QUE SE VEA EN EL FRONT PERO NO HAY STOCK
-    //dadoDeBaja SERIA PARA CUANDO NO SE QUIERA MOSTRAR EN EL FRONT
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String denominacion;
     private BigDecimal precioVenta;
-    private Boolean productoActivo;
+    private Boolean productoActivo; //Si se puede usar el producto o deshabilitar su uso para compra , preparacion de otros ,etc
     private Integer tiempoEstimadoMinutos;
 
 
