@@ -5,9 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mija.elbuensaborback.application.dto.global.promocion.ArticuloPromocionDto;
-import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromocionCreatedRequest;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloPromocionEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenArticuloEntity;
 
@@ -39,5 +37,9 @@ public abstract class ArticuloPromocionMapper {
                     }).collect(Collectors.toSet());
             entity.setImagenesUrls(imagenes);
         }
+    }
+    @AfterMapping
+    protected void relacionConManufacturado(@MappingTarget ArticuloPromocionEntity entity, ArticuloPromocionCreatedRequest dto) {
+        entity.getPromocionDetalle().stream().forEach(detalle -> { detalle.setArticuloPromocion(entity); });
     }
 }

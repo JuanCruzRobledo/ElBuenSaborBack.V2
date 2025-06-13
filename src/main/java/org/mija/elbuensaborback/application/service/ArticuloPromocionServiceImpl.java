@@ -35,7 +35,10 @@ public class ArticuloPromocionServiceImpl implements ArticuloPromocionService {
 
     @Override
     public ArticuloPromocionDto crearPromocion(ArticuloPromocionCreatedRequest articuloPromocionCreatedRequest) {
-        return null;
+        ArticuloPromocionEntity articuloPromocion = articuloPromocionMapper.toEntity(articuloPromocionCreatedRequest);
+        articuloPromocion = articuloPromocionRepository.save(articuloPromocion);
+
+        return articuloPromocionMapper.toResponse(articuloPromocion);
     }
 
     @Override
@@ -45,6 +48,8 @@ public class ArticuloPromocionServiceImpl implements ArticuloPromocionService {
 
     @Override
     public ArticuloPromocionDto eliminarPromocion(Long id) {
-        return null;
+        ArticuloPromocionEntity articuloPromocionEntity = articuloPromocionRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No se pudo eliminar la Promocion"));
+        articuloPromocionEntity.setProductoActivo(false);
+        return articuloPromocionMapper.toResponse(articuloPromocionEntity);
     }
 }

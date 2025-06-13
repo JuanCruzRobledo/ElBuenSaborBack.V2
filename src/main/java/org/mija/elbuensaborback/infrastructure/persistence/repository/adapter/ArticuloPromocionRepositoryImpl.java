@@ -28,7 +28,7 @@ public class ArticuloPromocionRepositoryImpl implements ArticuloPromocionReposit
 
     @Override
     public ArticuloPromocionEntity save(ArticuloPromocionEntity entity) {
-        return null;
+        return articuloPromocionJpaRepository.save(entity);
     }
 
     @Override

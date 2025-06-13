@@ -32,7 +32,6 @@ public abstract class PromocionDetalleMapper {
 
         entity.setArticulo(articulo);
         entity.setCantidad(dto.cantidad());
-
     }
 
 
