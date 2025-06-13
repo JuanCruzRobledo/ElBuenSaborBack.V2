@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FacturaController {
     private final FacturaService facturaService;
 
-    @GetMapping("/pedido/{idPedido}")
+    @GetMapping(value = "/pedido/{idPedido}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> descargarFactura(@PathVariable Long idPedido) {
         try {
             byte[] pdfBytes = facturaService.generarFacturaPdf(idPedido);
@@ -29,14 +29,11 @@ public class FacturaController {
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(pdfBytes);
-
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }
