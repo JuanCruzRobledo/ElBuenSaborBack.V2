@@ -43,6 +43,6 @@ public abstract class ArticuloEntity {
     @JoinColumn(name = "sucursal_id")
     private SucursalEntity sucursal;
 
-    public abstract void descontarStock(int cantidad);
+    //public abstract void descontarStock(int cantidad);
 
 }

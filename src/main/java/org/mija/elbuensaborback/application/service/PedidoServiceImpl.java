@@ -10,6 +10,7 @@ import org.mija.elbuensaborback.application.service.contratos.PedidoService;
 import org.mija.elbuensaborback.domain.enums.EstadoEnum;
 import org.mija.elbuensaborback.domain.enums.EstadoPagoEnum;
 import org.mija.elbuensaborback.domain.enums.TipoEnvioEnum;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.DetallePedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
@@ -62,7 +63,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.calcularCostoTotalPedido();
 
         // Procesar stock
-        procesarStock(pedido.getListaDetalle());
+        pedido.procesarStock();
 
         pedido = pedidoRepository.save(pedido);
 
@@ -75,11 +76,6 @@ public class PedidoServiceImpl implements PedidoService {
         return respuesta;
     }
 
-    private void procesarStock(List<DetallePedidoEntity> detalles) {
-        for (DetallePedidoEntity detalle : detalles) {
-            detalle.getArticulo().descontarStock(detalle.getCantidad());
-        }
-    }
 
     @Override
     public PedidoResponse obtenerPedido(Long id) {

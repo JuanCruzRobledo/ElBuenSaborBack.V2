@@ -55,10 +55,10 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
         //setPrecioVenta(costoTotal.multiply(BigDecimal.valueOf(1.3)));
     }
 
-    @Override
+    //@Override
     public void descontarStock(int cantidad) {
         for (ArticuloManufacturadoDetalleEntity detalle : this.getArticuloManufacturadoDetalle()) {
-            detalle.getArticuloInsumo().descontarStock((int)(detalle.getCantidad() * cantidad));
+            detalle.getArticuloInsumo().descontarStock(detalle.getCantidad() * cantidad);
         }
     }
 

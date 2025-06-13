@@ -27,12 +27,14 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
     @OneToMany(mappedBy = "articuloPromocion")
     private List<PromocionDetalleEntity> promocionDetalle;
 
-    @Override
+    /*
     public void descontarStock(int cantidad) {
         for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
             detalle.getArticulo().descontarStock(detalle.getCantidad() * cantidad);
         }
     }
+
+     */
 
 
     //@Id

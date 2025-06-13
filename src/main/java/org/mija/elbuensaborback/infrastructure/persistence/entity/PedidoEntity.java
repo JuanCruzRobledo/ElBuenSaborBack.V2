@@ -118,4 +118,14 @@ public class PedidoEntity {
         this.factura = factura;
     }
 
+    public void procesarStock(){
+        for (DetallePedidoEntity detallePedidoEntity : listaDetalle) {
+            if (detallePedidoEntity.getArticulo() instanceof ArticuloManufacturadoEntity) {
+                ((ArticuloManufacturadoEntity) detallePedidoEntity.getArticulo()).descontarStock(detallePedidoEntity.getCantidad());
+            } else if (detallePedidoEntity.getArticulo() instanceof ArticuloInsumoEntity) {
+                ((ArticuloInsumoEntity) detallePedidoEntity.getArticulo()).descontarStock(detallePedidoEntity.getCantidad().doubleValue());
+            }
+        }
+    }
+
 }
