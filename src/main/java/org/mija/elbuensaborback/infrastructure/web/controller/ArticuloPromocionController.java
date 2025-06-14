@@ -3,6 +3,7 @@ package org.mija.elbuensaborback.infrastructure.web.controller;
 import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.global.promocion.ArticuloPromocionDto;
 import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromocionCreatedRequest;
+import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromocionUpdateRequest;
 import org.mija.elbuensaborback.application.service.ArticuloPromocionServiceImpl;
 import org.mija.elbuensaborback.application.service.contratos.ArticuloPromocionService;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ public class ArticuloPromocionController {
     @PutMapping("/{id}")
     public ResponseEntity<ArticuloPromocionDto> actualizarPromocion(
             @PathVariable Long id,
-            @RequestBody ArticuloPromocionDto dto
+            @RequestBody ArticuloPromocionUpdateRequest dto
     ) {
 
         ArticuloPromocionDto actualizado = articuloPromocionService.actualizarPromocion(id,dto);

@@ -2,6 +2,7 @@ package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
 import org.mija.elbuensaborback.domain.repository.ArticuloRepositoryPort;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.ArticuloJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -39,5 +40,9 @@ public class ArticuloRepositoryImpl implements ArticuloRepositoryPort {
     @Override
     public List<ArticuloEntity> saveAll(List<ArticuloEntity> entities) {
         return List.of();
+    }
+
+    public List<ArticuloEntity> findAllById(List<Long> ids){
+        return articuloJpaRepository.findAllById(ids);
     }
 }

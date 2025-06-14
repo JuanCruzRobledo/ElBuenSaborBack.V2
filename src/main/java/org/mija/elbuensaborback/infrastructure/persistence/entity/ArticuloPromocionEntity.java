@@ -26,7 +26,7 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
     private String descripcionDescuento;
     private BigDecimal precioPromocional;
 
-    @OneToMany(mappedBy = "articuloPromocion", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "articuloPromocion", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<PromocionDetalleEntity> promocionDetalle;
 
 
