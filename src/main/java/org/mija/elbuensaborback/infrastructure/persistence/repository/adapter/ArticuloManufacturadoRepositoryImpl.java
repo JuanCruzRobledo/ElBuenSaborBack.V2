@@ -33,10 +33,9 @@ public class ArticuloManufacturadoRepositoryImpl implements ArticuloManufacturad
     }
 
     //CAMBIAR POR ArticuloManufacturadoBasicResponse
-    public List<ArticuloManufacturadoEntity> findAllBasic() {
-        //CAMBIAR POR findAllBasic
-        //return articuloManufacturadoJpaRepository.findAllBasic();
-        return articuloManufacturadoJpaRepository.findAll();
+    public List<ArticuloManufacturadoEntity> findAllBasicForSell() {
+
+        return articuloManufacturadoJpaRepository.findAllBasicForSell();
     }
 
     @Override

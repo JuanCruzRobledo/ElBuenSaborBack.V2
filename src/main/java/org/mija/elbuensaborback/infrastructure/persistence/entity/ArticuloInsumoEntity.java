@@ -26,8 +26,7 @@ public class ArticuloInsumoEntity extends ArticuloEntity {
     private Double stockMaximo;
     private Double stockMinimo;
     private Boolean esParaPreparar;
-    //Este insumo se puede vender?
-    private Boolean esVendible; //True en ensaladas preparadas o jugos preparados o asi
+
 
     //@Override
     public void descontarStock(Double cantidad) {

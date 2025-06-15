@@ -13,6 +13,7 @@ public record ArticuloPromocionUpdateRequest(
         String denominacion,
         BigDecimal precioVenta,
         Boolean productoActivo,
+        Boolean esVendible,
         Integer tiempoEstimadoMinutos,
         BigDecimal precioCosto,
         Set<ImagenDto> imagenesUrls,

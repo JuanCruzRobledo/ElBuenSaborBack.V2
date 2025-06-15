@@ -174,6 +174,7 @@ public class ArticuloPromocionData {
                 .denominacion(nombre)
                 .descripcionDescuento(descripcion)
                 .productoActivo(true)
+                .esVendible(true)
                 .categoria(categoria)
                 .tiempoEstimadoMinutos(tiempoEstimado)
                 .fechaDesde(desde)

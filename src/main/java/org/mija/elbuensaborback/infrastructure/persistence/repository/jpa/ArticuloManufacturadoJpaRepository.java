@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface ArticuloManufacturadoJpaRepository extends JpaRepository<ArticuloManufacturadoEntity, Long> {
 
-    //@Query("SELECT * FROM ")
-    //CAMBIAR POR ArticuloManufacturadoBasicResponse
-    //List<ArticuloManufacturadoBasicResponse> findAllBasic();
+
+    //(a.id, a.denominacion, a.descripcion, a.categoria, a.precioVenta, a.imagenesUrls, a.tiempoEstimadoMinutos, a.productoActivo, a.articuloManufacturadoDetalle)
+    @Query("SELECT a FROM articulo_manufacturado a WHERE a.esVendible = true")
+    List<ArticuloManufacturadoEntity> findAllBasicForSell();
 }

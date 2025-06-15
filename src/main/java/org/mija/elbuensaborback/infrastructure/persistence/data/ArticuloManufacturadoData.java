@@ -178,6 +178,7 @@ public class ArticuloManufacturadoData {
     ) {
         ArticuloManufacturadoEntity articulo = ArticuloManufacturadoEntity.builder()
                 .productoActivo(true)
+                .esVendible(true)
                 .denominacion(denominacion)
                 .descripcion(descripcion)
                 .precioVenta(precio)

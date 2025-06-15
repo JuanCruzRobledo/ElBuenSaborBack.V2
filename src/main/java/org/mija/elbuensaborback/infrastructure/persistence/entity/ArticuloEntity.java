@@ -26,9 +26,16 @@ public abstract class ArticuloEntity {
     @Column(unique = true, nullable = false)
     private String denominacion;
     private BigDecimal precioVenta;
-    private Boolean productoActivo; //Si se puede usar el producto o deshabilitar su uso para compra , preparacion de otros ,etc
+
+
     private Integer tiempoEstimadoMinutos;
     private BigDecimal precioCosto;
+
+
+    //Estos dos tienen que estar desactivados para la baja logica
+    //Si se puede usar el producto o deshabilitar su uso para compra , preparacion de otros ,etc
+    private Boolean productoActivo;
+    private Boolean esVendible; //True si va a aparecer en el menu?
 
 
     @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, orphanRemoval = true)

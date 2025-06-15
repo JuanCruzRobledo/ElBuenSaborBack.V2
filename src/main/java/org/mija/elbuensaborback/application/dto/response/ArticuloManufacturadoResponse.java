@@ -14,6 +14,7 @@ public record ArticuloManufacturadoResponse(
         String denominacion,
         BigDecimal precioVenta,
         Boolean productoActivo,
+        Boolean esVendible,
         Integer tiempoEstimadoMinutos,
         Set<ImagenDto> imagenesUrls,
         Long categoriaId,

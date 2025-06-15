@@ -145,10 +145,9 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
     }
 
     public List<ArticuloManufacturadoBasicResponse> listarBasicArticulosManufacturados() {
-        //AGREGAR QUERY PERSONALIZADA
-        //basicFindAll
-        List<ArticuloManufacturadoEntity> articulos = articuloManufacturadoRepository.findAll();
-        return articulos.stream().map(articuloManufacturadoMapper::toBasicResponse).collect(Collectors.toList());
+
+
+        return articuloManufacturadoRepository.findAllBasicForSell().stream().map(articuloManufacturadoMapper::toBasicResponse).collect(Collectors.toList());
     }
 
 }

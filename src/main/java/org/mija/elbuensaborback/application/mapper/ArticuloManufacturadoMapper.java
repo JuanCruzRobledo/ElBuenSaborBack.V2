@@ -144,5 +144,18 @@ public abstract class ArticuloManufacturadoMapper {
     public abstract ArticuloManufacturadoResponse toResponse(ArticuloManufacturadoEntity entity);
 
     //-------------- BASIC -------------
+    @Mapping(target = "imagenesUrls", ignore = true)
+    @Mapping(target = "categoriaId", source = "categoria.id")
+    @Mapping(target = "categoriaDenominacion", source = "categoria.denominacion")
     public abstract ArticuloManufacturadoBasicResponse toBasicResponse(ArticuloManufacturadoEntity entity);
+
+    @AfterMapping
+    protected void mapImagenes(ArticuloManufacturadoEntity entity,
+                               @MappingTarget ArticuloManufacturadoBasicResponse.ArticuloManufacturadoBasicResponseBuilder builder) {
+        Set<String> urls = entity.getImagenesUrls().stream()
+                .map(ImagenArticuloEntity::getUrl)
+                .collect(Collectors.toSet());
+        builder.imagenesUrls(urls);
+    }
+
 }
