@@ -1,6 +1,5 @@
 package org.mija.elbuensaborback.application.dto.request.promocion;
 
-import org.mija.elbuensaborback.application.dto.global.manufacturado.ImagenDto;
 import org.mija.elbuensaborback.application.dto.global.promocion.DetalleDto;
 
 import java.math.BigDecimal;
@@ -15,7 +14,6 @@ public record ArticuloPromocionCreatedRequest(
         Boolean productoActivo,
         Boolean esVendible,
         Integer tiempoEstimadoMinutos,
-        BigDecimal precioCosto,
         Set<String> imagenesUrls,
         Long categoriaId,
         LocalDate fechaDesde,
@@ -23,7 +21,6 @@ public record ArticuloPromocionCreatedRequest(
         LocalTime horaDesde,
         LocalTime horaHasta,
         String descripcion,
-        BigDecimal precioTotal,
         List<DetalleDto> promocionDetalle
 ) {
 }

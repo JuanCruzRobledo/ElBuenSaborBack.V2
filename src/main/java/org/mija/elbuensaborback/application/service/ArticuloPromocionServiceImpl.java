@@ -49,6 +49,11 @@ public class ArticuloPromocionServiceImpl implements ArticuloPromocionService {
     @Override
     public ArticuloPromocionDto crearPromocion(ArticuloPromocionCreatedRequest articuloPromocionCreatedRequest) {
         ArticuloPromocionEntity articuloPromocion = articuloPromocionMapper.toEntity(articuloPromocionCreatedRequest);
+
+        //1. Calcular el precio costo de la promocion y el precio de total sin descuento
+        articuloPromocion.calcularPrecioCosto();
+        articuloPromocion.calcularPrecioTotal();
+
         articuloPromocion = articuloPromocionRepository.save(articuloPromocion);
 
         return articuloPromocionMapper.toResponse(articuloPromocion);
