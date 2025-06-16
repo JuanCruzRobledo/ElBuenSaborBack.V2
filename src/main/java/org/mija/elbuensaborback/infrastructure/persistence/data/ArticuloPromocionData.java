@@ -112,7 +112,7 @@ public class ArticuloPromocionData {
                 LocalTime.of(22, 0),
                 comboIndividual
         );
-        combo3.setImagenesUrls(crearImagenes(combo3, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838093/estguhkiaxdaztpjw5ma.webp"));
+        combo3.setImagenesUrls(crearImagenes(combo3, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838092/wguftynzlcjwpxikbnaq.webp"));
         promociones.add(combo3);
 
         ArticuloPromocionEntity combo4 = crearPromocion(
@@ -131,7 +131,8 @@ public class ArticuloPromocionData {
                 LocalTime.of(23, 59),
                 comboIndividual
         );
-        combo4.setImagenesUrls(crearImagenes(combo4, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838092/wguftynzlcjwpxikbnaq.webp"));
+
+        combo4.setImagenesUrls(crearImagenes(combo4, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838093/estguhkiaxdaztpjw5ma.webp"));
         promociones.add(combo4);
 
         articuloPromocionRepository.saveAll(promociones);
