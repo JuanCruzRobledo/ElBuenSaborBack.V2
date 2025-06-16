@@ -26,6 +26,10 @@ public class LocalidadRepositoryImpl implements LocalidadRepositoryPort {
         return localidadJpaRepository.findAll();
     }
 
+    public List<LocalidadEntity> findAllByProvinciaId(Long provinciaId) {
+        return localidadJpaRepository.findAllByProvinciaId(provinciaId);
+    }
+
     @Override
     public LocalidadEntity save(LocalidadEntity nombreEntidad) {
         return localidadJpaRepository.save(nombreEntidad);

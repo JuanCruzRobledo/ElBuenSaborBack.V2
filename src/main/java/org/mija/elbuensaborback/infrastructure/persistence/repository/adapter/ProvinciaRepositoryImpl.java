@@ -26,6 +26,10 @@ public class ProvinciaRepositoryImpl implements ProvinciaRepositoryPort {
         return provinciaJpaRepository.findAll();
     }
 
+    public List<ProvinciaEntity> findAllByPaisId(Long id) {
+        return provinciaJpaRepository.findAllByPaisId(id);
+    }
+
     @Override
     public ProvinciaEntity save(ProvinciaEntity nombreEntidad) {
         return provinciaJpaRepository.save(nombreEntidad);

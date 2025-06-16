@@ -15,9 +15,9 @@ public record ArticuloManufacturadoBasicResponse(
         String categoriaDenominacion,
         BigDecimal precioVenta,
         Set<String> imagenesUrls,
-        Integer tiempoEstimadoMinutos,
-        boolean productoActivo,
-        List<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalle
+        //Integer tiempoEstimadoMinutos,
+        boolean productoActivo
+        //List<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalle
 ) {
     @Builder
     public ArticuloManufacturadoBasicResponse {}

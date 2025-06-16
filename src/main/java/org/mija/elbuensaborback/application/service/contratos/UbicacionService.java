@@ -7,7 +7,7 @@ import org.mija.elbuensaborback.application.dto.response.ProvinciaResponse;
 import java.util.Set;
 
 public interface UbicacionService {
-    Set<LocalidadResponse> obtenerLocalidades();
+    Set<LocalidadResponse> obtenerLocalidades(Long id);
     Set<PaisResponse> obtenerPaises();
-    Set<ProvinciaResponse> obtenerProvincias();
+    Set<ProvinciaResponse> obtenerProvincias(Long id);
 }

@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.application.service;
 
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.response.LocalidadResponse;
 import org.mija.elbuensaborback.application.dto.response.PaisResponse;
 import org.mija.elbuensaborback.application.dto.response.ProvinciaResponse;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UbicacionServiceImpl implements UbicacionService {
 
     private final LocalidadRepositoryImpl localidadRepository;
@@ -25,19 +27,9 @@ public class UbicacionServiceImpl implements UbicacionService {
     private final PaisMapper paisMapper;
     private final ProvinciaMapper provinciaMapper;
 
-
-    public UbicacionServiceImpl(LocalidadRepositoryImpl localidadRepository, PaisRepositoryImpl paisRepository, ProvinciaRepositoryImpl provinciaRepository, LocalidadMapper localidadMapper, PaisMapper paisMapper, ProvinciaMapper provinciaMapper) {
-        this.localidadRepository = localidadRepository;
-        this.paisRepository = paisRepository;
-        this.provinciaRepository = provinciaRepository;
-        this.localidadMapper = localidadMapper;
-        this.paisMapper = paisMapper;
-        this.provinciaMapper = provinciaMapper;
-    }
-
     @Override
-    public Set<LocalidadResponse> obtenerLocalidades() {
-        return localidadRepository.findAll().stream().map(localidadMapper::toResponse).collect(Collectors.toSet());
+    public Set<LocalidadResponse> obtenerLocalidades(Long id) {
+        return localidadRepository.findAllByProvinciaId(id).stream().map(localidadMapper::toResponse).collect(Collectors.toSet());
     }
 
     @Override
@@ -46,7 +38,7 @@ public class UbicacionServiceImpl implements UbicacionService {
     }
 
     @Override
-    public Set<ProvinciaResponse> obtenerProvincias() {
-        return provinciaRepository.findAll().stream().map(provinciaMapper::toResponse).collect(Collectors.toSet());
+    public Set<ProvinciaResponse> obtenerProvincias(Long id) {
+        return provinciaRepository.findAllByPaisId(id).stream().map(provinciaMapper::toResponse).collect(Collectors.toSet());
     }
 }

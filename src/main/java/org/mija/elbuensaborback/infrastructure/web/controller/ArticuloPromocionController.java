@@ -5,7 +5,6 @@ import org.mija.elbuensaborback.application.dto.global.promocion.ArticuloPromoci
 import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromocionCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromocionUpdateRequest;
 import org.mija.elbuensaborback.application.service.ArticuloPromocionServiceImpl;
-import org.mija.elbuensaborback.application.service.contratos.ArticuloPromocionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
