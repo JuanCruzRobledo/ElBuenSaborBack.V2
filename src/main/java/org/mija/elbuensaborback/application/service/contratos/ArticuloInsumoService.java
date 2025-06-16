@@ -4,6 +4,7 @@ import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloActualiza
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoBasicResponse;
+import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoMenuBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoResponse;
 
 import java.util.List;
@@ -17,5 +18,5 @@ public interface ArticuloInsumoService {
     Set<ArticuloInsumoResponse> listarArticulosInsumo();
     ArticuloInsumoResponse actualizarPrecioYStock(Long id, ArticuloActualizarStockPrecioRequest articuloUpdateRequest);
     List<ArticuloInsumoBasicResponse> listarBasicArticulosInsumo();
-    List<ArticuloInsumoResponse> obtenerBebidas(String denominacion);
+    List<ArticuloInsumoMenuBasicResponse> obtenerBebidas(String denominacion);
 }

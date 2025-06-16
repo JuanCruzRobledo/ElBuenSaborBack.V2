@@ -146,7 +146,6 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
 
     public List<ArticuloManufacturadoBasicResponse> listarBasicArticulosManufacturados() {
 
-
         return articuloManufacturadoRepository.findAllBasicForSell().stream().map(articuloManufacturadoMapper::toBasicResponse).collect(Collectors.toList());
     }
 

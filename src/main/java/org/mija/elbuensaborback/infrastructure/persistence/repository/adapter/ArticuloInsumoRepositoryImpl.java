@@ -46,8 +46,8 @@ public class ArticuloInsumoRepositoryImpl implements ArticuloInsumoRepositoryPor
         return articuloInsumoJpaRepository.findAllById(ids);
     }
 
-    public List<ArticuloInsumoEntity> findAllByCategoria(String categoria){
-        return articuloInsumoJpaRepository.findAllByCategoriaDenominacion(categoria);
+    public List<ArticuloInsumoEntity> findAllByCategoriaVendibles(String categoria){
+        return articuloInsumoJpaRepository.findAllByCategoriaDenominacionVendibles(categoria);
     }
 
     @Override

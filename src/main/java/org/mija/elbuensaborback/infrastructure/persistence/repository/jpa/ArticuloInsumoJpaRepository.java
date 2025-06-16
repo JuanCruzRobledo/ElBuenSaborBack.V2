@@ -4,6 +4,7 @@ import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoBasicResp
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public interface ArticuloInsumoJpaRepository extends JpaRepository<ArticuloInsum
 
     ArticuloInsumoEntity findByDenominacion(String denominacion);
 
-    List<ArticuloInsumoEntity> findAllByCategoriaDenominacion(String denominacion);
+    @Query("SELECT a FROM articulo_insumo a WHERE a.categoria.denominacion = :denominacion AND a.esVendible = true")
+    List<ArticuloInsumoEntity> findAllByCategoriaDenominacionVendibles(@Param("denominacion") String denominacion);
 
 }

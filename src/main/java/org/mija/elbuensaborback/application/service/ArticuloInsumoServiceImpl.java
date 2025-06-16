@@ -5,6 +5,7 @@ import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloActualiza
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoBasicResponse;
+import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoMenuBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoResponse;
 import org.mija.elbuensaborback.application.mapper.ArticuloInsumoMapper;
 import org.mija.elbuensaborback.application.service.contratos.ArticuloInsumoService;
@@ -101,17 +102,17 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
         return articuloInsumoRepository.basicFindAll();
     }
 
-    public List<ArticuloInsumoResponse> obtenerBebidas(String denominacion) {
+    public List<ArticuloInsumoMenuBasicResponse> obtenerBebidas(String denominacion) {
         CategoriaEntity categoriaPadre = categoriaRepository.findByDenominacion(denominacion);
         List<ArticuloInsumoEntity> listaDeBebidas = new ArrayList<>();
 
         for (CategoriaEntity categoria : categoriaPadre.getSubcategorias()) {
-            List<ArticuloInsumoEntity> bebidas =  articuloInsumoRepository.findAllByCategoria(categoria.getDenominacion());
+            List<ArticuloInsumoEntity> bebidas =  articuloInsumoRepository.findAllByCategoriaVendibles(categoria.getDenominacion());
             listaDeBebidas.addAll(bebidas);
         }
 
 
-        return listaDeBebidas.stream().map(articuloInsumoMapper::toResponse).toList();
+        return listaDeBebidas.stream().map(articuloInsumoMapper::menuBasicResponse).toList();
     }
 
 }

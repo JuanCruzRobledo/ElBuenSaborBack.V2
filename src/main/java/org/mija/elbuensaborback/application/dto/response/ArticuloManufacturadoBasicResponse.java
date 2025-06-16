@@ -11,7 +11,7 @@ public record ArticuloManufacturadoBasicResponse(
         Long id,
         String denominacion,
         String descripcion,
-        String categoriaId,
+        Long categoriaId,
         String categoriaDenominacion,
         BigDecimal precioVenta,
         Set<String> imagenesUrls,

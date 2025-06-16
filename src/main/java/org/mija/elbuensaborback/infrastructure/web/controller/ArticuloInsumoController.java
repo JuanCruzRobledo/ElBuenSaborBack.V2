@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/articulo-insumo")
-//@CrossOrigin("*")
 public class ArticuloInsumoController {
 
     private final ArticuloInsumoServiceImpl articuloInsumoService;
@@ -68,7 +67,7 @@ public class ArticuloInsumoController {
         }
     }
 
-    @GetMapping("bebidas/getAll")
+    @GetMapping("/bebidas/basic/getAll")
     public ResponseEntity<?> obtenerBebidas(){
         try{
             return ResponseEntity.ok(articuloInsumoService.obtenerBebidas("bebidas"));
@@ -77,7 +76,7 @@ public class ArticuloInsumoController {
         }
     }
 
-    @GetMapping("{categoria}/getAll")
+    @GetMapping("/{categoria}/getAll")
     public ResponseEntity<?> obtenerBebidasPorCategoria(@PathVariable String categoria){
         try{
             return ResponseEntity.ok(articuloInsumoService.obtenerBebidas(categoria));

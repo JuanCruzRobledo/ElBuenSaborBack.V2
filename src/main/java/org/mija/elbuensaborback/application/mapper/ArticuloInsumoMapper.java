@@ -7,9 +7,11 @@ import org.mapstruct.MappingTarget;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoBasicResponse;
+import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoMenuBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoResponse;
+import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoBasicResponse;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumoEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.CategoriaEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenArticuloEntity;
 
 import java.util.Set;
@@ -61,4 +63,21 @@ public abstract class ArticuloInsumoMapper {
 
     @Mapping(target = "categoriaDenominacion", source = "categoria.denominacion")
     public abstract ArticuloInsumoBasicResponse toBasic(ArticuloInsumoEntity articuloEntity);
+
+
+    @Mapping(target = "categoriaId", source = "categoria.id")
+    @Mapping(target = "categoriaDenominacion", source = "categoria.denominacion")
+    @Mapping(target = "imagenesUrls", ignore = true)
+    public abstract ArticuloInsumoMenuBasicResponse menuBasicResponse(ArticuloInsumoEntity articuloEntity);
+
+    //Despues usar en mapper imagen
+    @AfterMapping
+    protected void mapImagenes(@MappingTarget ArticuloInsumoMenuBasicResponse.ArticuloInsumoMenuBasicResponseBuilder builder, ArticuloInsumoEntity articuloEntity) {
+        if (articuloEntity.getImagenesUrls() != null) {
+            Set<String> imagenes = articuloEntity.getImagenesUrls().stream()
+                    .map(ImagenArticuloEntity::getUrl).collect(Collectors.toSet());
+            builder.imagenesUrls(imagenes);
+        }
+    }
+
 }
