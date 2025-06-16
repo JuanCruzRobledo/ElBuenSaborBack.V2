@@ -7,9 +7,9 @@ import org.mapstruct.MappingTarget;
 import org.mija.elbuensaborback.application.dto.global.manufacturado.ArticuloManufacturadoDetalleDto;
 import org.mija.elbuensaborback.application.dto.global.promocion.ArticuloPromocionDto;
 import org.mija.elbuensaborback.application.dto.global.promocion.DetalleDto;
-import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromocionCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromocionUpdateRequest;
+import org.mija.elbuensaborback.application.dto.response.ArticuloPromocionMenuBasicResponse;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 
 import java.util.*;
@@ -24,6 +24,19 @@ public abstract class ArticuloPromocionMapper {
     @Mapping(target = "categoriaId" , source = "categoria.id")
     @Mapping(target = "categoriaDenominacion" , source = "categoria.denominacion")
     public abstract ArticuloPromocionDto toResponse(ArticuloPromocionEntity articuloPromocionEntity);
+
+    @Mapping(target = "categoriaId" , source = "categoria.id")
+    @Mapping(target = "categoriaDenominacion" , source = "categoria.denominacion")
+    @Mapping(target = "imagenesUrls" , ignore = true )
+    public abstract ArticuloPromocionMenuBasicResponse toBasicResponse(ArticuloPromocionEntity articuloPromocionEntity);
+
+    @AfterMapping
+    public void mapImagenes(@MappingTarget ArticuloPromocionMenuBasicResponse.ArticuloPromocionMenuBasicResponseBuilder builder, ArticuloPromocionEntity articuloPromocionEntity ) {
+        Set<String> imagenes = articuloPromocionEntity.getImagenesUrls().stream().map(ImagenArticuloEntity::getUrl).collect(Collectors.toSet());
+        builder.imagenesUrls(imagenes);
+    }
+
+
 
     @Mapping(target = "imagenesUrls", ignore = true)
     @Mapping(target = "categoria.id", source = "categoriaId")

@@ -4,5 +4,6 @@ public record DomicilioCreatedRequest(
         String calle,
         Integer numero,
         String codigoPostal,
+        String descripcion,
         Long localidadId
 ) {}

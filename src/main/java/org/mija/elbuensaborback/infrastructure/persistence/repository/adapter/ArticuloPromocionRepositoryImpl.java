@@ -26,6 +26,10 @@ public class ArticuloPromocionRepositoryImpl implements ArticuloPromocionReposit
         return articuloPromocionJpaRepository.findAll();
     }
 
+    public List<ArticuloPromocionEntity> findAllPromocionesActivas() {
+        return articuloPromocionJpaRepository.findAllByEsVendible(true);
+    }
+
     @Override
     public ArticuloPromocionEntity save(ArticuloPromocionEntity entity) {
         return articuloPromocionJpaRepository.save(entity);

@@ -15,6 +15,7 @@ public class DomicilioEntity {
     private String calle;
     private Integer numero;
     private String codigoPostal;
+    private String descripcion;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "localidad_id", referencedColumnName = "id", nullable = false)

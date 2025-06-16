@@ -7,6 +7,7 @@ import org.mija.elbuensaborback.application.dto.global.promocion.ArticuloPromoci
 import org.mija.elbuensaborback.application.dto.global.promocion.DetalleDto;
 import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromocionCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromocionUpdateRequest;
+import org.mija.elbuensaborback.application.dto.response.ArticuloPromocionMenuBasicResponse;
 import org.mija.elbuensaborback.application.mapper.ArticuloPromocionMapper;
 import org.mija.elbuensaborback.application.service.contratos.ArticuloPromocionService;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloEntity;
@@ -44,6 +45,11 @@ public class ArticuloPromocionServiceImpl implements ArticuloPromocionService {
     @Override
     public List<ArticuloPromocionDto> listarArticulosPromocion() {
         return articuloPromocionRepository.findAll().stream().map(articuloPromocionMapper::toResponse).toList();
+    }
+
+    @Override
+    public List<ArticuloPromocionMenuBasicResponse> listarArticulosPromocionMenu() {
+        return articuloPromocionRepository.findAllPromocionesActivas().stream().map(articuloPromocionMapper::toBasicResponse).toList();
     }
 
     @Override

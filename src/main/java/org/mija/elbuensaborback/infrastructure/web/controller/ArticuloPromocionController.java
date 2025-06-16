@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.global.promocion.ArticuloPromocionDto;
 import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromocionCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromocionUpdateRequest;
+import org.mija.elbuensaborback.application.dto.response.ArticuloPromocionMenuBasicResponse;
 import org.mija.elbuensaborback.application.service.ArticuloPromocionServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,13 @@ public class ArticuloPromocionController {
     @GetMapping("/getAll")
     public ResponseEntity<List<ArticuloPromocionDto>> listarPromociones() {
         List<ArticuloPromocionDto> lista = articuloPromocionService.listarArticulosPromocion();
+        return ResponseEntity.ok(lista);
+    }
+
+    // Listar todas las promociones
+    @GetMapping("/basic/getAll")
+    public ResponseEntity<List<ArticuloPromocionMenuBasicResponse>> listarPromocionesBasic() {
+        List<ArticuloPromocionMenuBasicResponse> lista = articuloPromocionService.listarArticulosPromocionMenu();
         return ResponseEntity.ok(lista);
     }
 

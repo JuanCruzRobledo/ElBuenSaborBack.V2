@@ -5,6 +5,7 @@ public record DomicilioResponse(
         String calle,
         Integer numero,
         String codigoPostal,
+        String descripcion,
         LocalidadResponse localidad
 ) {
 }
