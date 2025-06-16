@@ -6,6 +6,9 @@ public record DomicilioResponse(
         Integer numero,
         String codigoPostal,
         String descripcion,
+        PaisResponse pais,
+        ProvinciaResponse provincia,
         LocalidadResponse localidad
+
 ) {
 }

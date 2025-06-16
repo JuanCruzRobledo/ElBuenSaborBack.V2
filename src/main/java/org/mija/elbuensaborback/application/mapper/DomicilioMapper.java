@@ -9,6 +9,8 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.DomicilioEntit
 @Mapper(componentModel = "spring", uses = {LocalidadMapper.class})
 public interface DomicilioMapper {
 
+    @Mapping(target = "provincia" , source = "localidad.provincia")
+    @Mapping(target = "pais" , source = "localidad.provincia.pais")
     DomicilioResponse toResponse(DomicilioEntity domicilioEntity);
 
     @Mapping(target = "id", ignore = true)
