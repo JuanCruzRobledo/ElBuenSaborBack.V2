@@ -22,8 +22,8 @@ public record ArticuloPromocionUpdateRequest(
         LocalDate fechaHasta,
         LocalTime horaDesde,
         LocalTime horaHasta,
-        String descripcionDescuento,
-        BigDecimal precioPromocional,
+        String descripcion,
+        BigDecimal precioTotal,
         List<DetalleDto> promocionDetalle
 ) {
 }

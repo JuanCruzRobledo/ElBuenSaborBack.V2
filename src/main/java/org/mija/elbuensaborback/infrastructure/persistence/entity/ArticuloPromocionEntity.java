@@ -23,8 +23,10 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
     private LocalDate fechaHasta;
     private LocalTime horaDesde;
     private LocalTime horaHasta;
-    private String descripcionDescuento;
-    private BigDecimal precioPromocional;
+    private String descripcion;
+    //precioTotal: suma de los productos de la promoción (sería como el precio mínimo de la promoción)
+    //precioVenta: precio de venta, con el descuento de la promoción aplicado
+    private BigDecimal precioTotal;
 
     @OneToMany(mappedBy = "articuloPromocion", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<PromocionDetalleEntity> promocionDetalle;
@@ -63,11 +65,11 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
         }
         setPrecioCosto(costoTotal);
     }
-    public void calcularPrecioPromocional(){
-        setPrecioPromocional(this.getPrecioVenta().multiply(BigDecimal.valueOf(0.9)));
+    public void calcularPrecioVenta(){
+        setPrecioVenta(this.getPrecioTotal().multiply(BigDecimal.valueOf(0.9)));
     }
 
-    public void calcularPrecioVenta(){
+    public void calcularPrecioTotal(){
         BigDecimal ventaTotal = BigDecimal.ZERO;
 
         for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
@@ -76,6 +78,6 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
             BigDecimal precioPorCantidad = precio.multiply(cantidad);
             ventaTotal = ventaTotal.add(precioPorCantidad);
         }
-        setPrecioVenta(ventaTotal);
+        setPrecioTotal(ventaTotal);
     }
 }

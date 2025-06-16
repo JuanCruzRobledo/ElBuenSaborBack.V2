@@ -37,7 +37,7 @@ public abstract class DetallePedidoMapper {
         BigDecimal subTotal;
 
         if (articulo instanceof ArticuloPromocionEntity) {
-            subTotal = ((ArticuloPromocionEntity) articulo).getPrecioPromocional().multiply(BigDecimal.valueOf(cantidad));
+            subTotal = ((ArticuloPromocionEntity) articulo).getPrecioTotal().multiply(BigDecimal.valueOf(cantidad));
         } else{
             subTotal = articulo.getPrecioVenta().multiply(BigDecimal.valueOf(cantidad));
         }

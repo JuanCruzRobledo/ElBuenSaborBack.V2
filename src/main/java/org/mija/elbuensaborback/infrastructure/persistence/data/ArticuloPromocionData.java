@@ -172,7 +172,7 @@ public class ArticuloPromocionData {
         // Crear la promoción
         ArticuloPromocionEntity promocion = ArticuloPromocionEntity.builder()
                 .denominacion(nombre)
-                .descripcionDescuento(descripcion)
+                .descripcion(descripcion)
                 .productoActivo(true)
                 .esVendible(true)
                 .categoria(categoria)
@@ -191,8 +191,8 @@ public class ArticuloPromocionData {
 
         promocion.tiempoEstimadoCalculado(5);
         promocion.calcularPrecioCosto();
+        promocion.calcularPrecioTotal();
         promocion.calcularPrecioVenta();
-        promocion.calcularPrecioPromocional();
 
         return promocion;
     }
