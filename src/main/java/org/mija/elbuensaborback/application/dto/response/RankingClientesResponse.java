@@ -1,8 +1,11 @@
 package org.mija.elbuensaborback.application.dto.response;
 
+import java.math.BigDecimal;
+
 public record RankingClientesResponse(
-        ClienteResponse cliente,
-        int cantidadPedidos,
-        Double importeTotal
+        String nombre,
+        String apellido,
+        Long cantidadPedidosFinalizados,
+        BigDecimal totalPedidosFinalizados
 ) {
 }

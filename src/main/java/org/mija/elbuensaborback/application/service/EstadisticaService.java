@@ -1,9 +1,11 @@
 package org.mija.elbuensaborback.application.service;
 
-import org.mija.elbuensaborback.application.dto.global.ClienteVentaResumenDTO;
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.response.RankingClientesResponse;
+import org.mija.elbuensaborback.application.dto.response.RankingManufacturadoResponse;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.EstadisticaDiaria;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.DetallePedidoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PedidoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.EstadisticaDiariaJpaRepository;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,17 +17,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class EstadisticaService {
 
     private final PedidoRepositoryImpl pedidoRepository;
-
+    private final DetallePedidoRepositoryImpl detallePedidoRepository;
     private final EstadisticaDiariaJpaRepository estadisticaDiariaRepository;
-
-    public EstadisticaService(PedidoRepositoryImpl pedidoRepository, EstadisticaDiariaJpaRepository estadisticaDiariaRepository) {
-        this.pedidoRepository = pedidoRepository;
-        this.estadisticaDiariaRepository = estadisticaDiariaRepository;
-    }
-
 
     // Ejecuta todos los días a las 2:00 AM
     @Scheduled(cron = "0 0 2 * * ?")
@@ -91,7 +88,7 @@ public class EstadisticaService {
     }
 
 
-    public List<ClienteVentaResumenDTO> rankingClientes(LocalDate fechaInicio, LocalDate fechaFin) {
+    public List<RankingClientesResponse> rankingClientes(LocalDate fechaInicio, LocalDate fechaFin) {
         if (fechaInicio != null && fechaFin != null) {
             return pedidoRepository.obtenerVentasClientesPorRango(fechaInicio, fechaFin);
         } else if (fechaInicio != null) {
@@ -102,4 +99,17 @@ public class EstadisticaService {
             return pedidoRepository.obtenerVentasClientesFinalizados();
         }
     }
+
+    public List<RankingManufacturadoResponse> rankingManufacturados(LocalDate fechaInicio, LocalDate fechaFin) {
+        if (fechaInicio != null && fechaFin != null) {
+            return detallePedidoRepository.rankingArticulosMasPedidosEntreFechas(fechaInicio, fechaFin);
+        } else if (fechaInicio != null) {
+            return detallePedidoRepository.rankingArticulosMasPedidosDesdeFecha(fechaInicio);
+        } else if (fechaFin != null) {
+            return detallePedidoRepository.rankingArticulosMasPedidosHastaFecha(fechaFin);
+        } else {
+            return detallePedidoRepository.rankingArticulosMasPedidos();
+        }
+    }
+
 }

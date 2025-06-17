@@ -1,10 +1,10 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
-import org.mija.elbuensaborback.application.dto.global.ClienteVentaResumenDTO;
+
+import org.mija.elbuensaborback.application.dto.response.RankingClientesResponse;
 import org.mija.elbuensaborback.domain.repository.PedidoRepositoryPort;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.PedidoJpaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -61,19 +61,19 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
         return pedidoJpaRepository.findByFechaPedido(fechaPedido);
     }
 
-    public List<ClienteVentaResumenDTO> obtenerVentasClientesFinalizados() {
+    public List<RankingClientesResponse> obtenerVentasClientesFinalizados() {
         return pedidoJpaRepository.obtenerVentasClientesFinalizados();
     }
 
-    public List<ClienteVentaResumenDTO> obtenerVentasClientesPorRango(LocalDate fechaInicio, LocalDate fechaFin) {
+    public List<RankingClientesResponse> obtenerVentasClientesPorRango(LocalDate fechaInicio, LocalDate fechaFin) {
         return pedidoJpaRepository.obtenerVentasClientesPorRango(fechaInicio, fechaFin);
     }
 
-    public List<ClienteVentaResumenDTO> obtenerVentasClientesDesdeFecha(LocalDate fechaInicio) {
+    public List<RankingClientesResponse> obtenerVentasClientesDesdeFecha(LocalDate fechaInicio) {
         return pedidoJpaRepository.obtenerVentasClientesDesdeFecha(fechaInicio);
     }
 
-    public List<ClienteVentaResumenDTO> obtenerVentasClientesHastaFecha(LocalDate fechaFin) {
+    public List<RankingClientesResponse> obtenerVentasClientesHastaFecha(LocalDate fechaFin) {
         return pedidoJpaRepository.obtenerVentasClientesHastaFecha(fechaFin);
     }
 }

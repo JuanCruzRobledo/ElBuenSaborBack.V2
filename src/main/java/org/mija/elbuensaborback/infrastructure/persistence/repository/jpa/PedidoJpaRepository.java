@@ -1,7 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.jpa;
 
-import org.mija.elbuensaborback.application.dto.global.ClienteVentaResumenDTO;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
+import org.mija.elbuensaborback.application.dto.response.RankingClientesResponse;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,7 +23,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     List<PedidoEntity> findByFechaPedido(LocalDate fechaPedido);
 
     @Query("""
-    SELECT new org.mija.elbuensaborback.application.dto.global.ClienteVentaResumenDTO(
+    SELECT new org.mija.elbuensaborback.application.dto.response.RankingClientesResponse(
         c.nombre,
         c.apellido,
         COUNT(p),
@@ -35,10 +34,10 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     WHERE p.estadoEnum = 'TERMINADO'
     GROUP BY c.id, c.nombre, c.apellido
 """)
-    List<ClienteVentaResumenDTO> obtenerVentasClientesFinalizados();
+    List<RankingClientesResponse> obtenerVentasClientesFinalizados();
 
     @Query("""
-    SELECT new org.mija.elbuensaborback.application.dto.global.ClienteVentaResumenDTO(
+    SELECT new org.mija.elbuensaborback.application.dto.response.RankingClientesResponse(
         c.nombre,
         c.apellido,
         COUNT(p),
@@ -50,13 +49,13 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     AND p.fechaPedido BETWEEN :fechaInicio AND :fechaFin
     GROUP BY c.id, c.nombre, c.apellido
 """)
-    List<ClienteVentaResumenDTO> obtenerVentasClientesPorRango(
+    List<RankingClientesResponse> obtenerVentasClientesPorRango(
             @Param("fechaInicio") LocalDate fechaInicio,
             @Param("fechaFin") LocalDate fechaFin
     );
 
     @Query("""
-    SELECT new org.mija.elbuensaborback.application.dto.global.ClienteVentaResumenDTO(
+    SELECT new org.mija.elbuensaborback.application.dto.response.RankingClientesResponse(
         c.nombre,
         c.apellido,
         COUNT(p),
@@ -68,12 +67,12 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     AND p.fechaPedido >= :fechaInicio
     GROUP BY c.id, c.nombre, c.apellido
 """)
-    List<ClienteVentaResumenDTO> obtenerVentasClientesDesdeFecha(
+    List<RankingClientesResponse> obtenerVentasClientesDesdeFecha(
             @Param("fechaInicio") LocalDate fechaInicio
     );
 
     @Query("""
-    SELECT new org.mija.elbuensaborback.application.dto.global.ClienteVentaResumenDTO(
+    SELECT new org.mija.elbuensaborback.application.dto.response.RankingClientesResponse(
         c.nombre,
         c.apellido,
         COUNT(p),
@@ -85,7 +84,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     AND p.fechaPedido <= :fechaFin
     GROUP BY c.id, c.nombre, c.apellido
 """)
-    List<ClienteVentaResumenDTO> obtenerVentasClientesHastaFecha(
+    List<RankingClientesResponse> obtenerVentasClientesHastaFecha(
             @Param("fechaFin") LocalDate fechaFin
     );
 
