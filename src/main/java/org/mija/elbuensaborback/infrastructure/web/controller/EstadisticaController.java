@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
+import org.mija.elbuensaborback.application.dto.global.ClienteVentaResumenDTO;
 import org.mija.elbuensaborback.application.service.EstadisticaService;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.EstadisticaDiaria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,17 @@ public class EstadisticaController {
             @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
 
         List<EstadisticaDiaria> estadisticas = estadisticaService.obtenerEstadisticasPorRango(fechaInicio, fechaFin);
+        return ResponseEntity.ok(estadisticas);
+    }
+
+    @GetMapping("/ranking-clientes")
+    public ResponseEntity<?> obtenerRankingClientes(
+            @RequestParam(value = "fechaInicio", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(value = "fechaFin", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+
+        List<ClienteVentaResumenDTO> estadisticas = estadisticaService.rankingClientes(fechaInicio, fechaFin);
         return ResponseEntity.ok(estadisticas);
     }
 }

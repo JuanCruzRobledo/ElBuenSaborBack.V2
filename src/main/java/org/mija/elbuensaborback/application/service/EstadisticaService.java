@@ -1,5 +1,7 @@
 package org.mija.elbuensaborback.application.service;
 
+import org.mija.elbuensaborback.application.dto.global.ClienteVentaResumenDTO;
+import org.mija.elbuensaborback.application.dto.response.RankingClientesResponse;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.EstadisticaDiaria;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PedidoRepositoryImpl;
@@ -86,5 +88,18 @@ public class EstadisticaService {
 
     public List<EstadisticaDiaria> obtenerEstadisticasPorRango(LocalDate fechaInicio, LocalDate fechaFin) {
         return estadisticaDiariaRepository.findByFechaBetween(fechaInicio, fechaFin);
+    }
+
+
+    public List<ClienteVentaResumenDTO> rankingClientes(LocalDate fechaInicio, LocalDate fechaFin) {
+        if (fechaInicio != null && fechaFin != null) {
+            return pedidoRepository.obtenerVentasClientesPorRango(fechaInicio, fechaFin);
+        } else if (fechaInicio != null) {
+            return pedidoRepository.obtenerVentasClientesDesdeFecha(fechaInicio);
+        } else if (fechaFin != null) {
+            return pedidoRepository.obtenerVentasClientesHastaFecha(fechaFin);
+        } else {
+            return pedidoRepository.obtenerVentasClientesFinalizados();
+        }
     }
 }

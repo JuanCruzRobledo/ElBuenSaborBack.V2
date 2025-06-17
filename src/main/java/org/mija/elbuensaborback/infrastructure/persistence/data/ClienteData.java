@@ -29,6 +29,7 @@ public class ClienteData {
                 .calle("Av. Jorgito ")
                 .codigoPostal("1111")
                 .localidad(localidadRepository.findByNombre("Godoy Cruz"))
+                .descripcion("Casa blanca con rejas marrones")
                 .build();
 
         UsuarioEntity userAmbar= UsuarioEntity.builder()
@@ -55,11 +56,12 @@ public class ClienteData {
                 .numero(123)
                 .calle("Av. San Martin")
                 .codigoPostal("5555")
+                .descripcion("Casa Morada con paredes sin revocar")
                 .localidad(localidadRepository.findByNombre("Godoy Cruz"))
                 .build();
 
-        UsuarioEntity userJuan = UsuarioEntity.builder()
-                .email("juan@gmail.com")
+        UsuarioEntity userPerez = UsuarioEntity.builder()
+                .email("perez@gmail.com")
                 .password(passwordEncoder.encode("112233"))
                 .disabled(false)
                 .accountExpired(false)
@@ -70,10 +72,10 @@ public class ClienteData {
 
 
         ClienteEntity cliente2 = ClienteEntity.builder()
-                .nombre("")
+                .nombre("Raton")
                 .apellido("Perez")
                 .telefono("987654321")
-                .usuario(userJuan)
+                .usuario(userPerez)
                 .domicilio(List.of(domicilio2))
                 .listaPedido(new ArrayList<>())
                 .build();

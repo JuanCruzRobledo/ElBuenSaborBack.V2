@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
+import org.mija.elbuensaborback.application.dto.global.ClienteVentaResumenDTO;
 import org.mija.elbuensaborback.domain.repository.PedidoRepositoryPort;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.PedidoJpaRepository;
@@ -58,5 +59,21 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
 
     public List<PedidoEntity> findByFechaPedido(LocalDate fechaPedido){
         return pedidoJpaRepository.findByFechaPedido(fechaPedido);
+    }
+
+    public List<ClienteVentaResumenDTO> obtenerVentasClientesFinalizados() {
+        return pedidoJpaRepository.obtenerVentasClientesFinalizados();
+    }
+
+    public List<ClienteVentaResumenDTO> obtenerVentasClientesPorRango(LocalDate fechaInicio, LocalDate fechaFin) {
+        return pedidoJpaRepository.obtenerVentasClientesPorRango(fechaInicio, fechaFin);
+    }
+
+    public List<ClienteVentaResumenDTO> obtenerVentasClientesDesdeFecha(LocalDate fechaInicio) {
+        return pedidoJpaRepository.obtenerVentasClientesDesdeFecha(fechaInicio);
+    }
+
+    public List<ClienteVentaResumenDTO> obtenerVentasClientesHastaFecha(LocalDate fechaFin) {
+        return pedidoJpaRepository.obtenerVentasClientesHastaFecha(fechaFin);
     }
 }
