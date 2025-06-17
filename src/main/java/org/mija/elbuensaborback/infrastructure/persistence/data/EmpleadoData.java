@@ -2,6 +2,7 @@ package org.mija.elbuensaborback.infrastructure.persistence.data;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.mija.elbuensaborback.domain.enums.AuthProviderEnum;
 import org.mija.elbuensaborback.domain.enums.RolEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.EmpleadoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
@@ -26,6 +27,7 @@ public class EmpleadoData {
         UsuarioEntity userIsabella = UsuarioEntity.builder()
                 .email("isabella@gmail.com")
                 .password(passwordEncoder.encode("112233"))
+                .authProviderEnum(AuthProviderEnum.LOCAL)
                 .disabled(false)
                 .accountExpired(false)
                 .accountLocked(false)
@@ -45,6 +47,7 @@ public class EmpleadoData {
         UsuarioEntity userMaiten = UsuarioEntity.builder()
                 .email("maiten@gmail.com")
                 .password(passwordEncoder.encode("112233"))
+                .authProviderEnum(AuthProviderEnum.LOCAL)
                 .disabled(false)
                 .accountExpired(false)
                 .accountLocked(false)
@@ -64,6 +67,7 @@ public class EmpleadoData {
         UsuarioEntity userEmiliano = UsuarioEntity.builder()
                 .email("emiliano@gmail.com")
                 .password(passwordEncoder.encode("112233"))
+                .authProviderEnum(AuthProviderEnum.LOCAL)
                 .disabled(false)
                 .accountExpired(false)
                 .accountLocked(false)

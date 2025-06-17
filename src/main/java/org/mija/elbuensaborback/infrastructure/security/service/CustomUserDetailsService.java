@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.security.service;
 
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.domain.enums.AuthProviderEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.UsuarioEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.UsuarioRepositoryImpl;
@@ -15,13 +16,10 @@ import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UsuarioRepositoryImpl usuarioRepository;
-
-    public CustomUserDetailsService(UsuarioRepositoryImpl usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
 
 
     @Override

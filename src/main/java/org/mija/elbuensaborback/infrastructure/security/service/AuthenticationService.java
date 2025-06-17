@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.security.service;
 
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.request.auth.AuthRequest;
 import org.mija.elbuensaborback.application.dto.request.auth.RegisterRequest;
 import org.mija.elbuensaborback.application.dto.response.AuthResponse;
@@ -24,6 +25,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
 
     private final AuthenticationManager authManager;
@@ -34,17 +36,6 @@ public class AuthenticationService {
     private final RoleRepositoryImpl roleRepository;
     private final ClienteRepositoryImpl clienteRepository;
     private final ClienteMapper clienteMapper;
-
-    public AuthenticationService(AuthenticationManager authManager, CustomUserDetailsService userDetailsService, UsuarioRepositoryImpl usuarioRepository, PasswordEncoder passwordEncoder, JwtService jwtService, RoleRepositoryImpl roleRepository, ClienteRepositoryImpl clienteRepository, ClienteMapper clienteMapper) {
-        this.authManager = authManager;
-        this.userDetailsService = userDetailsService;
-        this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-        this.roleRepository = roleRepository;
-        this.clienteRepository = clienteRepository;
-        this.clienteMapper = clienteMapper;
-    }
 
     public AuthResponse login(AuthRequest request) {
         Authentication authentication = authManager.authenticate(
