@@ -31,6 +31,11 @@ public class DomicilioController {
         return ResponseEntity.ok(domicilioService.listarDomicilios(idCliente));
     }
 
+    @GetMapping("/{idDomicilio}")
+    public ResponseEntity<DomicilioResponse> obtenerDomicilio(@PathVariable Long idDomicilio) {
+        return ResponseEntity.ok(domicilioService.obtenerDomicilio(idDomicilio));
+    }
+
     @PutMapping("/{idDomicilio}")
     public ResponseEntity<DomicilioResponse> actualizarDomicilio(
             @PathVariable Long idDomicilio,
