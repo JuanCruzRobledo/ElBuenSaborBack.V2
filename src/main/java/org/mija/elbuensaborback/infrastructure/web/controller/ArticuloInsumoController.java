@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloActualizarStockPrecioRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoUpdateRequest;
@@ -11,15 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/articulo-insumo")
+@RequiredArgsConstructor
 public class ArticuloInsumoController {
 
     private final ArticuloInsumoServiceImpl articuloInsumoService;
 
-    public ArticuloInsumoController(ArticuloInsumoServiceImpl articuloInsumoService) {
-        this.articuloInsumoService = articuloInsumoService;
-    }
-
-
+    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<?> crearArticuloInsumo(@RequestBody ArticuloInsumoCreatedRequest articuloInsumoCreatedRequest) {
         try{
@@ -67,7 +65,7 @@ public class ArticuloInsumoController {
         }
     }
 
-    @GetMapping("/bebidas/basic/getAll")
+    @GetMapping("bebidas/getAll")
     public ResponseEntity<?> obtenerBebidas(){
         try{
             return ResponseEntity.ok(articuloInsumoService.obtenerBebidas("bebidas"));
@@ -76,7 +74,7 @@ public class ArticuloInsumoController {
         }
     }
 
-    @GetMapping("/{categoria}/getAll")
+    @GetMapping("{categoria}/getAll")
     public ResponseEntity<?> obtenerBebidasPorCategoria(@PathVariable String categoria){
         try{
             return ResponseEntity.ok(articuloInsumoService.obtenerBebidas(categoria));

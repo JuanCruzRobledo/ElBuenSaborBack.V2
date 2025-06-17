@@ -1,9 +1,12 @@
 package org.mija.elbuensaborback.infrastructure.configuration.security;
 
 
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.infrastructure.security.service.CustomOAuth2UserService;
 import org.mija.elbuensaborback.infrastructure.security.service.CustomUserDetailsService;
 import org.mija.elbuensaborback.infrastructure.security.filters.JwtAuthenticationFilter;
+import org.mija.elbuensaborback.infrastructure.security.service.OAuth2FailureHandler;
 import org.mija.elbuensaborback.infrastructure.security.service.OAuth2SuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +30,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 @Profile("!test")
 public class SecurityConfig {
@@ -34,31 +38,28 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtFilter;
     private final OAuth2SuccessHandler successHandler;
     private final CustomOAuth2UserService oAuth2UserService;
-
-    public SecurityConfig(JwtAuthenticationFilter jwtFilter, OAuth2SuccessHandler successHandler, CustomOAuth2UserService oAuth2UserService) {
-        this.jwtFilter = jwtFilter;
-        this.successHandler = successHandler;
-        this.oAuth2UserService = oAuth2UserService;
-    }
+    private final OAuth2FailureHandler failureHandler;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-
-        return httpSecurity
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                        })
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(
-                        authorizeRequests ->{
-                            authorizeRequests.requestMatchers("/auth/**", "/oauth2/**").permitAll()
-                                    .anyRequest().authenticated();
-                        }
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**", "/oauth2/**", "articulo-manufacturado/basic/getAll").permitAll()
+                        .anyRequest().authenticated() // todas las demás requieren JWT válido
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(oAuth2UserService))
+                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
                         .successHandler(successHandler)
+                        .failureHandler(failureHandler)
                 )
                 .build();
     }
@@ -70,7 +71,6 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true); // Importante para cookies/tokens
-        configuration.setExposedHeaders(Arrays.asList("Content-Disposition"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // Aplica a todas las rutas

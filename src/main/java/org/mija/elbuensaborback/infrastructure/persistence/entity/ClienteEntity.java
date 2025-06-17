@@ -30,7 +30,7 @@ public class ClienteEntity extends PersonaEntity {
     @OneToMany(mappedBy = "cliente")
     private List<PedidoEntity> listaPedido;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "imagen_id")
     private ImagenClienteEntity imagen;
 }

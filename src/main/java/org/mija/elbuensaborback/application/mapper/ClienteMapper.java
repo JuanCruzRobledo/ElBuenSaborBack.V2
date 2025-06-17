@@ -9,6 +9,7 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
 @Mapper(componentModel = "spring")
 public interface ClienteMapper {
 
+    @Mapping(target = "email",source = "usuario.email")
     ClienteBasicResponse toResponse(ClienteEntity entity);
 
     ClienteEntity toEntity(ClienteUpdateRequest clienteUpdateRequest);

@@ -6,6 +6,7 @@ import org.mija.elbuensaborback.application.dto.response.DomicilioResponse;
 import org.mija.elbuensaborback.application.service.DomicilioServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -20,6 +21,7 @@ public class DomicilioController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN') or #idCliente == authentication.principal.id")
     @PostMapping
     public ResponseEntity<DomicilioResponse> crearDomicilio(@PathVariable Long idCliente, @RequestBody DomicilioCreatedRequest domicilioCreatedRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
