@@ -1,7 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
 import lombok.RequiredArgsConstructor;
-import org.mija.elbuensaborback.application.dto.response.RankingManufacturadoResponse;
+import org.mija.elbuensaborback.application.dto.response.RankingArticuloResponse;
 import org.mija.elbuensaborback.domain.repository.DetallePedidoRepositoryPort;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.DetallePedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.DetallePedidoJpaRepository;
@@ -41,18 +41,35 @@ public class DetallePedidoRepositoryImpl implements DetallePedidoRepositoryPort 
         return List.of();
     }
 
-    public List<RankingManufacturadoResponse> rankingArticulosMasPedidos() {
-        return detallePedidoJpaRepository.rankingArticulosMasPedidos();
+    // =========================== ARTICULO MANUFACTURADO =============================
+
+    public List<RankingArticuloResponse> rankingArticulosManufacturadosMasPedidos() {
+        return detallePedidoJpaRepository.rankingArticulosManufacturadosMasPedidos();
     }
 
-    public List<RankingManufacturadoResponse> rankingArticulosMasPedidosEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
-        return detallePedidoJpaRepository.rankingArticulosMasPedidosEntreFechas(fechaInicio,fechaFin);
+    public List<RankingArticuloResponse> rankingArticulosManufacturadosMasPedidosEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        return detallePedidoJpaRepository.rankingArticulosManufacturadosMasPedidosEntreFechas(fechaInicio,fechaFin);
     }
-    public List<RankingManufacturadoResponse> rankingArticulosMasPedidosDesdeFecha(LocalDate fechaInicio) {
-        return detallePedidoJpaRepository.rankingArticulosMasPedidosDesdeFecha(fechaInicio);
+    public List<RankingArticuloResponse> rankingArticulosManufacturadosMasPedidosDesdeFecha(LocalDate fechaInicio) {
+        return detallePedidoJpaRepository.rankingArticulosManufacturadosMasPedidosDesdeFecha(fechaInicio);
     }
-    public List<RankingManufacturadoResponse> rankingArticulosMasPedidosHastaFecha(LocalDate fechaFin) {
-        return detallePedidoJpaRepository.rankingArticulosMasPedidosHastaFecha(fechaFin);
+    public List<RankingArticuloResponse> rankingArticulosManufacturadosMasPedidosHastaFecha(LocalDate fechaFin) {
+        return detallePedidoJpaRepository.rankingArticulosManufacturadosMasPedidosHastaFecha(fechaFin);
     }
 
+    // =========================== ARTICULO INSUMO =============================
+
+    public List<RankingArticuloResponse> rankingArticulosInsumosMasPedidos() {
+        return detallePedidoJpaRepository.rankingArticulosInsumosMasPedidos();
+    }
+
+    public List<RankingArticuloResponse> rankingArticulosInsumosMasPedidosEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        return detallePedidoJpaRepository.rankingArticulosInsumosMasPedidosEntreFechas(fechaInicio,fechaFin);
+    }
+    public List<RankingArticuloResponse> rankingArticulosInsumosMasPedidosDesdeFecha(LocalDate fechaInicio) {
+        return detallePedidoJpaRepository.rankingArticulosInsumosMasPedidosDesdeFecha(fechaInicio);
+    }
+    public List<RankingArticuloResponse> rankingArticulosInsumosMasPedidosHastaFecha(LocalDate fechaFin) {
+        return detallePedidoJpaRepository.rankingArticulosInsumosMasPedidosHastaFecha(fechaFin);
+    }
 }

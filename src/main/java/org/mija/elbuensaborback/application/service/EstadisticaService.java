@@ -2,7 +2,7 @@ package org.mija.elbuensaborback.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.response.RankingClientesResponse;
-import org.mija.elbuensaborback.application.dto.response.RankingManufacturadoResponse;
+import org.mija.elbuensaborback.application.dto.response.RankingArticuloResponse;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.EstadisticaDiaria;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.DetallePedidoRepositoryImpl;
@@ -100,15 +100,27 @@ public class EstadisticaService {
         }
     }
 
-    public List<RankingManufacturadoResponse> rankingManufacturados(LocalDate fechaInicio, LocalDate fechaFin) {
+    public List<RankingArticuloResponse> rankingManufacturados(LocalDate fechaInicio, LocalDate fechaFin) {
         if (fechaInicio != null && fechaFin != null) {
-            return detallePedidoRepository.rankingArticulosMasPedidosEntreFechas(fechaInicio, fechaFin);
+            return detallePedidoRepository.rankingArticulosManufacturadosMasPedidosEntreFechas(fechaInicio, fechaFin);
         } else if (fechaInicio != null) {
-            return detallePedidoRepository.rankingArticulosMasPedidosDesdeFecha(fechaInicio);
+            return detallePedidoRepository.rankingArticulosManufacturadosMasPedidosDesdeFecha(fechaInicio);
         } else if (fechaFin != null) {
-            return detallePedidoRepository.rankingArticulosMasPedidosHastaFecha(fechaFin);
+            return detallePedidoRepository.rankingArticulosManufacturadosMasPedidosHastaFecha(fechaFin);
         } else {
-            return detallePedidoRepository.rankingArticulosMasPedidos();
+            return detallePedidoRepository.rankingArticulosManufacturadosMasPedidos();
+        }
+    }
+
+    public List<RankingArticuloResponse> rankingInsumos(LocalDate fechaInicio, LocalDate fechaFin) {
+        if (fechaInicio != null && fechaFin != null) {
+            return detallePedidoRepository.rankingArticulosInsumosMasPedidosEntreFechas(fechaInicio, fechaFin);
+        } else if (fechaInicio != null) {
+            return detallePedidoRepository.rankingArticulosInsumosMasPedidosDesdeFecha(fechaInicio);
+        } else if (fechaFin != null) {
+            return detallePedidoRepository.rankingArticulosInsumosMasPedidosHastaFecha(fechaFin);
+        } else {
+            return detallePedidoRepository.rankingArticulosInsumosMasPedidos();
         }
     }
 
