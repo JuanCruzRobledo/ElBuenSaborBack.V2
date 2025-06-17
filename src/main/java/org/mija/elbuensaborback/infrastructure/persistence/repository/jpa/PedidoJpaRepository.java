@@ -1,6 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.jpa;
 
 import org.mija.elbuensaborback.application.dto.response.RankingClientesResponse;
+import org.mija.elbuensaborback.domain.enums.EstadoEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +21,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
 
     List<PedidoEntity> findByFechaPedidoBetween(LocalDateTime desde, LocalDateTime hasta);
 
-    List<PedidoEntity> findByFechaPedido(LocalDate fechaPedido);
+    List<PedidoEntity> findByFechaPedidoAndEstadoEnum(LocalDate fechaPedido, EstadoEnum estadoEnum);
 
     @Query("""
     SELECT new org.mija.elbuensaborback.application.dto.response.RankingClientesResponse(

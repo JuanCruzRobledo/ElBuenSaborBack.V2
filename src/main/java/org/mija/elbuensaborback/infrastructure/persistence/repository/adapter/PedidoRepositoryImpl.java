@@ -2,6 +2,7 @@ package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
 
 import org.mija.elbuensaborback.application.dto.response.RankingClientesResponse;
+import org.mija.elbuensaborback.domain.enums.EstadoEnum;
 import org.mija.elbuensaborback.domain.repository.PedidoRepositoryPort;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.PedidoJpaRepository;
@@ -57,8 +58,8 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
         return pedidoJpaRepository.findByFechaPedidoBetween(desde, hasta);
     }
 
-    public List<PedidoEntity> findByFechaPedido(LocalDate fechaPedido){
-        return pedidoJpaRepository.findByFechaPedido(fechaPedido);
+    public List<PedidoEntity> findTerminadosByFechaPedido(LocalDate fechaPedido){
+        return pedidoJpaRepository.findByFechaPedidoAndEstadoEnum(fechaPedido, EstadoEnum.TERMINADO);
     }
 
     public List<RankingClientesResponse> obtenerVentasClientesFinalizados() {

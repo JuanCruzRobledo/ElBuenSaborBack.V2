@@ -30,7 +30,7 @@ public class EstadisticaService {
         LocalDate ayer = LocalDate.now().minusDays(1);
 
         // Consultar pedidos del día anterior
-        List<PedidoEntity> pedidos = pedidoRepository.findByFechaPedido(ayer);
+        List<PedidoEntity> pedidos = pedidoRepository.findTerminadosByFechaPedido(ayer);
 
         // Calcular ingreso total
         BigDecimal ingreso = pedidos.stream()
@@ -60,7 +60,7 @@ public class EstadisticaService {
     public void generarEstadisticasDelDiaActual() {
         LocalDate hoy = LocalDate.now();
 
-        List<PedidoEntity> pedidos = pedidoRepository.findByFechaPedido(hoy);
+        List<PedidoEntity> pedidos = pedidoRepository.findTerminadosByFechaPedido(hoy);
 
         BigDecimal ingreso = pedidos.stream()
                 .map(PedidoEntity::getTotal)
