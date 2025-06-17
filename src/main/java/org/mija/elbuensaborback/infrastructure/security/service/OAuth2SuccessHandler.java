@@ -21,7 +21,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
 
-    @Value("${url.front}")
+    @Value("${url.front.client}")
     private String urlFront;
 
     @Override

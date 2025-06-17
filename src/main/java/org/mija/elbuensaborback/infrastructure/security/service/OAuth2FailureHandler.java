@@ -14,7 +14,7 @@ import java.io.IOException;
 @Component
 public class OAuth2FailureHandler implements AuthenticationFailureHandler {
 
-    @Value("${url.front}")
+    @Value("${url.front.client}")
     private String urlFront;
 
     @Override
