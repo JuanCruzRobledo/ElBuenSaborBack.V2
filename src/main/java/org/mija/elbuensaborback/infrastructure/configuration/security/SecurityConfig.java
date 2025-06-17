@@ -1,6 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.configuration.security;
 
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.infrastructure.security.service.CustomOAuth2UserService;
 import org.mija.elbuensaborback.infrastructure.security.service.CustomUserDetailsService;
@@ -47,20 +48,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                        })
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/oauth2/**").permitAll()
-                        //.requestMatchers("/articulo-insumo/**").hasAnyRole("ADMIN", "COCINERO")
-                        .requestMatchers("/articulo-manufacturado/**").hasRole("CLIENTE")
-                        //.requestMatchers("/categoria/**").hasRole("ADMIN")
-                        //.requestMatchers("/cliente/**").hasRole("ADMIN")
-                        //.requestMatchers("/cliente/**/domicilios/**").hasAnyRole("ADMIN", "CLIENTE")
-                        //.requestMatchers("/empleados/**").hasRole("ADMIN")
-                        //.requestMatchers("/estadisticas/**").hasRole("ADMIN")
-                        //.requestMatchers("/facturas/**").hasRole("ADMIN")
-                        //.requestMatchers("/payment/**").hasRole("ADMIN")
-                        //.requestMatchers("/pedido/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .requestMatchers("/auth/**", "/oauth2/**", "articulo-manufacturado/basic/getAll").permitAll()
+                        .anyRequest().authenticated() // todas las demás requieren JWT válido
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
