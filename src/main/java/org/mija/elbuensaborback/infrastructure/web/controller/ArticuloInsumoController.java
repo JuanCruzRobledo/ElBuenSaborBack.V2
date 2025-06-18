@@ -65,7 +65,7 @@ public class ArticuloInsumoController {
         }
     }
 
-    @GetMapping("bebidas/getAll")
+    @GetMapping("/bebidas/basic/getAll")
     public ResponseEntity<?> obtenerBebidas(){
         try{
             return ResponseEntity.ok(articuloInsumoService.obtenerBebidas("bebidas"));

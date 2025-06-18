@@ -53,7 +53,7 @@ public class SecurityConfig {
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/oauth2/**", "articulo-manufacturado/basic/getAll").permitAll()
+                        .requestMatchers("/auth/**", "/oauth2/**", "/articulo-manufacturado/basic/getAll", "/articulo-insumo/bebidas/basic/getAll").permitAll()
                         .anyRequest().authenticated() // todas las demás requieren JWT válido
                 )
                 .oauth2Login(oauth2 -> oauth2
