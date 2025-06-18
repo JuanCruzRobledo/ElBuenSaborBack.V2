@@ -1,10 +1,8 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
-import com.cloudinary.Cloudinary;
 import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.request.cliente.ClienteUpdateRequest;
 import org.mija.elbuensaborback.application.service.ClienteServiceImpl;
-import org.mija.elbuensaborback.application.service.CloudinaryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

@@ -29,8 +29,8 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteBasicResponse traerCliente(Long id) {
         ClienteEntity cliente = clienteRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el cliente"));
-        System.out.println("IMAGEN " + cliente.getImagen().getUrl());
-        return clienteMapper.toBasicResponse(cliente);
+
+        return  clienteMapper.toBasicResponse(cliente);
     }
 
     @Override

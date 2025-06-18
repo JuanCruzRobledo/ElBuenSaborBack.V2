@@ -1,5 +1,7 @@
 package org.mija.elbuensaborback.application.dto.response;
 
+import lombok.Builder;
+
 public record ClienteBasicResponse(
         Long id,
         String nombre,
@@ -8,4 +10,6 @@ public record ClienteBasicResponse(
         String email,
         String imagen
 ) {
+    @Builder
+    public ClienteBasicResponse{}
 }
