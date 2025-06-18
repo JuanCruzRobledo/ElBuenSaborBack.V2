@@ -24,6 +24,6 @@ public class PromocionDetalleEntity {
 
     @ManyToOne
     @JoinColumn(name = "articulo_id")
-    // ArticuloManufacturado o ArticuloInsumo que se pueda vender
+    // ArticuloManufacturado, ArticuloInsumo , ArticuloPromocion
     private ArticuloEntity articulo;
 }

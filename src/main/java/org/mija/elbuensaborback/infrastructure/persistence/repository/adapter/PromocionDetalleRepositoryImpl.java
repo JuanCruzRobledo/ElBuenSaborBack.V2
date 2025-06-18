@@ -49,7 +49,7 @@ public class PromocionDetalleRepositoryImpl implements PromocionDetalleRepositor
         return promocionDetalleJpaRepository.findByArticuloIn(articulos);
     }
 
-    public List<ArticuloPromocionEntity> findByArticulo(ArticuloEntity articulo){
+    public List<PromocionDetalleEntity> findByArticulo(ArticuloEntity articulo){
         return promocionDetalleJpaRepository.findByArticulo(articulo);
     }
 }

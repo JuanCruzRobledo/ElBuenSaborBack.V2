@@ -1,18 +1,18 @@
 package org.mija.elbuensaborback.application.service;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.global.manufacturado.ArticuloManufacturadoDetalleDto;
 import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoResponse;
+import org.mija.elbuensaborback.application.helpers.ArticuloEstadoService;
 import org.mija.elbuensaborback.application.mapper.ArticuloManufacturadoMapper;
 import org.mija.elbuensaborback.application.service.contratos.ArticuloManufacturadoService;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
-import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloInsumoRepositoryImpl;
-import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloManufacturadoDetalleRepositoryImpl;
-import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloManufacturadoRepositoryImpl;
-import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.CategoriaRepositoryImpl;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +21,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoService {
 
     private final ArticuloManufacturadoRepositoryImpl articuloManufacturadoRepository;
@@ -28,15 +29,7 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
     private final ArticuloManufacturadoDetalleRepositoryImpl articuloManufacturadoDetalleRepository;
     private final ArticuloManufacturadoMapper articuloManufacturadoMapper;
     private final ArticuloInsumoRepositoryImpl articuloInsumoRepository;
-
-    public ArticuloManufacturadoServiceImpl(ArticuloManufacturadoRepositoryImpl articuloManufacturadoRepository, CategoriaRepositoryImpl categoriaRepository, ArticuloManufacturadoDetalleRepositoryImpl articuloManufacturadoDetalleRepository, ArticuloManufacturadoMapper articuloManufacturadoMapper, ArticuloInsumoRepositoryImpl articuloInsumoRepository) {
-        this.articuloManufacturadoRepository = articuloManufacturadoRepository;
-        this.categoriaRepository = categoriaRepository;
-        this.articuloManufacturadoDetalleRepository = articuloManufacturadoDetalleRepository;
-        this.articuloManufacturadoMapper = articuloManufacturadoMapper;
-        this.articuloInsumoRepository = articuloInsumoRepository;
-    }
-
+    private final ArticuloEstadoService articuloEstadoService;
 
     @Override
     public ArticuloManufacturadoResponse crearArticulo(ArticuloManufacturadoCreatedRequest articulo) {
@@ -69,56 +62,62 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
     }
 
     @Override
+    @Transactional
     public ArticuloManufacturadoResponse actualizarArticulo(Long id, ArticuloManufacturadoUpdateRequest articulo) {
-        /*System.out.println("TIENE DETALLES LA ENTIDAD TRAIDA? : ");
-        articuloEntity.getArticuloManufacturadoDetalle().forEach(articuloManufacturadoDetalle -> {
-            System.out.println("ID: " + articuloManufacturadoDetalle.getId());
-            System.out.println("Cantidad: " + articuloManufacturadoDetalle.getCantidad());
-            System.out.println("UnidadMedidaEnum: " + articuloManufacturadoDetalle.getUnidadMedidaEnum());
-            System.out.println("ArticuloInsumo: " + articuloManufacturadoDetalle.getArticuloInsumo().getId());
-            System.out.println("ArticuloManufacturado: " + articuloManufacturadoDetalle.getArticuloManufacturado().getId());
-        });*/
-
         // 1. Buscar el artículo existente
         ArticuloManufacturadoEntity articuloEntity = articuloManufacturadoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Artículo no encontrado con ID: " + id));
 
-        // 2. Buscar la categoría
+        // 2. Guardar estado anterior
+        boolean estabaActivo = Boolean.TRUE.equals(articuloEntity.getProductoActivo());
+
+        // 3. Buscar la categoría
         CategoriaEntity categoria = categoriaRepository.findById(articulo.categoriaId())
                 .orElseThrow(() -> new RuntimeException("Categoría no encontrada con ID: " + articulo.categoriaId()));
 
-        // 3. Obtener todos los IDs de insumos mencionados en los detalles
+        // 4. Obtener todos los IDs de insumos mencionados en los detalles
         List<Long> insumoIds = articulo.articuloManufacturadoDetalle().stream()
                 .map(ArticuloManufacturadoDetalleDto::articuloInsumoId)
                 .distinct()
                 .toList();
 
-        // 4. Buscar todos los insumos y armar un Map por ID
+        // 5. Buscar todos los insumos
         Map<Long, ArticuloInsumoEntity> insumos = articuloInsumoRepository.findAllById(insumoIds).stream()
                 .collect(Collectors.toMap(ArticuloInsumoEntity::getId, Function.identity()));
 
-        // 5. Validar que no falte ninguno
+        // 6. Validar que no falte ninguno
         if (insumos.size() != insumoIds.size()) {
             throw new RuntimeException("Uno o más insumos no existen en la base de datos.");
         }
 
-        // 6. Mapear datos desde el DTO hacia la entidad
+        // 7. Mapear cambios
         articuloManufacturadoMapper.updateEntityWithDetalles(articulo, articuloEntity, insumos);
 
-        if (articuloEntity.getPrecioCosto() != articulo.precioCosto()){
+        // 8. Validaciones de negocio
+        if (articuloEntity.getPrecioCosto() != articulo.precioCosto()) {
             throw new RuntimeException("Precio costo insuficiente");
         }
+
         articuloEntity.setPrecioCosto(articulo.precioCosto());
         articuloEntity.setPrecioVenta(articulo.precioVenta());
         articuloEntity.setTiempoEstimadoMinutos(articulo.tiempoEstimadoMinutos());
-
-        // 7. Setear la nueva categoría
         articuloEntity.setCategoria(categoria);
 
-        // 8. Guardar cambios
+        // 9. Guardar cambios
         ArticuloManufacturadoEntity actualizado = articuloManufacturadoRepository.save(articuloEntity);
 
-        // 9. Devolver respuesta mapeada
+        // 10. Verificar cambios de estado y actuar
+        boolean ahoraActivo = Boolean.TRUE.equals(actualizado.getProductoActivo());
+
+        if (!estabaActivo && ahoraActivo) {
+            // Reactivado: verificar promociones que lo usan
+            articuloEstadoService.reactivarManufacturadoRecursivamente(actualizado);
+        } else if (estabaActivo && !ahoraActivo) {
+            // Desactivado: desactivar promociones relacionadas
+            articuloEstadoService.desactivarManufacturadoRecursivamente(actualizado);
+        }
+
+        // 11. Retornar DTO
         return articuloManufacturadoMapper.toResponse(actualizado);
     }
 
@@ -129,10 +128,14 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
     }
 
     @Override
+    @Transactional
     public void eliminarArticulo(Long id) {
-        ArticuloManufacturadoEntity articuloManufacturado = articuloManufacturadoRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No se encontro el ArticuloManufacturado"));
-        articuloManufacturado.setProductoActivo(false);
-        articuloManufacturadoRepository.save(articuloManufacturado);
+        ArticuloManufacturadoEntity manufacturado = articuloManufacturadoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró el Articulo Manufacturado con id: " + id));
+
+        manufacturado.setEsVendible(false);
+
+        articuloEstadoService.desactivarManufacturadoRecursivamente(manufacturado);
     }
 
     @Override

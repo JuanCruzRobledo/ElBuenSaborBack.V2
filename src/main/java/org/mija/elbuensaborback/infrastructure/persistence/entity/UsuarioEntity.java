@@ -35,5 +35,4 @@ public class UsuarioEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity rol;
-
 }

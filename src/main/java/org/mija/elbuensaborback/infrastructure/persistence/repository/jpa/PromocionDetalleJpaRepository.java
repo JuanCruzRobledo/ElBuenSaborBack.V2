@@ -11,5 +11,5 @@ import java.util.Set;
 public interface PromocionDetalleJpaRepository extends JpaRepository<PromocionDetalleEntity, Long> {
 
     List<PromocionDetalleEntity> findByArticuloIn(Set<ArticuloEntity> articulos);
-    List<ArticuloPromocionEntity>  findByArticulo(ArticuloEntity articulo);
+    List<PromocionDetalleEntity>  findByArticulo(ArticuloEntity articulo);
 }
