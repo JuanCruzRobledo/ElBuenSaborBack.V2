@@ -10,10 +10,7 @@ import org.mija.elbuensaborback.application.dto.request.promocion.ArticuloPromoc
 import org.mija.elbuensaborback.application.dto.response.ArticuloPromocionMenuBasicResponse;
 import org.mija.elbuensaborback.application.mapper.ArticuloPromocionMapper;
 import org.mija.elbuensaborback.application.service.contratos.ArticuloPromocionService;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumoEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloPromocionEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.CategoriaEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloPromocionRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.CategoriaRepositoryImpl;
@@ -57,6 +54,8 @@ public class ArticuloPromocionServiceImpl implements ArticuloPromocionService {
         ArticuloPromocionEntity articuloPromocion = articuloPromocionMapper.toEntity(articuloPromocionCreatedRequest);
 
         //1. Calcular el precio costo de la promocion y el precio de total sin descuento
+        SucursalEntity sucursal = SucursalEntity.builder().id(1L).build();
+        articuloPromocion.setSucursal(sucursal);
         articuloPromocion.calcularPrecioCosto();
         articuloPromocion.calcularPrecioTotal();
 

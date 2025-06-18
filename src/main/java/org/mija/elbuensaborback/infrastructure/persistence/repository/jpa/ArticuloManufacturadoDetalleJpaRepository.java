@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.jpa;
 
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoDetalleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,4 +13,6 @@ public interface ArticuloManufacturadoDetalleJpaRepository extends JpaRepository
 
     @Query("SELECT d FROM org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoDetalleEntity d JOIN FETCH d.articuloInsumo WHERE d.articuloManufacturado.id = :idManufacturado")
     List<ArticuloManufacturadoDetalleEntity> findAllByIdArticuloManufacturado(@Param("idManufacturado") Long idManufacturado);
+
+    List<ArticuloManufacturadoDetalleEntity> findByArticuloInsumo(ArticuloInsumoEntity insumo);
 }

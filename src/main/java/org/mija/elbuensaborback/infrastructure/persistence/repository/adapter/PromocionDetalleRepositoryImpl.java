@@ -1,12 +1,15 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
 import org.mija.elbuensaborback.domain.repository.PromocionDetalleRepositoryPort;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloPromocionEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PromocionDetalleEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.PromocionDetalleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public class PromocionDetalleRepositoryImpl implements PromocionDetalleRepositoryPort {
@@ -40,5 +43,13 @@ public class PromocionDetalleRepositoryImpl implements PromocionDetalleRepositor
     @Override
     public List<PromocionDetalleEntity> saveAll(List<PromocionDetalleEntity> entities) {
         return List.of();
+    }
+
+    public List<PromocionDetalleEntity> findByArticuloIn(Set<ArticuloEntity> articulos){
+        return promocionDetalleJpaRepository.findByArticuloIn(articulos);
+    }
+
+    public List<ArticuloPromocionEntity> findByArticulo(ArticuloEntity articulo){
+        return promocionDetalleJpaRepository.findByArticulo(articulo);
     }
 }

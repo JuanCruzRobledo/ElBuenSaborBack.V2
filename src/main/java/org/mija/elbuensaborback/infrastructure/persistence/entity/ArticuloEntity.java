@@ -50,6 +50,13 @@ public abstract class ArticuloEntity {
     @JoinColumn(name = "sucursal_id")
     private SucursalEntity sucursal;
 
-    //public abstract void descontarStock(int cantidad);
+    public void activar() {
+        this.productoActivo = true;
+        this.esVendible = true;
+    }
 
+    public void desactivar() {
+        this.productoActivo = false;
+        this.esVendible = false;
+    }
 }
