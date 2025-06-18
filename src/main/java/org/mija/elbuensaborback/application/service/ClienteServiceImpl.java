@@ -7,6 +7,7 @@ import org.mija.elbuensaborback.application.dto.response.ClienteBasicResponse;
 import org.mija.elbuensaborback.application.mapper.ClienteMapper;
 import org.mija.elbuensaborback.application.service.contratos.ClienteService;;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ClienteRepositoryImpl;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +34,19 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setId(id);
 
         return clienteMapper.toResponse(clienteRepository.save(cliente));
+    }
+
+    @Override
+    public ClienteBasicResponse subirFoto(Long id, String foto) {
+        ClienteEntity cliente = clienteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se pudo encontrar el cliente"));
+        if (cliente.getImagen() == null) {
+            ImagenClienteEntity imagen = ImagenClienteEntity.builder().url(foto).build();
+            cliente.setImagen(imagen);
+        } else {
+            cliente.getImagen().setUrl(foto);
+        }
+
+        cliente =clienteRepository.save(cliente);
+        return clienteMapper.toResponse(cliente);
     }
 }

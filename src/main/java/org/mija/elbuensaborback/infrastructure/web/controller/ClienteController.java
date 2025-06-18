@@ -21,4 +21,9 @@ public class ClienteController {
     public ResponseEntity<?> actualizarCliente(@PathVariable Long id, @RequestBody ClienteUpdateRequest clienteUpdateRequest) {
         return ResponseEntity.ok(clienteService.actualizarCliente(id, clienteUpdateRequest));
     }
+
+    @PostMapping("/foto/{id}")
+    public ResponseEntity<?> subirFotoCliente(@PathVariable Long id, @RequestBody String foto) {
+        return ResponseEntity.ok(clienteService.subirFoto(id, foto));
+    }
 }

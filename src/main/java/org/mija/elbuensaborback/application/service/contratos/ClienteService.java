@@ -8,4 +8,5 @@ public interface ClienteService {
 
     ClienteBasicResponse traerCliente(Long id);
     ClienteBasicResponse actualizarCliente(Long id, ClienteUpdateRequest clienteUpdateRequest);
+    ClienteBasicResponse subirFoto(Long id,String foto);
 }
