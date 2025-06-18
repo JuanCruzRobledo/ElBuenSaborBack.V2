@@ -7,11 +7,11 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.RoleEntity;
 
 @Mapper(componentModel = "spring")
 public interface RolMapper {
-    //@Mapping(target = "rolName", source = "rolEnum")
-    @Mapping(target = "rolName", ignore = true)
+    @Mapping(target = "rolName", source = "rolEnum")
+    //@Mapping(target = "rolName", ignore = true)
     RolDto toDto(RoleEntity roleEntity);
 
-    //@Mapping(target = "rolEnum", source = "rolName")
-    @Mapping(target = "rolEnum", ignore = true)
+    @Mapping(target = "rolEnum", source = "rolName")
+    //@Mapping(target = "rolEnum", ignore = true)
     RoleEntity toEntity(RolDto rolDto);
 }

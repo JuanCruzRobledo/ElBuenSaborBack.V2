@@ -9,6 +9,7 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.EmpleadoEntity
 @Mapper(componentModel = "spring", uses = { RolMapper.class})
 public interface EmpleadoMapper {
     @Mapping(target = "email", source = "usuario.email")
+    @Mapping(target = "rol", source = "usuario.rol")
     EmpleadoResponse toResponse(EmpleadoEntity entity);
 
     @Mapping(target = "usuario.email", source = "email")
