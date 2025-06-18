@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mija.elbuensaborback.application.dto.global.manufacturado.ImagenDto;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenArticuloEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenClienteEntity;
 
 
 @Mapper(componentModel="spring")
@@ -13,6 +14,8 @@ public interface ImagenArticuloMapper {
     ImagenArticuloEntity dtoToEntity(ImagenDto imagenDto);
 
     ImagenDto entityToDto(ImagenArticuloEntity imagenArticuloEntity);
+
+    ImagenDto entityToDto(ImagenClienteEntity imagenClienteEntity);
 
     /* TENGO QUE ARREGLAR PARA QUE SE HAGA ACA
     @Mapping(target = "id", ignore = true)

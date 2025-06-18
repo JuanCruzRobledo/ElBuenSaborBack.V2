@@ -4,12 +4,15 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.request.cliente.ClienteUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ClienteBasicResponse;
+import org.mija.elbuensaborback.application.dto.response.ClienteResponse;
 import org.mija.elbuensaborback.application.mapper.ClienteMapper;
 import org.mija.elbuensaborback.application.service.contratos.ClienteService;;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ClienteRepositoryImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -23,7 +26,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteBasicResponse traerCliente(Long id) {
         ClienteEntity cliente = clienteRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el cliente"));
-        return clienteMapper.toResponse(cliente);
+        return clienteMapper.toBasicResponse(cliente);
     }
 
     @Override
@@ -33,7 +36,7 @@ public class ClienteServiceImpl implements ClienteService {
 
         cliente.setId(id);
 
-        return clienteMapper.toResponse(clienteRepository.save(cliente));
+        return clienteMapper.toBasicResponse(clienteRepository.save(cliente));
     }
 
     @Override
@@ -47,6 +50,12 @@ public class ClienteServiceImpl implements ClienteService {
         }
 
         cliente =clienteRepository.save(cliente);
-        return clienteMapper.toResponse(cliente);
+        return clienteMapper.toBasicResponse(cliente);
+    }
+
+    @Override
+    public List<ClienteResponse> listarClientes() {
+        List<ClienteEntity> listaEmpleados = clienteRepository.findAll();
+        return listaEmpleados.stream().map(clienteMapper::toResponse).toList();
     }
 }

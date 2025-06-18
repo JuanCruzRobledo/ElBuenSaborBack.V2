@@ -24,7 +24,7 @@ public class ClienteRepositoryImpl implements ClienteRepositoryPort {
 
     @Override
     public List<ClienteEntity> findAll() {
-        return List.of();
+        return clienteJpaRepository.findAll();
     }
 
     @Override

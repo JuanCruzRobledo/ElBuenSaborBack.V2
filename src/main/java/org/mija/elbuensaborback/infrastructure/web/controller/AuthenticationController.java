@@ -4,13 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.request.auth.AuthRequest;
 import org.mija.elbuensaborback.application.dto.request.auth.RegisterRequest;
 import org.mija.elbuensaborback.application.dto.response.AuthResponse;
-import org.mija.elbuensaborback.application.dto.response.ClienteBasicResponse;
 import org.mija.elbuensaborback.application.mapper.ClienteMapper;
-import org.mija.elbuensaborback.application.service.contratos.ClienteService;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.UsuarioEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.ClienteJpaRepository;
-import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.UsuarioJpaRepository;
 import org.mija.elbuensaborback.infrastructure.security.service.AuthenticationService;
 import org.mija.elbuensaborback.infrastructure.security.service.CustomUserDetailsService;
 import org.mija.elbuensaborback.infrastructure.security.service.JwtService;
@@ -19,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -79,7 +73,7 @@ public class AuthenticationController {
             // 4. Obtener datos del cliente
             ClienteEntity cliente = clienteRepository.findByUsuarioEmail(email);
 
-            return ResponseEntity.ok(new AuthResponse(newJwt, clienteMapper.toResponse(cliente)));
+            return ResponseEntity.ok(new AuthResponse(newJwt, clienteMapper.toBasicResponse(cliente)));
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Autenticación fallida", e);
@@ -96,6 +90,6 @@ public class AuthenticationController {
 
         ClienteEntity cliente = clienteRepository.findByUsuarioEmail(email);
 
-        return ResponseEntity.ok(new AuthResponse(newToken, clienteMapper.toResponse(cliente)));
+        return ResponseEntity.ok(new AuthResponse(newToken, clienteMapper.toBasicResponse(cliente)));
     }
 }

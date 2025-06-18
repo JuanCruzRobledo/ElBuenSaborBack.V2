@@ -26,4 +26,9 @@ public class ClienteController {
     public ResponseEntity<?> subirFotoCliente(@PathVariable Long id, @RequestBody String foto) {
         return ResponseEntity.ok(clienteService.subirFoto(id, foto));
     }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<?> obtenerTodosLosClientes() {
+        return ResponseEntity.ok(clienteService.listarClientes());
+    }
 }

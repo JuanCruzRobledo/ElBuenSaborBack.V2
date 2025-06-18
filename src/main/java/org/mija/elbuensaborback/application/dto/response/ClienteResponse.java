@@ -1,7 +1,17 @@
 package org.mija.elbuensaborback.application.dto.response;
 
+
+import org.mija.elbuensaborback.application.dto.global.manufacturado.ImagenDto;
+
+import java.util.List;
+
 public record ClienteResponse(
         Long id,
-        String nombreCompleto
+        String nombre,
+        String apellido,
+        String telefono,
+        UsuarioResponse usuario,
+        List<DomicilioResponse> domicilio,
+        ImagenDto imagen
 ) {
 }

@@ -46,7 +46,7 @@ public class AuthenticationService {
         String token = jwtService.generateToken(user);
 
         ClienteEntity cliente = clienteRepository.findByUsuarioEmail(request.email());
-        return new AuthResponse(token,clienteMapper.toResponse(cliente));
+        return new AuthResponse(token,clienteMapper.toBasicResponse(cliente));
     }
 
 
@@ -88,7 +88,7 @@ public class AuthenticationService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
         String token = jwtService.generateToken(userDetails);
 
-        return new AuthResponse(token,clienteMapper.toResponse(cliente));
+        return new AuthResponse(token,clienteMapper.toBasicResponse(cliente));
     }
 
     public AuthResponse oauth2Login(OAuth2AuthenticationToken authToken) {
