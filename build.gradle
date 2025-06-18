@@ -59,6 +59,8 @@ dependencies {
 
 // === WEB SOCKETS ===
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+// === CLOUDINARY ===
+    implementation 'com.cloudinary:cloudinary-http44:1.33.0'
 // === JASPER REPORTS ===
     implementation 'net.sf.jasperreports:jasperreports:6.21.3'
 }

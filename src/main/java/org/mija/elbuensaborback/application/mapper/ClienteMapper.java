@@ -12,6 +12,7 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
 public interface ClienteMapper {
 
     @Mapping(target = "email",source = "usuario.email")
+    @Mapping(target = "imagen",source = "imagen.url")
     ClienteBasicResponse toBasicResponse(ClienteEntity entity);
 
     ClienteResponse toResponse(ClienteEntity entity);

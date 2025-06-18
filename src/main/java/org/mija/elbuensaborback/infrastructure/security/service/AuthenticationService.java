@@ -107,7 +107,8 @@ public class AuthenticationService {
                 cliente.getNombre(),
                 cliente.getApellido(),
                 cliente.getTelefono(),
-                usuario.getEmail()
+                usuario.getEmail(),
+                cliente.getImagen().getUrl()
         );
         return new AuthResponse(jwt, clienteResponse);
     }
