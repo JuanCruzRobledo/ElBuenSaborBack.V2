@@ -98,27 +98,32 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
             throw new RuntimeException("Precio costo insuficiente");
         }
 
-        articuloEntity.setPrecioCosto(articulo.precioCosto());
+        if (articulo.precioCosto() != null) {
+            articuloEntity.setPrecioCosto(articulo.precioCosto());
+        } else {
+            articuloEntity.calcularPrecioCosto();
+        }
+
         articuloEntity.setPrecioVenta(articulo.precioVenta());
         articuloEntity.setTiempoEstimadoMinutos(articulo.tiempoEstimadoMinutos());
         articuloEntity.setCategoria(categoria);
 
-        // 9. Guardar cambios
-        ArticuloManufacturadoEntity actualizado = articuloManufacturadoRepository.save(articuloEntity);
 
         // 10. Verificar cambios de estado y actuar
-        boolean ahoraActivo = Boolean.TRUE.equals(actualizado.getProductoActivo());
+        boolean ahoraActivo = Boolean.TRUE.equals(articuloEntity.getProductoActivo());
 
         if (!estabaActivo && ahoraActivo) {
             // Reactivado: verificar promociones que lo usan
-            articuloEstadoService.reactivarManufacturadoRecursivamente(actualizado);
+            articuloEntity.setProductoActivo(Boolean.FALSE); //Para no afectar el metodo recursivo que lo va a activar
+            articuloEstadoService.reactivarManufacturadoRecursivamente(articuloEntity);
         } else if (estabaActivo && !ahoraActivo) {
             // Desactivado: desactivar promociones relacionadas
-            articuloEstadoService.desactivarManufacturadoRecursivamente(actualizado);
+            articuloEntity.setProductoActivo(Boolean.TRUE); //Para no afectar el metodo recursivo que lo va a activar
+            articuloEstadoService.desactivarManufacturadoRecursivamente(articuloEntity);
         }
 
         // 11. Retornar DTO
-        return articuloManufacturadoMapper.toResponse(actualizado);
+        return articuloManufacturadoMapper.toResponse(articuloEntity);
     }
 
 

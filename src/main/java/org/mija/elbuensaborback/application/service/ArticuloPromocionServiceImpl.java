@@ -103,25 +103,26 @@ public class ArticuloPromocionServiceImpl implements ArticuloPromocionService {
             throw new RuntimeException("Precio de costo no coincide con el esperado.");
         }
 
-        // 9. Setear nueva categoría
+        // 9. Setear nueva categoría y costo
         promocionEntity.setCategoria(categoria);
-
-        // 10. Guardar cambios
-        ArticuloPromocionEntity actualizada = articuloPromocionRepository.save(promocionEntity);
+        promocionEntity.calcularPrecioCosto();
+        promocionEntity.calcularPrecioTotal();
 
         // 11. Verificar cambio de estado y aplicar lógica relacionada
-        boolean estaActivaAhora = Boolean.TRUE.equals(actualizada.getProductoActivo());
+        boolean estaActivaAhora = Boolean.TRUE.equals(promocionEntity.getProductoActivo());
 
         if (!estabaActiva && estaActivaAhora) {
             // Se reactivó
-            articuloEstadoService.reactivarPromocionRecursivamente(actualizada);
+            promocionEntity.setProductoActivo(Boolean.FALSE); //Para no afectar el metodo recursivo que lo va a activar
+            articuloEstadoService.reactivarPromocionRecursivamente(promocionEntity);
         } else if (estabaActiva && !estaActivaAhora) {
             // Se desactivó
-            articuloEstadoService.desactivarPromocionRecursivamente(actualizada);
+            promocionEntity.setProductoActivo(Boolean.TRUE); //Para no afectar el metodo recursivo que lo va a activar
+            articuloEstadoService.desactivarPromocionRecursivamente(promocionEntity);
         }
 
         // 12. Devolver DTO
-        return articuloPromocionMapper.toResponse(actualizada);
+        return articuloPromocionMapper.toResponse(promocionEntity);
     }
 
     @Override

@@ -68,6 +68,7 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
             insumo.setProductoActivo(Boolean.FALSE); //Para no afectar el metodo recursivo que lo va a activar
             articuloEstadoService.reactivarInsumoRecursivamente(insumo);
         } else if (estabaActivo && !estaActivoAhora) {
+            insumo.setProductoActivo(Boolean.TRUE); //Para no afectar el metodo recursivo que lo va a activar
             articuloEstadoService.desactivarInsumoRecursivamente(insumo);
         }
 
