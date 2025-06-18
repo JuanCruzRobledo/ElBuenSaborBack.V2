@@ -27,8 +27,8 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteBasicResponse actualizarCliente(Long id, ClienteUpdateRequest clienteUpdateRequest) {
-
-        ClienteEntity cliente = clienteMapper.toEntity(clienteUpdateRequest);
+        ClienteEntity cliente = clienteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se pudo encontrar el cliente"));
+        clienteMapper.actualizarDesdeDto(clienteUpdateRequest, cliente);
 
         cliente.setId(id);
 
