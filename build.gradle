@@ -54,9 +54,10 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test' // Testing de funcionalidades de seguridad
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher' // Lanzador de tests de JUnit Platform
 
+// === SWAGGER ===
+    implementation("io.swagger.core.v3:swagger-annotations:2.2.31")
 // === MERCADO PAGO ===
     implementation 'com.mercadopago:sdk-java:2.2.0' // SDK oficial de Mercado Pago
-
 // === WEB SOCKETS ===
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 // === CLOUDINARY ===
