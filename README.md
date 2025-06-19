@@ -51,6 +51,7 @@ cd elbuensabor-back
 ```
 
 ### 2. Configurar variables de entorno
+> ⚠️ IMPORTANTE: No dejará correr la aplicación en caso de no encontrar una variable, ya que spring necesita inyectarla
 
 Crear un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
@@ -91,7 +92,37 @@ CLOUD_API_SECRET=...
 
 ---
 
-### 3. Levantar el proyecto
+### 4. Chequear Perfiles de entorno (`spring.profiles.active`)
+
+El proyecto utiliza perfiles configurables mediante la propiedad `spring.profiles.active` para adaptar el comportamiento del backend según el entorno de ejecución.
+
+#### 🔹 Perfil `test`
+
+```properties
+spring.profiles.active=test
+```
+
+- Pensado para **desarrollar y testear rápidamente** sin necesidad de autenticación real.
+- **Desactiva completamente la autenticación OAuth2** (Google) y la seguridad de endpoints.
+- Permite iniciar sesión con usuario y contraseña, pero **todos los endpoints quedan desprotegidos**, incluso los que normalmente requerirían un token.
+- Ideal para pruebas de funcionalidad y para desarrollo de frontend sin fricción.
+
+#### 🔹 Perfil `dev`
+
+```properties
+spring.profiles.active=dev
+```
+
+- Utilizado en desarrollo con lógica de seguridad activa.
+- Permite el uso de **OAuth2 y login con usuario/contraseña**.
+- Los endpoints públicos como los de la landing o el menú están accesibles sin login.
+- Los demás endpoints están **protegidos por roles y tokens JWT**, simulando el comportamiento del sistema en producción.
+
+> ✅ Para cambiar el perfil, editar la propiedad `spring.profiles.active` en el archivo `application.properties` o `application.yml`.
+
+---
+
+### 4. Levantar el proyecto
 
 Si usás **Gradle**:
 
@@ -119,7 +150,7 @@ Si usás **Gradle**:
 
 ### 📦 Módulo de Pedidos
 - Generación de pedidos
-- Cambio de estados de pedido 
+- Cambio de estados de pedido
 - WebSocket para notificaciones en tiempo real
 
 ### 👥 Módulo de Usuarios
@@ -141,7 +172,7 @@ Si usás **Gradle**:
 
 ### 💳 Módulo de Pagos
 - Integración con MercadoPago
-- Validación de pagos y manejo de IPN 
+- Validación de pagos y manejo de IPN
 - Uso de ngrok para pruebas en entorno local
 
 > ⚠️ Esta estructura representa la lógica del backend. Algunas de estas funcionalidades ya están integradas al frontend, y otras están listas pero en espera de implementación del lado cliente.
@@ -158,7 +189,7 @@ Aunque gran parte de la lógica ya está implementada, restan algunos detalles p
 - Validaciones adicionales en endpoints existentes
 - Manejo de respuestas en caso de error (GlobalExceptionHandler)
 - Envío de facturas por email
-- Corrección en algunos CRUDs de los faltantes por implementar en el front  
+- Corrección en algunos CRUDs de los faltantes por implementar en el front
 ---
 
 ## 📅 Última actualización Readme
