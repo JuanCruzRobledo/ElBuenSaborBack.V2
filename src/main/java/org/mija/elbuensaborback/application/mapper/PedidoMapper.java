@@ -12,8 +12,8 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 @Mapper(componentModel = "spring", uses = {DetallePedidoMapper.class, DomicilioMapper.class})
 public abstract class PedidoMapper {
 
-    @Mapping(target = "cliente.id", source = "clienteId")
-    @Mapping(target = "domicilio.id", source = "domicilioId")
+    @Mapping(target = "cliente.id", ignore = true )
+    @Mapping(target = "domicilio.id",  ignore = true )
     public abstract PedidoEntity toEntity(PedidoCreatedRequest pedidoCreatedRequest);
 
     @AfterMapping

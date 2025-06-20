@@ -21,6 +21,10 @@ public class LocalidadRepositoryImpl implements LocalidadRepositoryPort {
         return localidadJpaRepository.findById(id);
     }
 
+    public LocalidadEntity findByNombre(String nombre) {
+        return localidadJpaRepository.findByNombre(nombre);
+    }
+
     @Override
     public List<LocalidadEntity> findAll() {
         return localidadJpaRepository.findAll();

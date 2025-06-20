@@ -71,6 +71,7 @@ public class DomicilioServiceImpl implements DomicilioService {
 
         domicilio.setCalle(request.calle());
         domicilio.setNumero(request.numero());
+        domicilio.setDescripcion(request.descripcion());
         domicilio.setCodigoPostal(request.codigoPostal());
         domicilio.setLocalidad(localidad);
 

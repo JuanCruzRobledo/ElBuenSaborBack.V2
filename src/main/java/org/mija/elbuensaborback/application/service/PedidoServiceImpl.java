@@ -10,10 +10,10 @@ import org.mija.elbuensaborback.application.service.contratos.PedidoService;
 import org.mija.elbuensaborback.domain.enums.EstadoEnum;
 import org.mija.elbuensaborback.domain.enums.EstadoPagoEnum;
 import org.mija.elbuensaborback.domain.enums.TipoEnvioEnum;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.DetallePedidoEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ClienteRepositoryImpl;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.DomicilioRepositoryImpl;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.LocalidadRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PedidoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.web.controller.PedidoWebSocketController;
 import org.springframework.stereotype.Service;
@@ -34,12 +34,20 @@ public class PedidoServiceImpl implements PedidoService {
     private final PedidoMapper pedidoMapper;
     private final PedidoWebSocketController webSocketController;
     private final ComprobanteService comprobanteService;
+    private final ClienteRepositoryImpl clienteRepository;
+    private final DomicilioRepositoryImpl domicilioRepository;
+    private final LocalidadRepositoryImpl localidadRepository;
 
     @Override
     @Transactional
     public PedidoResponse crearPedido(PedidoCreatedRequest pedidoCreatedRequest) {
+        ClienteEntity cliente = clienteRepository.findById(pedidoCreatedRequest.clienteId()).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el cliente"));
+        DomicilioEntity domicilio = domicilioRepository.findById(pedidoCreatedRequest.domicilioId()).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el domicilio"));
+
         //Se calcula el subtotal de cada detalle en el mapper de detalle
         PedidoEntity pedido = pedidoMapper.toEntity(pedidoCreatedRequest);
+        pedido.setCliente(cliente);
+        pedido.setDomicilio(domicilio);
         pedido.setHoraEstimadaFinalizacion(LocalTime.MIN);
         pedido.setFechaPedido(LocalDate.now());
         pedido.setEstadoEnum(EstadoEnum.PENDIENTE);
@@ -65,6 +73,7 @@ public class PedidoServiceImpl implements PedidoService {
 
         // Procesar stock
         pedido.procesarStock();
+        pedido.setDomicilioSnapshot(domicilio.toString());
 
         pedido = pedidoRepository.save(pedido);
 
@@ -81,7 +90,9 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoResponse obtenerPedido(Long id) {
         PedidoEntity pedido = pedidoRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se encontro el pedido con el id "+ id));
-
+        pedido.setDomicilio(DomicilioEntity.fromSnapshotString(pedido.getDomicilioSnapshot()));
+        LocalidadEntity localidad = localidadRepository.findByNombre(pedido.getDomicilio().getLocalidad().getNombre());
+        pedido.getDomicilio().setLocalidad(localidad);
         return pedidoMapper.toResponse(pedido);
     }
 
@@ -92,12 +103,22 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public Set<PedidoResponse> listarPedido() {
-        return pedidoRepository.findAll().stream().map(pedidoMapper::toResponse).collect(Collectors.toSet());
+        return pedidoRepository.findAll().stream().map(pedido -> {
+            pedido.setDomicilio(DomicilioEntity.fromSnapshotString(pedido.getDomicilioSnapshot()));
+            LocalidadEntity localidad = localidadRepository.findByNombre(pedido.getDomicilio().getLocalidad().getNombre());
+            pedido.getDomicilio().setLocalidad(localidad);
+            return pedidoMapper.toResponse(pedido);
+        }).collect(Collectors.toSet());
     }
 
     @Override
     public Set<PedidoResponse> listarPedidoCliente(Long id) {
-        return pedidoRepository.findAllByCliente(id).stream().map(pedidoMapper::toResponse).collect(Collectors.toSet());
+        return pedidoRepository.findAllByCliente(id).stream().map(pedido -> {
+            pedido.setDomicilio(DomicilioEntity.fromSnapshotString(pedido.getDomicilioSnapshot()));
+            LocalidadEntity localidad = localidadRepository.findByNombre(pedido.getDomicilio().getLocalidad().getNombre());
+            pedido.getDomicilio().setLocalidad(localidad);
+            return pedidoMapper.toResponse(pedido);
+        }).collect(Collectors.toSet());
     }
 
 

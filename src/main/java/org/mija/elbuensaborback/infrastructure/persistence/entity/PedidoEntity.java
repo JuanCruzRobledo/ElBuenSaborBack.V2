@@ -51,6 +51,9 @@ public class PedidoEntity {
     @JoinColumn(name = "domicilio_id")
     private DomicilioEntity domicilio;
 
+    @Column(nullable = false)
+    private String domicilioSnapshot; //Guarda los valores del domicilio en el momento del pedido
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")
     private ClienteEntity cliente;
