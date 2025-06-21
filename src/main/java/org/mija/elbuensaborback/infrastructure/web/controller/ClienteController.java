@@ -28,10 +28,6 @@ public class ClienteController {
     public ResponseEntity<?> subirFotoCliente(@PathVariable Long id, @RequestParam("archivo") MultipartFile archivo) {
         return ResponseEntity.ok(clienteService.subirFoto(id, archivo));
     }
-    @PostMapping("/foto/{id}")
-    public ResponseEntity<?> subirFotoString(@PathVariable Long id, @RequestBody String foto) {
-        return ResponseEntity.ok(clienteService.subirFotoString(id, foto));
-    }
 
     @GetMapping("/getAll")
     public ResponseEntity<?> obtenerTodosLosClientes() {

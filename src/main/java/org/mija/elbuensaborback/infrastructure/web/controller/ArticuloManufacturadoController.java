@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoResponse;
@@ -10,13 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/articulo-manufacturado")
+@RequiredArgsConstructor
 public class ArticuloManufacturadoController {
     private final ArticuloManufacturadoServiceImpl articuloManufacturadoService;
-
-    public ArticuloManufacturadoController(ArticuloManufacturadoServiceImpl articuloManufacturadoService) {
-        this.articuloManufacturadoService = articuloManufacturadoService;
-    }
-
 
     @PostMapping("")
     public ResponseEntity<?> crearArticuloManufacturada(@RequestBody ArticuloManufacturadoCreatedRequest articuloManufacturadoCreatedRequest) {

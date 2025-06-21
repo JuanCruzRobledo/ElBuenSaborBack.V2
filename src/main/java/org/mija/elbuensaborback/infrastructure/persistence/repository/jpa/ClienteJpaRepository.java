@@ -10,7 +10,10 @@ import java.util.List;
 
 public interface ClienteJpaRepository extends JpaRepository<ClienteEntity, Long> {
     ClienteEntity findByUsuarioEmail(String email);
-    @Query("SELECT c.domicilio FROM cliente c WHERE c.id = :idCliente")
-    List<DomicilioEntity> findDomiciliosByClienteId(@Param("idCliente") Long idCliente);
+
+    @Query("SELECT d FROM cliente c JOIN c.domicilio d WHERE c.id = :idCliente AND d.activo = true")
+    List<DomicilioEntity> findDomiciliosActivosByClienteId(@Param("idCliente") Long idCliente);
+
+
     List<ClienteEntity> findAllByDomicilioContains(DomicilioEntity domicilio);
 }

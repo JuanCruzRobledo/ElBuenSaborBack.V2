@@ -47,7 +47,7 @@ public class ClienteRepositoryImpl implements ClienteRepositoryPort {
     }
 
     public List<DomicilioEntity> findDomiciliosByClienteId(Long clienteId) {
-        return clienteJpaRepository.findDomiciliosByClienteId(clienteId);
+        return clienteJpaRepository.findDomiciliosActivosByClienteId(clienteId);
     }
     public List<ClienteEntity> findAllByDomicilioContains(DomicilioEntity domicilio){
       return clienteJpaRepository.findAllByDomicilioContains(domicilio);

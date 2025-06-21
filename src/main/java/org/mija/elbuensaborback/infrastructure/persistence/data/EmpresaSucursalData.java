@@ -28,7 +28,7 @@ public class EmpresaSucursalData {
                 .horarioApertura(LocalTime.of(20, 0))
                 .horarioCierre(LocalTime.of(1, 0))
                 .domicilio(DomicilioEntity.builder()
-                        .calle("Av.Pepe").numero(123).codigoPostal("5523").localidad(lasHeras)
+                        .calle("Av.Pepe").numero(123).codigoPostal("5523").activo(true).localidad(lasHeras)
                         .build())
                 .build();
 

@@ -29,6 +29,7 @@ public class ClienteData {
                 .numero(123)
                 .calle("Av. Jorgito ")
                 .codigoPostal("1111")
+                .activo(true)
                 .localidad(localidadRepository.findByNombre("Godoy Cruz"))
                 .descripcion("Casa blanca con rejas marrones")
                 .build();
@@ -58,6 +59,7 @@ public class ClienteData {
                 .numero(123)
                 .calle("Av. San Martin")
                 .codigoPostal("5555")
+                .activo(true)
                 .descripcion("Casa Morada con paredes sin revocar")
                 .localidad(localidadRepository.findByNombre("Godoy Cruz"))
                 .build();

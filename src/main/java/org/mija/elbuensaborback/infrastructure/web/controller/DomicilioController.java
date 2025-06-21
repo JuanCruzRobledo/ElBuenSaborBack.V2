@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.request.domicilio.DomicilioCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.domicilio.DomicilioUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.DomicilioResponse;
@@ -13,13 +14,9 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/cliente/{idCliente}/domicilios")
+@RequiredArgsConstructor
 public class DomicilioController {
     private final DomicilioServiceImpl domicilioService;
-
-    public DomicilioController(DomicilioServiceImpl domicilioService) {
-        this.domicilioService = domicilioService;
-    }
-
 
     @PreAuthorize("hasRole('ADMIN') or #idCliente == authentication.principal.id")
     @PostMapping

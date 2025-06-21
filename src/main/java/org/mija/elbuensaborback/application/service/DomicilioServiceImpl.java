@@ -1,10 +1,11 @@
 package org.mija.elbuensaborback.application.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.mija.elbuensaborback.application.dto.request.domicilio.DomicilioCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.domicilio.DomicilioUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.DomicilioResponse;
-import org.mija.elbuensaborback.application.dto.response.LocalidadResponse;
 import org.mija.elbuensaborback.application.mapper.DomicilioMapper;
 import org.mija.elbuensaborback.application.mapper.LocalidadMapper;
 import org.mija.elbuensaborback.application.service.contratos.DomicilioService;
@@ -22,6 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class DomicilioServiceImpl implements DomicilioService {
 
     private final ClienteRepositoryImpl clienteRepository;
@@ -29,16 +31,6 @@ public class DomicilioServiceImpl implements DomicilioService {
     private final LocalidadRepositoryImpl localidadRepository;
     private final DomicilioMapper domicilioMapper;
     private final LocalidadMapper localidadMapper;
-
-    public DomicilioServiceImpl(ClienteRepositoryImpl clienteRepository,
-                                DomicilioRepositoryImpl domicilioRepository, LocalidadRepositoryImpl localidadRepository,
-                                DomicilioMapper domicilioMapper, LocalidadMapper localidadMapper) {
-        this.clienteRepository = clienteRepository;
-        this.domicilioRepository = domicilioRepository;
-        this.localidadRepository = localidadRepository;
-        this.domicilioMapper = domicilioMapper;
-        this.localidadMapper = localidadMapper;
-    }
 
     @Override
     @Transactional
@@ -52,6 +44,7 @@ public class DomicilioServiceImpl implements DomicilioService {
         DomicilioEntity domicilioEntity = domicilioMapper.fromCreatedRequest(request);
 
         domicilioEntity.setLocalidad(localidad);
+        domicilioEntity.setActivo(true);
 
         DomicilioEntity nuevoDomicilio = domicilioRepository.save(domicilioEntity);
 
@@ -84,6 +77,10 @@ public class DomicilioServiceImpl implements DomicilioService {
         DomicilioEntity domicilio = domicilioRepository.findById(idDomicilio)
                 .orElseThrow(() -> new RuntimeException("Domicilio no encontrado"));
 
+        if (!domicilio.isActivo()) {
+            throw new ResourceNotFoundException("Domicilio no disponible");
+        }
+
         return domicilioMapper.toResponse(domicilio);
     }
 
@@ -92,14 +89,9 @@ public class DomicilioServiceImpl implements DomicilioService {
         DomicilioEntity domicilio = domicilioRepository.findById(idDomicilio)
                 .orElseThrow(() -> new RuntimeException("Domicilio no encontrado"));
 
-        // Eliminar relación con clientes
-        List<ClienteEntity> clientes = clienteRepository.findAllByDomicilioContains(domicilio);
-        for (ClienteEntity cliente : clientes) {
-            cliente.getDomicilio().remove(domicilio);
-            clienteRepository.save(cliente);
-        }
+        domicilio.setActivo(false);
 
-        domicilioRepository.delete(domicilio);
+        domicilioRepository.save(domicilio);
     }
 
     @Override
