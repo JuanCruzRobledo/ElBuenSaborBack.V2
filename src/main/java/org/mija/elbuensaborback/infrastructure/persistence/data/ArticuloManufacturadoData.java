@@ -38,8 +38,7 @@ public class ArticuloManufacturadoData {
         ArticuloInsumoEntity tomate = articuloInsumoRepository.findByDenominacion("Tomate");
         ArticuloInsumoEntity mayonesa = articuloInsumoRepository.findByDenominacion("Mayonesa");
         ArticuloInsumoEntity mostaza = articuloInsumoRepository.findByDenominacion("Mostaza");
-        ArticuloInsumoEntity cebollaCaramelizada = articuloInsumoRepository.findByDenominacion("Cebolla caramelizada");
-        ArticuloInsumoEntity cebollaCrujiente = articuloInsumoRepository.findByDenominacion("Cebolla crujiente");
+        ArticuloInsumoEntity cebolla = articuloInsumoRepository.findByDenominacion("Cebolla");
         ArticuloInsumoEntity bacon = articuloInsumoRepository.findByDenominacion("Bacon");
         ArticuloInsumoEntity panArtesanal = articuloInsumoRepository.findByDenominacion("Pan artesanal");
         ArticuloInsumoEntity salsaEspecial = articuloInsumoRepository.findByDenominacion("Salsa especial");
@@ -74,7 +73,7 @@ public class ArticuloManufacturadoData {
                 hamburguesas, sucursal,
                 List.of(
                         detalle(carne, 120),
-                        detalle(cebollaCaramelizada, 30),
+                        detalle(cebolla, 30),
                         detalle(queso, 25),
                         detalle(pan, 90),
                         detalle(salsaBBQ, 20)
@@ -116,7 +115,7 @@ public class ArticuloManufacturadoData {
                 hamburguesas, sucursal,
                 List.of(
                         detalle(carne, 120),
-                        detalle(cebollaCrujiente, 30),
+                        detalle(cebolla, 30),
                         detalle(mostaza, 10),
                         detalle(pan, 90)
                 )

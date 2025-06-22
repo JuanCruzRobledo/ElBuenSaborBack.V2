@@ -19,6 +19,7 @@ public class DataInitializationService {
     private final ClienteData clienteData;
     private final EmpleadoData empleadoData;
     private final ArticuloPromocionData articuloPromocionData;
+    private final ArticuloInsumoVendibleData articuloInsumoVendibleData;
 
 
     public void init(){
@@ -26,6 +27,7 @@ public class DataInitializationService {
         empresaSucursalData.initEmpresaYSucursal();
         categoriaData.initCategorias();
         articuloInsumoData.initArticulosInsumos();
+        articuloInsumoVendibleData.initArticulosInsumosVendibles();
         rolesPermisosData.initRoleAndPermission();
         empleadoData.initEmpleadoWithUser();
         clienteData.initClientWithUsers();

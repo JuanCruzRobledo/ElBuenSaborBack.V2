@@ -52,20 +52,19 @@ public class CategoriaData {
         CategoriaEntity aguas = CategoriaEntity.builder().denominacion("Aguas").categoriaPadre(bebidas).build();
         CategoriaEntity cervezas = CategoriaEntity.builder().denominacion("Cervezas").categoriaPadre(bebidas).build();
         CategoriaEntity jugos = CategoriaEntity.builder().denominacion("Jugos").categoriaPadre(bebidas).build();
+        CategoriaEntity energizantes = CategoriaEntity.builder().denominacion("Energizantes").categoriaPadre(bebidas).build();
+
+        CategoriaEntity dulces = CategoriaEntity.builder().denominacion("Dulces").categoriaPadre(insumo).build();
+        CategoriaEntity alfajor = CategoriaEntity.builder().denominacion("alfajores").categoriaPadre(dulces).build();
+        CategoriaEntity chocolate = CategoriaEntity.builder().denominacion("chocolates").categoriaPadre(dulces).build();
 
         categoriaRepository.saveAll(List.of(
                 manufacturado, insumo,
                 hamburguesas,
                 salsas, panaderia, lacteos, verduras, carnes, condimentos,snacks,
-                bebidas, gaseosas, aguas, cervezas, jugos,sides,
-                combos, comboIndividual, comboFamiliar
-//                manufacturado, insumo,
-//                comidas, pizzas, hamburguesas, hamburguesasVeganas, empanadas, pastas,
-//                postres, helados, tortas, flanes,
-//                combos, comboFamiliar, comboIndividual,
-//                ensaladas, ensaladasClasicas, ensaladasEspeciales,
-//                salsas, panaderia, lacteos, verduras, carnes, condimentos,
-//                bebidas, gaseosas, aguas, cervezas, jugos,snacks
+                bebidas, gaseosas, aguas, cervezas, jugos, energizantes,sides,
+                combos, comboIndividual, comboFamiliar,
+                dulces, alfajor, chocolate
         ));
     }
 }

@@ -12,6 +12,7 @@ import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.Sucurs
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -38,390 +39,69 @@ public class ArticuloInsumoData {
 
     public void initArticulosInsumos() {
 
-        SucursalEntity sucursalEntity1 = sucursalRepository.findById(1L).orElseThrow(()->new EntityNotFoundException("No se encontro la sucursal"));
+        //Lista de todos los insumos
+        List<ArticuloInsumoEntity> insumos = new ArrayList<>();
 
         //ARTICULOS INSUMOS
-        ArticuloInsumoEntity panHamburguesa = ArticuloInsumoEntity.builder()
-                .denominacion("Pan de Hamburguesa")
-                .precioCosto(new BigDecimal("1200")) // por 1000 gr (1.2 kg), precio de panificado
-                .precioVenta(new BigDecimal("1600"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(3)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("panaderia"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity medallonCarne = ArticuloInsumoEntity.builder()
-                .denominacion("Medallón de Carne")
-                .precioCosto(new BigDecimal("3500")) // por 1000 gr (carne molida buena)
-                .precioVenta(new BigDecimal("4800"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(5)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("carnes"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity quesoCheddar = ArticuloInsumoEntity.builder()
-                .denominacion("Queso Cheddar")
-                .precioCosto(new BigDecimal("2200")) // por 1000 gr
-                .precioVenta(new BigDecimal("3000"))
-                .tiempoEstimadoMinutos(20)
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(2)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("lacteos"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity lechuga = ArticuloInsumoEntity.builder()
-                .denominacion("Lechuga")
-                .precioCosto(new BigDecimal("800")) // por 1000 gr
-                .precioVenta(new BigDecimal("1000"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(1)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("verduras"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity tomate = ArticuloInsumoEntity.builder()
-                .denominacion("Tomate")
-                .precioCosto(new BigDecimal("900")) // por 1000 gr
-                .precioVenta(new BigDecimal("1200"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(1)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("verduras"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity mayonesa = ArticuloInsumoEntity.builder()
-                .denominacion("Mayonesa")
-                .precioCosto(new BigDecimal("1500")) // por 1000 gr (botella grande)
-                .precioVenta(new BigDecimal("2000"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(1)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("salsas"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity mostaza = ArticuloInsumoEntity.builder()
-                .denominacion("Mostaza")
-                .precioCosto(new BigDecimal("1400"))
-                .precioVenta(new BigDecimal("1900"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(1)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("salsas"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity sal = ArticuloInsumoEntity.builder()
-                .denominacion("Sal")
-                .precioCosto(new BigDecimal("500")) // por 1000 gr
-                .precioVenta(new BigDecimal("800"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(0)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("condimentos"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity bacon = ArticuloInsumoEntity.builder()
-                .denominacion("Bacon")
-                .precioCosto(new BigDecimal("3200")) // por 1000 gr
-                .precioVenta(new BigDecimal("4500"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(3)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("carnes"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity panArtesanal = ArticuloInsumoEntity.builder()
-                .denominacion("Pan artesanal")
-                .precioCosto(new BigDecimal("1500"))
-                .precioVenta(new BigDecimal("2000"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(1)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("panaderia"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity cebollaCaramelizada = ArticuloInsumoEntity.builder()
-                .denominacion("Cebolla caramelizada")
-                .precioCosto(new BigDecimal("1000"))
-                .precioVenta(new BigDecimal("1400"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(5)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("verduras"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity queso = ArticuloInsumoEntity.builder()
-                .denominacion("Queso")
-                .precioCosto(new BigDecimal("2100")) // gral
-                .precioVenta(new BigDecimal("2800"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(2)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("lacteos"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity salsaBarbacoa = ArticuloInsumoEntity.builder()
-                .denominacion("Salsa barbacoa")
-                .precioCosto(new BigDecimal("1300")) // por 1000 ml
-                .precioVenta(new BigDecimal("1800"))
-                .unidadMedidaEnum(UnidadMedidaEnum.ML)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(1)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("salsas"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity cebollaFresca = ArticuloInsumoEntity.builder()
-                .denominacion("Cebolla fresca")
-                .precioCosto(new BigDecimal("700"))
-                .precioVenta(new BigDecimal("950"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(2)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("verduras"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity cebollaCrujiente = ArticuloInsumoEntity.builder()
-                .denominacion("Cebolla crujiente")
-                .precioCosto(new BigDecimal("700"))
-                .precioVenta(new BigDecimal("950"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(2)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("verduras"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity salsaEspecial = ArticuloInsumoEntity.builder()
-                .denominacion("Salsa especial")
-                .precioCosto(new BigDecimal("700"))
-                .precioVenta(new BigDecimal("950"))
-                .unidadMedidaEnum(UnidadMedidaEnum.ML)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(1)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("salsas"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity batatas = ArticuloInsumoEntity.builder()
-                .denominacion("Batatas")
-                .precioCosto(new BigDecimal("700"))
-                .precioVenta(new BigDecimal("950"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(2)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("verduras"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity papas = ArticuloInsumoEntity.builder()
-                .denominacion("Papas")
-                .precioCosto(new BigDecimal("700"))
-                .precioVenta(new BigDecimal("950"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(2)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("verduras"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity nachos = ArticuloInsumoEntity.builder()
-                .denominacion("Nachos")
-                .precioCosto(new BigDecimal("7100"))
-                .precioVenta(new BigDecimal("8300"))
-                .unidadMedidaEnum(UnidadMedidaEnum.GR)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(2)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("snacks"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        ArticuloInsumoEntity guacamole = ArticuloInsumoEntity.builder()
-                .denominacion("Guacamole")
-                .precioCosto(new BigDecimal("4300"))
-                .precioVenta(new BigDecimal("5500"))
-                .unidadMedidaEnum(UnidadMedidaEnum.ML)
-                .stockActual(4000.00)
-                .stockMaximo(10000.00)
-                .stockMinimo(1000.00)
-                .tiempoEstimadoMinutos(1)
-                .esParaPreparar(true)
-                .esVendible(false)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("salsas"))
-                .sucursal(sucursalEntity1)
-                .build();
-        //BEBIDAS
-
-        ArticuloInsumoEntity cocaCola = ArticuloInsumoEntity.builder()
-                .denominacion("Coca Cola 500ml")
-                .precioCosto(new BigDecimal("1500"))
-                .precioVenta(new BigDecimal("2000"))
-                .unidadMedidaEnum(UnidadMedidaEnum.UNIDAD)
-                .stockActual(400.00)
-                .stockMaximo(400.00)
-                .stockMinimo(100.00)
-                .tiempoEstimadoMinutos(0)
-                .esParaPreparar(false)
-                .esVendible(true)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("gaseosas"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        cocaCola.setImagenesUrls(crearImagenes(cocaCola, "https://res.cloudinary.com/drqdadlel/image/upload/v1746571979/cocacola_s4s5rg.png"));
-
-        ArticuloInsumoEntity cerveza = ArticuloInsumoEntity.builder()
-                .denominacion("Cerveza 375ml")
-                .precioCosto(new BigDecimal("2000"))
-                .precioVenta(new BigDecimal("2500"))
-                .unidadMedidaEnum(UnidadMedidaEnum.UNIDAD)
-                .stockActual(400.00)
-                .stockMaximo(400.00)
-                .stockMinimo(100.00)
-                .tiempoEstimadoMinutos(2)
-                .esParaPreparar(false)
-                .esVendible(true)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("cervezas"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        cerveza.setImagenesUrls(crearImagenes(cerveza, "https://res.cloudinary.com/drqdadlel/image/upload/v1746571980/cerveza_dzrpj9.png"));
-
-        ArticuloInsumoEntity aguaMineral = ArticuloInsumoEntity.builder()
-                .denominacion("Agua Mineral 473ml")
-                .precioCosto(new BigDecimal("1000"))
-                .precioVenta(new BigDecimal("1500"))
-                .unidadMedidaEnum(UnidadMedidaEnum.UNIDAD)
-                .stockActual(400.00)
-                .stockMaximo(400.00)
-                .stockMinimo(100.00)
-                .tiempoEstimadoMinutos(0)
-                .esParaPreparar(false)
-                .esVendible(true)
-                .productoActivo(true)
-                .categoria(categoriaRepository.findByDenominacion("aguas"))
-                .sucursal(sucursalEntity1)
-                .build();
-
-        aguaMineral.setImagenesUrls(crearImagenes(aguaMineral, "https://res.cloudinary.com/drqdadlel/image/upload/v1746571980/aguamineral_gtoc1a.png"));
-
-        articuloInsumoRepository.saveAll(List.of(bacon, panArtesanal, cebollaCaramelizada, queso,
-                salsaBarbacoa, cebollaFresca, cebollaCrujiente,
-                salsaEspecial, batatas, papas, nachos, guacamole,
-                panHamburguesa, medallonCarne, quesoCheddar,
-                lechuga, tomate, mayonesa, mostaza, sal, aguaMineral, cerveza, cocaCola
+        insumos.addAll(List.of(
+                crearInsumo("Pan de Hamburguesa", "panaderia", new BigDecimal("1200"), new BigDecimal("1600"), UnidadMedidaEnum.GR, 3),
+                crearInsumo("Medallón de Carne", "carnes", new BigDecimal("3500"), new BigDecimal("4800"), UnidadMedidaEnum.GR, 5),
+                crearInsumo("Queso Cheddar", "lacteos", new BigDecimal("2200"), new BigDecimal("3000"), UnidadMedidaEnum.GR, 2),
+                crearInsumo("Lechuga", "verduras", new BigDecimal("800"), new BigDecimal("1000"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Tomate", "verduras", new BigDecimal("900"), new BigDecimal("1200"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Mayonesa", "salsas", new BigDecimal("1500"), new BigDecimal("2000"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Mostaza", "salsas", new BigDecimal("1400"), new BigDecimal("1900"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Sal", "condimentos", new BigDecimal("500"), new BigDecimal("800"), UnidadMedidaEnum.GR, 0),
+                crearInsumo("Bacon", "carnes", new BigDecimal("3200"), new BigDecimal("4500"), UnidadMedidaEnum.GR, 3),
+                crearInsumo("Pan artesanal", "panaderia", new BigDecimal("1500"), new BigDecimal("2000"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Cebolla", "verduras", new BigDecimal("1000"), new BigDecimal("1400"), UnidadMedidaEnum.GR, 5),
+                crearInsumo("Queso", "lacteos", new BigDecimal("2100"), new BigDecimal("2800"), UnidadMedidaEnum.GR, 2),
+                crearInsumo("Salsa barbacoa", "salsas", new BigDecimal("1300"), new BigDecimal("1800"), UnidadMedidaEnum.ML, 1),
+                crearInsumo("Salsa especial", "salsas", new BigDecimal("700"), new BigDecimal("950"), UnidadMedidaEnum.ML, 1),
+                crearInsumo("Batatas", "verduras", new BigDecimal("700"), new BigDecimal("950"), UnidadMedidaEnum.GR, 2),
+                crearInsumo("Papas", "verduras", new BigDecimal("700"), new BigDecimal("950"), UnidadMedidaEnum.GR, 2),
+                crearInsumo("Nachos", "snacks", new BigDecimal("7100"), new BigDecimal("8300"), UnidadMedidaEnum.GR, 2),
+                crearInsumo("Guacamole", "salsas", new BigDecimal("4300"), new BigDecimal("5500"), UnidadMedidaEnum.ML, 1),
+                crearInsumo("Huevo", "lacteos", new BigDecimal("1800"), new BigDecimal("2400"), UnidadMedidaEnum.UNIDAD, 2),
+                crearInsumo("Harina 000", "panaderia", new BigDecimal("900"), new BigDecimal("1300"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Manteca", "lacteos", new BigDecimal("1900"), new BigDecimal("2500"), UnidadMedidaEnum.GR, 2),
+                crearInsumo("Ketchup", "salsas", new BigDecimal("1600"), new BigDecimal("2100"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Pepinillos", "verduras", new BigDecimal("2500"), new BigDecimal("3200"), UnidadMedidaEnum.GR, 2),
+                crearInsumo("Pan rallado", "panaderia", new BigDecimal("1100"), new BigDecimal("1500"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Ajo en polvo", "condimentos", new BigDecimal("1700"), new BigDecimal("2300"), UnidadMedidaEnum.GR, 0),
+                crearInsumo("Pimienta", "condimentos", new BigDecimal("2000"), new BigDecimal("2700"), UnidadMedidaEnum.GR, 0),
+                crearInsumo("Aceite vegetal", "condimentos", new BigDecimal("1700"), new BigDecimal("2200"), UnidadMedidaEnum.ML, 0),
+                crearInsumo("Jalapeños", "verduras", new BigDecimal("2600"), new BigDecimal("3300"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Ciboulette", "condimentos", new BigDecimal("900"), new BigDecimal("1200"), UnidadMedidaEnum.GR, 0),
+                crearInsumo("Pan tipo brioche", "panaderia", new BigDecimal("1800"), new BigDecimal("2300"), UnidadMedidaEnum.GR, 2),
+                crearInsumo("Salsa cheddar", "salsas", new BigDecimal("1900"), new BigDecimal("2600"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Curry", "condimentos", new BigDecimal("2300"), new BigDecimal("2900"), UnidadMedidaEnum.GR, 0),
+                crearInsumo("Zanahoria", "verduras", new BigDecimal("850"), new BigDecimal("1100"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Pickles", "verduras", new BigDecimal("2100"), new BigDecimal("2800"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Panceta ahumada", "carnes", new BigDecimal("3400"), new BigDecimal("4700"), UnidadMedidaEnum.GR, 3),
+                crearInsumo("Chimichurri", "salsas", new BigDecimal("1500"), new BigDecimal("2000"), UnidadMedidaEnum.GR, 1),
+                crearInsumo("Perejil fresco", "verduras", new BigDecimal("900"), new BigDecimal("1200"), UnidadMedidaEnum.GR, 1)
         ));
+
+        articuloInsumoRepository.saveAll(insumos);
+    }
+
+    private ArticuloInsumoEntity crearInsumo(String nombre, String categoria, BigDecimal costo, BigDecimal venta,
+                                             UnidadMedidaEnum unidad, int tiempoMinutos) {
+        return ArticuloInsumoEntity.builder()
+                .denominacion(nombre)
+                .precioCosto(costo)
+                .precioVenta(venta)
+                .unidadMedidaEnum(unidad)
+                .stockActual(4000.0)
+                .stockMaximo(10000.0)
+                .stockMinimo(1000.0)
+                .tiempoEstimadoMinutos(tiempoMinutos)
+                .esParaPreparar(true)
+                .esVendible(false)
+                .productoActivo(true)
+                .categoria(categoriaRepository.findByDenominacion(categoria))
+                .sucursal(sucursalRepository.findById(1L).orElseThrow())
+                .build();
     }
 }
