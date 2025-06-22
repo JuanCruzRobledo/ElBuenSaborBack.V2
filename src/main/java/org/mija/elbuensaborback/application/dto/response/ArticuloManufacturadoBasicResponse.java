@@ -13,6 +13,7 @@ public record ArticuloManufacturadoBasicResponse(
         String descripcion,
         Long categoriaId,
         String categoriaDenominacion,
+        String categoriaPadre,
         BigDecimal precioVenta,
         Set<String> imagenesUrls,
         //Integer tiempoEstimadoMinutos,

@@ -18,6 +18,7 @@ public record ArticuloPromocionMenuBasicResponse(
         Set<String> imagenesUrls,
         Long categoriaId,
         String categoriaDenominacion,
+        String categoriaPadre,
         LocalDate fechaDesde,
         LocalDate fechaHasta,
         LocalTime horaDesde,

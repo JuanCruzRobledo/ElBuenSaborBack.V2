@@ -147,6 +147,7 @@ public abstract class ArticuloManufacturadoMapper {
     @Mapping(target = "imagenesUrls", ignore = true)
     @Mapping(target = "categoriaId", source = "categoria.id")
     @Mapping(target = "categoriaDenominacion", source = "categoria.denominacion")
+    @Mapping(target = "categoriaPadre", source = "categoria.categoriaPadre.denominacion")
     public abstract ArticuloManufacturadoBasicResponse toBasicResponse(ArticuloManufacturadoEntity entity);
 
     @AfterMapping

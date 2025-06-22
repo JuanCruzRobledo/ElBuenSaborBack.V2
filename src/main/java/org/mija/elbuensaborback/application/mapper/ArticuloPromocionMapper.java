@@ -28,6 +28,7 @@ public abstract class ArticuloPromocionMapper {
     @Mapping(target = "categoriaId" , source = "categoria.id")
     @Mapping(target = "categoriaDenominacion" , source = "categoria.denominacion")
     @Mapping(target = "imagenesUrls" , ignore = true )
+    @Mapping(target = "categoriaPadre" , source = "categoria.categoriaPadre.denominacion")
     public abstract ArticuloPromocionMenuBasicResponse toBasicResponse(ArticuloPromocionEntity articuloPromocionEntity);
 
     @AfterMapping
