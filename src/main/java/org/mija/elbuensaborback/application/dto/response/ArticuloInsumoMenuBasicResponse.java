@@ -13,7 +13,8 @@ public record ArticuloInsumoMenuBasicResponse(
         Boolean productoActivo,
         Set<String> imagenesUrls,
         Long categoriaId,
-        String categoriaDenominacion
+        String categoriaDenominacion,
+        String categoriaPadre
 ) {
     @Builder
     public ArticuloInsumoMenuBasicResponse{}

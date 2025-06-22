@@ -17,6 +17,6 @@ public interface ArticuloInsumoService {
     void eliminarArticuloInsumo(Long id);
     Set<ArticuloInsumoResponse> listarArticulosInsumo();
     ArticuloInsumoResponse actualizarPrecioYStock(Long id, ArticuloActualizarStockPrecioRequest articuloUpdateRequest);
-    List<ArticuloInsumoBasicResponse> listarBasicArticulosInsumo();
+    List<ArticuloInsumoBasicResponse> listarBasicArticulosInsumoParaPreparar();
     List<ArticuloInsumoMenuBasicResponse> obtenerBebidas(String denominacion);
 }

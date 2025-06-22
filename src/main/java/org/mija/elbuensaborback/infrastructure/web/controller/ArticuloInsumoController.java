@@ -65,16 +65,16 @@ public class ArticuloInsumoController {
         }
     }
 
-    @GetMapping("/bebidas/basic/getAll")
-    public ResponseEntity<?> obtenerBebidas(){
+    @GetMapping("/vendibles/basic/getAll")
+    public ResponseEntity<?> obtenerInsumosVendibles(){
         try{
-            return ResponseEntity.ok(articuloInsumoService.obtenerBebidas("bebidas"));
+            return ResponseEntity.ok(articuloInsumoService.obtenerInsumosVendibles());
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
     }
 
-    @GetMapping("{categoria}/getAll")
+    @GetMapping("/{categoria}/basic/getAll")
     public ResponseEntity<?> obtenerBebidasPorCategoria(@PathVariable String categoria){
         try{
             return ResponseEntity.ok(articuloInsumoService.obtenerBebidas(categoria));
@@ -87,6 +87,14 @@ public class ArticuloInsumoController {
     public ResponseEntity<?> obtenerTodosBasicArticuloInsumo(){
         try{
             return ResponseEntity.ok(articuloInsumoService.listarBasicArticulosInsumo());
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+        }
+    }
+    @GetMapping("/elaboracion/basic/getAll")
+    public ResponseEntity<?> obtenerTodosBasicArticuloInsumoParaPreparar(){
+        try{
+            return ResponseEntity.ok(articuloInsumoService.listarBasicArticulosInsumoParaPreparar());
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }

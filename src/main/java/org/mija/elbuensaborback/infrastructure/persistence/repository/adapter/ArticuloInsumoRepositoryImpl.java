@@ -28,6 +28,14 @@ public class ArticuloInsumoRepositoryImpl implements ArticuloInsumoRepositoryPor
         return articuloInsumoJpaRepository.findAll();
     }
 
+    public List<ArticuloInsumoEntity> findAllVendibles() {
+        return articuloInsumoJpaRepository.findAllAndEsVendibleTrueAndCategoria();
+    }
+
+    public List<ArticuloInsumoBasicResponse> basicFindAllParaPreparar() {
+        return articuloInsumoJpaRepository.basicFindAllParaPreparar();
+    }
+
     public List<ArticuloInsumoBasicResponse> basicFindAll() {
         return articuloInsumoJpaRepository.basicFindAll();
     }

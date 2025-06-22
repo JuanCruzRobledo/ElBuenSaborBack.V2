@@ -119,7 +119,13 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
         return articuloInsumoMapper.toResponse(articulo);
     }
 
+    //Se usa para los checkbox de los CRUDs
     @Override
+    public List<ArticuloInsumoBasicResponse> listarBasicArticulosInsumoParaPreparar() {
+        return articuloInsumoRepository.basicFindAllParaPreparar();
+    }
+
+    //Es para cosas como el actualizar stock y precio
     public List<ArticuloInsumoBasicResponse> listarBasicArticulosInsumo() {
         return articuloInsumoRepository.basicFindAll();
     }
@@ -135,5 +141,11 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
 
 
         return listaDeBebidas.stream().map(articuloInsumoMapper::menuBasicResponse).toList();
+    }
+
+    public List<ArticuloInsumoMenuBasicResponse> obtenerInsumosVendibles( ) {
+        List<ArticuloInsumoEntity> listaInsumos = articuloInsumoRepository.findAllVendibles();
+
+        return listaInsumos.stream().map(articuloInsumoMapper::menuBasicResponse).toList();
     }
 }
