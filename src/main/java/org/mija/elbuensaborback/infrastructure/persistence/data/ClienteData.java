@@ -50,6 +50,7 @@ public class ClienteData {
                 .apellido("Gonzalez")
                 .telefono("123456789")
                 .usuario(userAmbar)
+                .activo(true)
                 .domicilio(List.of(domicilio1))
                 .listaPedido(new ArrayList<>())
                 .build();
@@ -81,6 +82,7 @@ public class ClienteData {
                 .apellido("Perez")
                 .telefono("987654321")
                 .usuario(userPerez)
+                .activo(true)
                 .domicilio(List.of(domicilio2))
                 .listaPedido(new ArrayList<>())
                 .build();

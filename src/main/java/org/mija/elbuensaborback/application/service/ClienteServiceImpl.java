@@ -6,7 +6,7 @@ import org.mija.elbuensaborback.application.dto.request.cliente.ClienteUpdateReq
 import org.mija.elbuensaborback.application.dto.response.ClienteBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.ClienteResponse;
 import org.mija.elbuensaborback.application.mapper.ClienteMapper;
-import org.mija.elbuensaborback.application.service.contratos.ClienteService;;
+import org.mija.elbuensaborback.application.service.contratos.ClienteService;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ClienteRepositoryImpl;
@@ -88,5 +88,12 @@ public class ClienteServiceImpl implements ClienteService {
     public List<ClienteResponse> listarClientes() {
         List<ClienteEntity> listaEmpleados = clienteRepository.findAll();
         return listaEmpleados.stream().map(clienteMapper::toResponse).toList();
+    }
+
+    @Override
+    public void eliminarCliente(Long id) {
+        ClienteEntity cliente = clienteRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Empleado"));
+        cliente.setActivo(false);
+        clienteRepository.save(cliente);
     }
 }

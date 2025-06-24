@@ -15,4 +15,5 @@ public interface ClienteService {
     ClienteBasicResponse actualizarCliente(Long id, ClienteUpdateRequest clienteUpdateRequest);
     ClienteBasicResponse subirFoto(Long id, MultipartFile foto);
     List<ClienteResponse> listarClientes();
+    void eliminarCliente(Long id);
 }

@@ -11,6 +11,7 @@ public record ClienteResponse(
         String apellido,
         String telefono,
         UsuarioResponse usuario,
+        boolean activo,
         List<DomicilioResponse> domicilio,
         ImagenDto imagen
 ) {

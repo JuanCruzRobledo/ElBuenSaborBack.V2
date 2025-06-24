@@ -10,4 +10,5 @@ public interface EmpleadoService {
     EmpleadoResponse buscarEmpleadoPorId(Long id);
     EmpleadoResponse buscarEmpleadoPorEmail(String email);
     List<EmpleadoResponse> listarEmpleados();
+    void eliminarEmpleado(Long id);
 }

@@ -78,6 +78,7 @@ public class AuthenticationService {
                 .nombre(nuevoUsuario.nombre()) // asumimos que vienen en el request
                 .apellido(nuevoUsuario.apellido())
                 .telefono(nuevoUsuario.telefono())
+                .activo(true)
                 .usuario(usuario) // relación con usuario
                 .build();
 

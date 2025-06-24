@@ -1,5 +1,6 @@
 package org.mija.elbuensaborback.application.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.EmpleadoResponse;
@@ -23,6 +24,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     public EmpleadoResponse crearEmpleado(EmpleadoCreatedRequest request) {
         EmpleadoEntity empleado = empleadoMapper.toEntity(request);
         empleado.setSucursal(SucursalEntity.builder().id(1L).build());
+        empleado.setActivo(true);
         empleado = empleadoRepository.save(empleado);
         return empleadoMapper.toResponse(empleado);
     }
@@ -41,5 +43,12 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     public List<EmpleadoResponse> listarEmpleados() {
         List<EmpleadoEntity> listaEmpleados = empleadoRepository.findAll();
         return listaEmpleados.stream().map(empleadoMapper::toResponse).toList();
+    }
+
+    @Override
+    public void eliminarEmpleado(Long id) {
+        EmpleadoEntity empleado = empleadoRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No se encontró el empleado"));
+        empleado.setActivo(false);
+        empleadoRepository.save(empleado);
     }
 }

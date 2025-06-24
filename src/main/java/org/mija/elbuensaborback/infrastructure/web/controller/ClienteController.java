@@ -34,4 +34,9 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.listarClientes());
     }
 
+    @DeleteMapping("/id")
+    public ResponseEntity<?> eliminarCliente(Long id) {
+        clienteService.eliminarCliente(id);
+        return ResponseEntity.ok("Empleado eliminado");
+    }
 }

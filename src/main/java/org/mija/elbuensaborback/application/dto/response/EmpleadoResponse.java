@@ -8,6 +8,7 @@ public record EmpleadoResponse(
         String apellido,
         String telefono,
         String email,
+        boolean activo,
         RolDto rol
 ) {
 }

@@ -24,6 +24,7 @@ public abstract class PersonaEntity {
     private String nombre;
     private String apellido;
     private String telefono;
+    private boolean activo;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")

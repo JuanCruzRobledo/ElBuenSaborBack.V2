@@ -39,6 +39,7 @@ public class EmpleadoData {
                 .nombre("Isabella")
                 .apellido("Lopez")
                 .telefono("555111222")
+                .activo(true)
                 .usuario(userIsabella)
                 .sucursal(sucursal)
                 .build();
@@ -60,6 +61,7 @@ public class EmpleadoData {
                 .nombre("Maiten")
                 .apellido("Fernandez")
                 .telefono("444333222")
+                .activo(true)
                 .usuario(userMaiten)
                 .sucursal(sucursal)
                 .build();
@@ -80,6 +82,7 @@ public class EmpleadoData {
                 .nombre("Emiliano")
                 .apellido("Chavez")
                 .telefono("23545222")
+                .activo(true)
                 .usuario(userEmiliano)
                 .sucursal(sucursal)
                 .build();
