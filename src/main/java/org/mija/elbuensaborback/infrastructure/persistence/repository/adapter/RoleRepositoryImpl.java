@@ -28,7 +28,7 @@ public class RoleRepositoryImpl implements RoleRepositoryPort {
 
     @Override
     public List<RoleEntity> findAll() {
-        return List.of();
+        return roleJpaRepository.findAll() ;
     }
 
     @Override
