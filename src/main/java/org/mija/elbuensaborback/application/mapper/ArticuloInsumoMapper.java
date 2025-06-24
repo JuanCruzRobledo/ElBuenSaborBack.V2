@@ -4,6 +4,7 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mija.elbuensaborback.application.dto.global.manufacturado.ImagenDto;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.insumo.ArticuloInsumoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoBasicResponse;
@@ -14,6 +15,7 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloInsumo
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ArticuloManufacturadoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ImagenArticuloEntity;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,19 +48,32 @@ public abstract class ArticuloInsumoMapper {
 
     @Mapping(target = "id", ignore = true )
     @Mapping(target = "categoria", ignore = true)
+    @Mapping(target = "imagenesUrls" , ignore = true)
     public abstract void toEntity(@MappingTarget ArticuloInsumoEntity articuloEntity,ArticuloInsumoUpdateRequest articuloUpdatedRequest);
 
     public void updateEntity(@MappingTarget ArticuloInsumoEntity articuloEntity, ArticuloInsumoUpdateRequest articuloUpdateRequest) {
-        toEntity(articuloEntity,articuloUpdateRequest);
+        toEntity(articuloEntity, articuloUpdateRequest);
 
-        if (articuloEntity.getImagenesUrls() != null) {
-            articuloEntity.getImagenesUrls().forEach(image -> {
-                if (image != null) {
-                    image.setArticulo(articuloEntity);
-                }
-            });
-        }
+        Set<ImagenArticuloEntity> imagenesActuales = articuloEntity.getImagenesUrls();
 
+        // Eliminar imágenes que ya no están en el DTO
+        Set<Long> idsDelDto = articuloUpdateRequest.imagenesUrls().stream()
+                .filter(dto -> dto.id() != null)
+                .map(ImagenDto::id)
+                .collect(Collectors.toSet());
+
+        imagenesActuales.removeIf(imagen -> imagen.getId() != null && !idsDelDto.contains(imagen.getId()));
+
+        // Agregar nuevas imágenes (las que tienen id == null)
+        articuloUpdateRequest.imagenesUrls().stream()
+                .filter(dto -> dto.id() == null)
+                .forEach(dto -> {
+                    ImagenArticuloEntity nueva = ImagenArticuloEntity.builder()
+                            .url(dto.url())
+                            .articulo(articuloEntity)
+                            .build();
+                    imagenesActuales.add(nueva);
+                });
     }
 
     @Mapping(target = "categoriaDenominacion", source = "categoria.denominacion")

@@ -5,6 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mija.elbuensaborback.application.dto.global.manufacturado.ArticuloManufacturadoDetalleDto;
+import org.mija.elbuensaborback.application.dto.global.manufacturado.ImagenDto;
 import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.manufacturado.ArticuloManufacturadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ArticuloManufacturadoBasicResponse;
@@ -59,6 +60,7 @@ public abstract class ArticuloManufacturadoMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "articuloManufacturadoDetalle", ignore = true)
+    @Mapping(target = "imagenesUrls", ignore = true)
     public abstract void updateEntityFromDto(ArticuloManufacturadoUpdateRequest dto, @MappingTarget ArticuloManufacturadoEntity entity);
 
     public void updateEntityWithDetalles(
@@ -131,10 +133,27 @@ public abstract class ArticuloManufacturadoMapper {
         entity.setTiempoEstimadoMinutos(updateDto.tiempoEstimadoMinutos());
          */
 
-        //8. Mapear Imagenes
-        entity.getImagenesUrls().forEach(image ->{
-            image.setArticulo(entity);
-        });
+        // 7/8. Actualizar imágenes
+        Set<ImagenArticuloEntity> imagenesActuales = entity.getImagenesUrls();
+
+        Set<Long> idsDelDto = updateDto.imagenesUrls().stream()
+                .filter(dto -> dto.id() != null)
+                .map(ImagenDto::id)
+                .collect(Collectors.toSet());
+
+        // Eliminar imágenes que ya no están en el DTO
+        imagenesActuales.removeIf(imagen -> imagen.getId() != null && !idsDelDto.contains(imagen.getId()));
+
+        // Agregar imágenes nuevas (id == null)
+        updateDto.imagenesUrls().stream()
+                .filter(dto -> dto.id() == null)
+                .forEach(dto -> {
+                    ImagenArticuloEntity nueva = ImagenArticuloEntity.builder()
+                            .url(dto.url())
+                            .articulo(entity) // Relación bidireccional
+                            .build();
+                    imagenesActuales.add(nueva);
+                });
     }
 
     // ======================= RESPONSE =======================
