@@ -91,6 +91,7 @@ public class ArticuloInsumoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
     }
+
     @GetMapping("/elaboracion/basic/getAll")
     public ResponseEntity<?> obtenerTodosBasicArticuloInsumoParaPreparar(){
         try{
@@ -110,6 +111,15 @@ public class ArticuloInsumoController {
             return ResponseEntity.ok(actualizado);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/bajo-stock/getAll")
+    public ResponseEntity<?> obtenerBajoStock(){
+        try{
+            return ResponseEntity.ok(articuloInsumoService.obtenerInsumosBajoDeStock());
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
     }
 

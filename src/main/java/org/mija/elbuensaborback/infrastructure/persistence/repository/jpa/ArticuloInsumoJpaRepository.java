@@ -24,4 +24,7 @@ public interface ArticuloInsumoJpaRepository extends JpaRepository<ArticuloInsum
     @Query("SELECT a FROM articulo_insumo a JOIN categoria c WHERE a.esVendible = true")
     List<ArticuloInsumoEntity> findAllAndEsVendibleTrueAndCategoria();
 
+    @Query("SELECT i FROM articulo_insumo i WHERE i.stockActual <= i.stockMinimo * 1.20 ")
+    List<ArticuloInsumoEntity> findAllBajoStock();
+
 }

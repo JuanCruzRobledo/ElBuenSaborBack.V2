@@ -148,4 +148,9 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
 
         return listaInsumos.stream().map(articuloInsumoMapper::menuBasicResponse).toList();
     }
+
+    public List<ArticuloInsumoResponse> obtenerInsumosBajoDeStock() {
+        List<ArticuloInsumoEntity> listaInsumos = articuloInsumoRepository.insumosBajoStockFindAll();
+        return listaInsumos.stream().map(articuloInsumoMapper::toResponse).toList();
+    }
 }

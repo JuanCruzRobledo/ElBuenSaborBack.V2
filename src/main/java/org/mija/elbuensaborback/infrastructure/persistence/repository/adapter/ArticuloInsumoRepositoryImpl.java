@@ -40,6 +40,10 @@ public class ArticuloInsumoRepositoryImpl implements ArticuloInsumoRepositoryPor
         return articuloInsumoJpaRepository.basicFindAll();
     }
 
+    public List<ArticuloInsumoEntity> insumosBajoStockFindAll() {
+        return articuloInsumoJpaRepository.findAllBajoStock();
+    }
+
     @Override
     public ArticuloInsumoEntity save(ArticuloInsumoEntity entity) {
         return articuloInsumoJpaRepository.save(entity);
