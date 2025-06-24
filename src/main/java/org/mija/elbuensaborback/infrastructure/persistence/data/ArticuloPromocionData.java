@@ -58,8 +58,12 @@ public class ArticuloPromocionData {
         ArticuloEntity softMayo = articuloRepository.findByDenominacion("Soft Mayo")
                 .orElseThrow(() -> new RuntimeException("No se encontró Soft Mayo"));
 
+        ArticuloEntity agua = articuloRepository.findByDenominacion("Agua Mineral 473ml")
+                .orElseThrow(() -> new RuntimeException("No se encontró Agua"));
+
         List<ArticuloPromocionEntity> promociones = new ArrayList<>();
 
+        // Vigente (desde hace poco, termina a fin de año)
         ArticuloPromocionEntity combo1 = crearPromocion(
                 "Combo BBQ + Coca Cola",
                 "Hamburguesa BBQ con Coca Cola 500ml",
@@ -69,8 +73,8 @@ public class ArticuloPromocionData {
                 ),
                 sucursal,
                 25,
-                LocalDate.now(),
-                LocalDate.now().plusMonths(12),
+                LocalDate.of(2025, 6, 1),
+                LocalDate.of(2025, 12, 31),
                 LocalTime.of(0, 0),
                 LocalTime.of(23, 0),
                 comboIndividual
@@ -78,6 +82,7 @@ public class ArticuloPromocionData {
         combo1.setImagenesUrls(crearImagenes(combo1, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838093/gwiq22zgfprwzknnsnru.webp"));
         promociones.add(combo1);
 
+        // Vencida
         ArticuloPromocionEntity combo2 = crearPromocion(
                 "Combo Classic Doble",
                 "2 Hamburguesas Classic, 1 Papas Fritas y 2 Cervezas",
@@ -88,8 +93,8 @@ public class ArticuloPromocionData {
                 ),
                 sucursal,
                 30,
-                LocalDate.now(),
-                LocalDate.now().plusMonths(12),
+                LocalDate.of(2025, 3, 1),
+                LocalDate.of(2025, 5, 31),
                 LocalTime.of(11, 0),
                 LocalTime.of(23, 0),
                 comboFamiliar
@@ -97,6 +102,7 @@ public class ArticuloPromocionData {
         combo2.setImagenesUrls(crearImagenes(combo2, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838093/kautfm8lturhgcsufeno.webp"));
         promociones.add(combo2);
 
+        // Futura (comienza en julio)
         ArticuloPromocionEntity combo3 = crearPromocion(
                 "Nachos + Coca",
                 "Nachos con Coca Cola 500ml",
@@ -106,8 +112,8 @@ public class ArticuloPromocionData {
                 ),
                 sucursal,
                 10,
-                LocalDate.now(),
-                LocalDate.now().plusMonths(12),
+                LocalDate.of(2025, 7, 1),
+                LocalDate.of(2025, 9, 30),
                 LocalTime.of(17, 0),
                 LocalTime.of(22, 0),
                 comboIndividual
@@ -115,6 +121,7 @@ public class ArticuloPromocionData {
         combo3.setImagenesUrls(crearImagenes(combo3, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838092/wguftynzlcjwpxikbnaq.webp"));
         promociones.add(combo3);
 
+        // Promo corta (de esta semana)
         ArticuloPromocionEntity combo4 = crearPromocion(
                 "Soft Mayo + Batatas + Cerveza",
                 "Hamburguesa Soft Mayo con batatas y cerveza",
@@ -125,15 +132,33 @@ public class ArticuloPromocionData {
                 ),
                 sucursal,
                 20,
-                LocalDate.now(),
-                LocalDate.now().plusMonths(12),
+                LocalDate.of(2025, 6, 24),
+                LocalDate.of(2025, 6, 30),
                 LocalTime.of(18, 0),
                 LocalTime.of(23, 59),
                 comboIndividual
         );
-
         combo4.setImagenesUrls(crearImagenes(combo4, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838093/estguhkiaxdaztpjw5ma.webp"));
         promociones.add(combo4);
+
+        ArticuloPromocionEntity combo5 = crearPromocion(
+                "Promo Individual Classic",
+                "1 Hamburguesa Classic, 1 Papas Fritas y 1 Agua",
+                List.of(
+                        detalle(classic, 1),
+                        detalle(papas, 1),
+                        detalle(agua, 1)
+                ),
+                sucursal,
+                20,
+                LocalDate.of(2025, 6, 24),
+                LocalDate.of(2025, 12, 31),
+                LocalTime.of(11, 0),
+                LocalTime.of(23, 0),
+                comboIndividual
+        );
+        combo5.setImagenesUrls(crearImagenes(combo5, "https://res.cloudinary.com/drqdadlel/image/upload/v1750183712/rjgwsqyysixbloshzpjk.png"));
+        promociones.add(combo5);
 
         articuloPromocionRepository.saveAll(promociones);
     }
