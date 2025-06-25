@@ -15,6 +15,7 @@ import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.Pe
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.RoleRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.UsuarioRepositoryImpl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +26,8 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import static com.cloudinary.AccessControlRule.AccessType.token;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +43,7 @@ public class AuthenticationService {
     private final ClienteMapper clienteMapper;
     private final PersonaRepositoryImpl personaRepository;
     private final EmpleadoMapper empleadoMapper;
+    private final CustomUserDetailsService customUserDetailsService;
 
     public AuthResponse login(AuthRequest request) {
         Authentication authentication = authManager.authenticate(
@@ -119,26 +123,20 @@ public class AuthenticationService {
         return new AuthResponse(token,clienteMapper.toBasicResponse(cliente));
     }
 
-    public AuthResponse oauth2Login(OAuth2AuthenticationToken authToken) {
-        OAuth2User oAuth2User = authToken.getPrincipal();
-        String email = oAuth2User.getAttribute("email");
+    public AuthResponse validateGoogleToken(String tokenHeader) {
+        String token = tokenHeader.replace("Bearer ", "");
+        String email = jwtService.extractUsername(token);
 
-        UsuarioEntity usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        String newToken = jwtService.generateToken(userDetails);
 
-        ClienteEntity cliente = clienteRepository.findByUsuarioEmail(usuario.getEmail());
+        ClienteEntity cliente = clienteRepository.findByUsuarioEmail(email);
 
-        String jwt = jwtService.generateToken(oAuth2User);
+        if (!cliente.isActivo()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "El usuario no está activo.");
+        }
 
-        ClienteBasicResponse clienteResponse = new ClienteBasicResponse(
-                cliente.getId(),
-                cliente.getNombre(),
-                cliente.getApellido(),
-                cliente.getTelefono(),
-                usuario.getEmail(),
-                cliente.getImagen().getUrl()
-        );
-        return new AuthResponse(jwt, clienteResponse);
+        return new AuthResponse(newToken, clienteMapper.toBasicResponse(cliente));
     }
 
 }
