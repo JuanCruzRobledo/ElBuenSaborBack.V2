@@ -33,7 +33,7 @@ public interface ClienteMapper {
     void actualizarDesdeDto(ClienteBasicUpdateRequest dto, @MappingTarget ClienteEntity entity);
 
     @Mapping(target = "usuario", ignore = true)
-    @Mapping(target = "usuario.email", source = "email")
+    //@Mapping(target = "usuario.email", source = "email")
     void actualizarDesdeDto(ClienteCompleteUpdateRequest dto, @MappingTarget ClienteEntity entity);
 
 }
