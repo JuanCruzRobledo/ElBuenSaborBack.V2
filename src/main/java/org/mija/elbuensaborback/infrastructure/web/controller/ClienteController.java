@@ -1,7 +1,8 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.mija.elbuensaborback.application.dto.request.cliente.ClienteUpdateRequest;
+import org.mija.elbuensaborback.application.dto.request.cliente.ClienteBasicUpdateRequest;
+import org.mija.elbuensaborback.application.dto.request.cliente.ClienteCompleteUpdateRequest;
 import org.mija.elbuensaborback.application.service.ClienteServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,17 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.traerCliente(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarCliente(@PathVariable Long id, @RequestBody ClienteUpdateRequest clienteUpdateRequest) {
-        return ResponseEntity.ok(clienteService.actualizarCliente(id, clienteUpdateRequest));
+    @PutMapping("/basic/{id}")
+    public ResponseEntity<?> actualizarBasicCliente(@PathVariable Long id, @RequestBody ClienteBasicUpdateRequest clienteBasicUpdateRequest) {
+        return ResponseEntity.ok(clienteService.actualizarCliente(id, clienteBasicUpdateRequest));
     }
 
-    @PostMapping("/fotoCloud/{id}")
+    @PutMapping("/complete/{id}")
+    public ResponseEntity<?> actualizarClienteCompleto(@PathVariable Long id, @RequestBody ClienteCompleteUpdateRequest clienteBasicUpdateRequest) {
+        return ResponseEntity.ok(clienteService.actualizarClienteCompleto(id, clienteBasicUpdateRequest));
+    }
+
+    @PostMapping("/foto/{id}")
     public ResponseEntity<?> subirFotoCliente(@PathVariable Long id, @RequestParam("archivo") MultipartFile archivo) {
         return ResponseEntity.ok(clienteService.subirFoto(id, archivo));
     }

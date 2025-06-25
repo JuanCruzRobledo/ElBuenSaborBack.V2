@@ -2,7 +2,8 @@ package org.mija.elbuensaborback.application.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.mija.elbuensaborback.application.dto.request.cliente.ClienteUpdateRequest;
+import org.mija.elbuensaborback.application.dto.request.cliente.ClienteBasicUpdateRequest;
+import org.mija.elbuensaborback.application.dto.request.cliente.ClienteCompleteUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ClienteBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.ClienteResponse;
 import org.mija.elbuensaborback.application.mapper.ClienteMapper;
@@ -34,13 +35,23 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ClienteBasicResponse actualizarCliente(Long id, ClienteUpdateRequest clienteUpdateRequest) {
+    public ClienteBasicResponse actualizarCliente(Long id, ClienteBasicUpdateRequest clienteBasicUpdateRequest) {
         ClienteEntity cliente = clienteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se pudo encontrar el cliente"));
-        clienteMapper.actualizarDesdeDto(clienteUpdateRequest, cliente);
+        clienteMapper.actualizarDesdeDto(clienteBasicUpdateRequest, cliente);
 
         cliente.setId(id);
 
         return clienteMapper.toBasicResponse(clienteRepository.save(cliente));
+    }
+
+    @Override
+    public ClienteResponse actualizarClienteCompleto(Long id, ClienteCompleteUpdateRequest clienteBasicUpdateRequest) {
+        ClienteEntity cliente = clienteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se pudo encontrar el cliente"));
+        clienteMapper.actualizarDesdeDto(clienteBasicUpdateRequest, cliente);
+
+        cliente.setId(id);
+
+        return clienteMapper.toResponse(clienteRepository.save(cliente));
     }
 
     @Override
@@ -67,21 +78,6 @@ public class ClienteServiceImpl implements ClienteService {
         } catch (IOException e) {
             throw new RuntimeException("Error al subir la imagen: " + e.getMessage(), e);
         }
-    }
-
-    public ClienteBasicResponse subirFotoString(Long id, String foto) {
-        ClienteEntity cliente = clienteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se pudo encontrar el cliente"));
-        if (cliente.getImagen() == null) {
-            ImagenClienteEntity imagen = ImagenClienteEntity.builder().url(foto).build();
-            cliente.setImagen(imagen);
-            imagen.setCliente(cliente);
-        } else {
-            cliente.getImagen().setUrl(foto);
-            cliente.getImagen().setCliente(cliente);
-        }
-
-        cliente =clienteRepository.save(cliente);
-        return clienteMapper.toBasicResponse(cliente);
     }
 
     @Override

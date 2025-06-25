@@ -1,6 +1,6 @@
 package org.mija.elbuensaborback.application.dto.request.cliente;
 
-public record ClienteUpdateRequest(
+public record ClienteBasicUpdateRequest(
         String nombre,
         String apellido,
         //String email,

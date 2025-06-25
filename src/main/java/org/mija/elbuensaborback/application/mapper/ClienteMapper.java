@@ -4,7 +4,8 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mija.elbuensaborback.application.dto.request.cliente.ClienteUpdateRequest;
+import org.mija.elbuensaborback.application.dto.request.cliente.ClienteBasicUpdateRequest;
+import org.mija.elbuensaborback.application.dto.request.cliente.ClienteCompleteUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ClienteBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.ClienteResponse;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
@@ -23,10 +24,16 @@ public interface ClienteMapper {
         }
     }
 
+    @Mapping(target = "email", source = "usuario.email")
     ClienteResponse toResponse(ClienteEntity entity);
 
-    ClienteEntity toEntity(ClienteUpdateRequest clienteUpdateRequest);
+    ClienteEntity toEntity(ClienteBasicUpdateRequest clienteBasicUpdateRequest);
 
     @Mapping(target = "usuario", ignore = true)
-    void actualizarDesdeDto(ClienteUpdateRequest dto, @MappingTarget ClienteEntity entity);
+    void actualizarDesdeDto(ClienteBasicUpdateRequest dto, @MappingTarget ClienteEntity entity);
+
+    @Mapping(target = "usuario", ignore = true)
+    @Mapping(target = "usuario.email", source = "email")
+    void actualizarDesdeDto(ClienteCompleteUpdateRequest dto, @MappingTarget ClienteEntity entity);
+
 }

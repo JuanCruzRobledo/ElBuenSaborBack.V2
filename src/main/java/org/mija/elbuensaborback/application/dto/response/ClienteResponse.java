@@ -10,7 +10,8 @@ public record ClienteResponse(
         String nombre,
         String apellido,
         String telefono,
-        UsuarioResponse usuario,
+        //UsuarioResponse usuario,
+        String email,
         boolean activo,
         List<DomicilioResponse> domicilio,
         ImagenDto imagen
