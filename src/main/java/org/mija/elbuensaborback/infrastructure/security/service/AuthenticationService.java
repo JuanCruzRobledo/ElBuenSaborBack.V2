@@ -66,9 +66,9 @@ public class AuthenticationService {
 
                 return new AuthResponse(token, clienteMapper.toBasicResponse(cliente));
             }
-            case "EMPLEADO" -> {
+            case "ADMIN" -> {
                 if (!(persona instanceof EmpleadoEntity empleado))
-                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No es un empleado");
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No es un administrador");
 
                 return new AuthResponse(token, empleadoMapper.toBasicResponse(empleado));
             }
