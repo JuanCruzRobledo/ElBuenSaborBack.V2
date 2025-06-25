@@ -89,7 +89,6 @@ public class AuthenticationController {
         String newToken = jwtService.generateToken(userDetails);
 
         ClienteEntity cliente = clienteRepository.findByUsuarioEmail(email);
-
         return ResponseEntity.ok(new AuthResponse(newToken, clienteMapper.toBasicResponse(cliente)));
     }
 }

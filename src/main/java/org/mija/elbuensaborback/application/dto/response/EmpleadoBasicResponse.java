@@ -1,15 +1,10 @@
 package org.mija.elbuensaborback.application.dto.response;
 
-import lombok.Builder;
-
-public record ClienteBasicResponse(
+public record EmpleadoBasicResponse(
         Long id,
         String nombre,
         String apellido,
         String telefono,
         String email,
-        String imagen
-) implements PersonaResponse {
-    @Builder
-    public ClienteBasicResponse{}
-}
+        String rol
+) implements PersonaResponse {}

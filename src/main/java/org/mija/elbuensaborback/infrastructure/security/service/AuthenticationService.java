@@ -6,14 +6,15 @@ import org.mija.elbuensaborback.application.dto.request.auth.RegisterRequest;
 import org.mija.elbuensaborback.application.dto.response.AuthResponse;
 import org.mija.elbuensaborback.application.dto.response.ClienteBasicResponse;
 import org.mija.elbuensaborback.application.mapper.ClienteMapper;
+import org.mija.elbuensaborback.application.mapper.EmpleadoMapper;
 import org.mija.elbuensaborback.domain.enums.AuthProviderEnum;
 import org.mija.elbuensaborback.domain.enums.RolEnum;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.RoleEntity;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.UsuarioEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ClienteRepositoryImpl;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PersonaRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.RoleRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.UsuarioRepositoryImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +38,8 @@ public class AuthenticationService {
     private final RoleRepositoryImpl roleRepository;
     private final ClienteRepositoryImpl clienteRepository;
     private final ClienteMapper clienteMapper;
+    private final PersonaRepositoryImpl personaRepository;
+    private final EmpleadoMapper empleadoMapper;
 
     public AuthResponse login(AuthRequest request) {
         Authentication authentication = authManager.authenticate(
@@ -45,8 +49,31 @@ public class AuthenticationService {
         UserDetails user = (UserDetails) authentication.getPrincipal();
         String token = jwtService.generateToken(user);
 
-        ClienteEntity cliente = clienteRepository.findByUsuarioEmail(request.email());
-        return new AuthResponse(token,clienteMapper.toBasicResponse(cliente));
+        //Para la respuesta del login:
+        //Buscamos la persona que está asociado a ese usuario
+        PersonaEntity persona = personaRepository.findByUsuarioEmail(request.email());
+
+        // Validación de estado activo
+        if (!persona.isActivo()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "El usuario no está activo.");
+        }
+
+        //Dependiendo el tipo de persona devuelve su respuesta
+        switch (request.tipoLogin()) {
+            case "CLIENTE" -> {
+                if (!(persona instanceof ClienteEntity cliente))
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No es un cliente");
+
+                return new AuthResponse(token, clienteMapper.toBasicResponse(cliente));
+            }
+            case "EMPLEADO" -> {
+                if (!(persona instanceof EmpleadoEntity empleado))
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No es un empleado");
+
+                return new AuthResponse(token, empleadoMapper.toBasicResponse(empleado));
+            }
+            default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo de login inválido");
+        }
     }
 
 

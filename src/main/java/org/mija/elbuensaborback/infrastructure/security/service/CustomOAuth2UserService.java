@@ -56,6 +56,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                     nuevoCliente.setApellido(oAuth2User.getAttribute("family_name"));
                     nuevoCliente.setImagen(ImagenClienteEntity.builder().url(oAuth2User.getAttribute("picture")).build());
                     nuevoCliente.setTelefono(null);
+                    nuevoCliente.setActivo(false);
                     nuevoCliente.setUsuario(nuevoUsuario);
 
                     clienteRepository.save(nuevoCliente);

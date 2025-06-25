@@ -1,6 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
 import org.mija.elbuensaborback.domain.repository.PersonaRepositoryPort;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PersonaEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.PersonaJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -34,6 +35,10 @@ public class PersonaRepositoryImpl implements PersonaRepositoryPort {
     @Override
     public void deleteById(Long aLong) {
 
+    }
+
+    public PersonaEntity findByUsuarioEmail(String email) {
+        return personaJpaRepository.findByUsuarioEmail(email);
     }
 
     @Override

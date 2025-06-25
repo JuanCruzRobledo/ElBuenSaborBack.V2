@@ -1,3 +1,7 @@
 package org.mija.elbuensaborback.application.dto.request.auth;
 
-public record AuthRequest(String email, String password) {}
+public record AuthRequest(
+        String email,
+        String password,
+        String tipoLogin
+) {}
