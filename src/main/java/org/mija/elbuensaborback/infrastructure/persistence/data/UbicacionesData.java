@@ -30,8 +30,8 @@ public class UbicacionesData {
 
         // Localidades
         LocalidadEntity godoyCruz = LocalidadEntity.builder().nombre("Godoy Cruz").provincia(mendoza).build();
-        LocalidadEntity lujanDeCuyo = LocalidadEntity.builder().nombre("Luján de Cuyo").provincia(mendoza).build();
-        LocalidadEntity maipu = LocalidadEntity.builder().nombre("Maipú").provincia(mendoza).build();
+        LocalidadEntity lujanDeCuyo = LocalidadEntity.builder().nombre("Lujan de Cuyo").provincia(mendoza).build();
+        LocalidadEntity maipu = LocalidadEntity.builder().nombre("Maipu").provincia(mendoza).build();
         LocalidadEntity lasHeras = LocalidadEntity.builder().nombre("Las Heras").provincia(mendoza).build();
 
         localidadRepository.saveAll(List.of(godoyCruz, lujanDeCuyo, maipu, lasHeras));

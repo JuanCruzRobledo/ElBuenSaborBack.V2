@@ -30,9 +30,8 @@ public class ArticuloManufacturadoData {
         CategoriaEntity hamburguesas = categoriaRepository.findByDenominacion("hamburguesas");
         CategoriaEntity sides = categoriaRepository.findByDenominacion("sides");
 
-        ArticuloInsumoEntity pan = articuloInsumoRepository.findByDenominacion("Pan de Hamburguesa");
-        ArticuloInsumoEntity carne = articuloInsumoRepository.findByDenominacion("Medallón de carne");
-        //demas
+        ArticuloInsumoEntity pan = articuloInsumoRepository.findByDenominacion("Pan de Hamburguesa Comun");
+        ArticuloInsumoEntity carne = articuloInsumoRepository.findByDenominacion("Medallon de Carne");
         ArticuloInsumoEntity cheddar = articuloInsumoRepository.findByDenominacion("Queso Cheddar");
         ArticuloInsumoEntity lechuga = articuloInsumoRepository.findByDenominacion("Lechuga");
         ArticuloInsumoEntity tomate = articuloInsumoRepository.findByDenominacion("Tomate");
@@ -48,7 +47,8 @@ public class ArticuloManufacturadoData {
         ArticuloInsumoEntity nachos = articuloInsumoRepository.findByDenominacion("Nachos");
         ArticuloInsumoEntity guacamole = articuloInsumoRepository.findByDenominacion("Guacamole");
         ArticuloInsumoEntity sal = articuloInsumoRepository.findByDenominacion("Sal");
-        ArticuloInsumoEntity queso = articuloInsumoRepository.findByDenominacion("Queso");
+        ArticuloInsumoEntity quesoTibo = articuloInsumoRepository.findByDenominacion("Queso Tibo");
+
 
         List<ArticuloManufacturadoEntity> articulos = new ArrayList<>();
 
@@ -74,7 +74,7 @@ public class ArticuloManufacturadoData {
                 List.of(
                         detalle(carne, 120),
                         detalle(cebolla, 30),
-                        detalle(queso, 25),
+                        detalle(quesoTibo, 25),
                         detalle(pan, 90),
                         detalle(salsaBBQ, 20)
                 )
@@ -151,7 +151,7 @@ public class ArticuloManufacturadoData {
                 List.of(
                         detalle(nachos, 150),
                         detalle(guacamole, 50),
-                        detalle(queso, 30)
+                        detalle(quesoTibo, 30)
                 )
         ));
 

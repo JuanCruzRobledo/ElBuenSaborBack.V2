@@ -40,12 +40,15 @@ public class CategoriaData {
 //        CategoriaEntity ensaladasEspeciales = CategoriaEntity.builder().denominacion("Especiales").categoriaPadre(ensaladas).build();
 
         CategoriaEntity salsas = CategoriaEntity.builder().denominacion("Salsas").categoriaPadre(insumo).build();
-        CategoriaEntity panaderia = CategoriaEntity.builder().denominacion("Panadería").categoriaPadre(insumo).build();
-        CategoriaEntity lacteos = CategoriaEntity.builder().denominacion("Lácteos").categoriaPadre(insumo).build();
+        CategoriaEntity panaderia = CategoriaEntity.builder().denominacion("Panaderia").categoriaPadre(insumo).build();
+        CategoriaEntity lacteos = CategoriaEntity.builder().denominacion("Lacteos").categoriaPadre(insumo).build();
         CategoriaEntity verduras = CategoriaEntity.builder().denominacion("Verduras").categoriaPadre(insumo).build();
-        CategoriaEntity carnes = CategoriaEntity.builder().denominacion("Carnes").categoriaPadre(insumo).build();
+        CategoriaEntity legumbres = CategoriaEntity.builder().denominacion("Legumbres").categoriaPadre(insumo).build();
+        CategoriaEntity hongos = CategoriaEntity.builder().denominacion("Hongos").categoriaPadre(insumo).build();
+        CategoriaEntity origenAnimal = CategoriaEntity.builder().denominacion("Origen Animal").categoriaPadre(insumo).build();
+        CategoriaEntity carnes = CategoriaEntity.builder().denominacion("Carnes").categoriaPadre(origenAnimal).build();
         CategoriaEntity condimentos = CategoriaEntity.builder().denominacion("Condimentos").categoriaPadre(insumo).build();
-        CategoriaEntity snacks = CategoriaEntity.builder().denominacion("snacks").categoriaPadre(insumo).build();
+        CategoriaEntity snacks = CategoriaEntity.builder().denominacion("Snacks").categoriaPadre(insumo).build();
 
         CategoriaEntity bebidas = CategoriaEntity.builder().denominacion("Bebidas").categoriaPadre(insumo).build();
         CategoriaEntity gaseosas = CategoriaEntity.builder().denominacion("Gaseosas").categoriaPadre(bebidas).build();
@@ -55,13 +58,13 @@ public class CategoriaData {
         CategoriaEntity energizantes = CategoriaEntity.builder().denominacion("Energizantes").categoriaPadre(bebidas).build();
 
         CategoriaEntity dulces = CategoriaEntity.builder().denominacion("Dulces").categoriaPadre(insumo).build();
-        CategoriaEntity alfajor = CategoriaEntity.builder().denominacion("alfajores").categoriaPadre(dulces).build();
-        CategoriaEntity chocolate = CategoriaEntity.builder().denominacion("chocolates").categoriaPadre(dulces).build();
+        CategoriaEntity alfajor = CategoriaEntity.builder().denominacion("Alfajores").categoriaPadre(dulces).build();
+        CategoriaEntity chocolate = CategoriaEntity.builder().denominacion("Chocolates").categoriaPadre(dulces).build();
 
         categoriaRepository.saveAll(List.of(
                 manufacturado, insumo,
                 hamburguesas,
-                salsas, panaderia, lacteos, verduras, carnes, condimentos,snacks,
+                salsas, panaderia, lacteos, verduras, legumbres, hongos, carnes, condimentos,snacks,
                 bebidas, gaseosas, aguas, cervezas, jugos, energizantes,sides,
                 combos, comboIndividual, comboFamiliar,
                 dulces, alfajor, chocolate

@@ -63,59 +63,59 @@ public class ArticuloInsumoVendibleData {
 
         List<ArticuloInsumoEntity> insumos = new ArrayList<>();
 
-        insumos.add(crearInsumoVendible("Coca Cola 500ml", "gaseosas",
+        insumos.add(crearInsumoVendible("Coca Cola 500ml", "Gaseosas",
                 new BigDecimal("1500"), new BigDecimal("2000"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal, "https://res.cloudinary.com/drqdadlel/image/upload/v1746571979/cocacola_s4s5rg.png"));
 
-        insumos.add(crearInsumoVendible("Cerveza 375ml", "cervezas",
+        insumos.add(crearInsumoVendible("Cerveza 375ml", "Cervezas",
                 new BigDecimal("2000"), new BigDecimal("2500"), UnidadMedidaEnum.UNIDAD, 2,
                 sucursal, "https://res.cloudinary.com/drqdadlel/image/upload/v1746571980/cerveza_dzrpj9.png"));
 
-        insumos.add(crearInsumoVendible("Agua Mineral 473ml", "aguas",
+        insumos.add(crearInsumoVendible("Agua Mineral 473ml", "Aguas",
                 new BigDecimal("1000"), new BigDecimal("1500"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal, "https://res.cloudinary.com/drqdadlel/image/upload/v1746571980/aguamineral_gtoc1a.png"));
 
-        insumos.add(crearInsumoVendible("Sprite 500ml", "gaseosas",
+        insumos.add(crearInsumoVendible("Sprite 500ml", "Gaseosas",
                 new BigDecimal("1400"), new BigDecimal("1900"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal, "https://res.cloudinary.com/dlqx3atyg/image/upload/v1750605283/sprite_500ml_z1hvj3.webp"));
 
-        insumos.add(crearInsumoVendible("Pepsi 500ml", "gaseosas",
+        insumos.add(crearInsumoVendible("Pepsi 500ml", "Gaseosas",
                 new BigDecimal("1350"), new BigDecimal("1850"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal, "https://res.cloudinary.com/dlqx3atyg/image/upload/v1750605398/orgsize_15597Pepsi_20Regular_20Blue_20500ml_agwlfx.webp"));
 
-        insumos.add(crearInsumoVendible("Fanta Naranja 500ml", "gaseosas",
+        insumos.add(crearInsumoVendible("Fanta Naranja 500ml", "Gaseosas",
                 new BigDecimal("1400"), new BigDecimal("1900"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal, "https://res.cloudinary.com/dlqx3atyg/image/upload/v1750605466/fanta_500ml_tjyime.png"));
 
-        insumos.add(crearInsumoVendible("Cerveza IPA 473ml", "cervezas",
+        insumos.add(crearInsumoVendible("Cerveza IPA 473ml", "Cervezas",
                 new BigDecimal("2500"), new BigDecimal("3200"), UnidadMedidaEnum.UNIDAD, 2,
                 sucursal, "https://res.cloudinary.com/dlqx3atyg/image/upload/v1750605553/Cerveza_IPA_pmsq92.png"));
 
-        insumos.add(crearInsumoVendible("Jugo de Naranja 500ml", "jugos",
+        insumos.add(crearInsumoVendible("Jugo de Naranja 500ml", "Jugos",
                 new BigDecimal("1200"), new BigDecimal("1700"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal, "https://res.cloudinary.com/dlqx3atyg/image/upload/v1750605992/citric-naranja-500ml_chdjuo.png"));
 
-        insumos.add(crearInsumoVendible("Jugo de Manzana 500ml", "jugos",
+        insumos.add(crearInsumoVendible("Jugo de Manzana 500ml", "Jugos",
                 new BigDecimal("1200"), new BigDecimal("1700"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal, "https://res.cloudinary.com/dlqx3atyg/image/upload/v1750605716/Jugo_manzana_500ml_eyhugv.png"));
 
-        insumos.add(crearInsumoVendible("Lata Energética 250ml", "energizantes",
+        insumos.add(crearInsumoVendible("Lata Energetica 250ml", "Energizantes",
                 new BigDecimal("2300"), new BigDecimal("2800"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal, "https://res.cloudinary.com/dlqx3atyg/image/upload/v1750605759/Bebida-Energizante-Redbull-Lata-250ml_aw08q1.png"));
 
-        insumos.add(crearInsumoVendible("Oreos", "snacks",
+        insumos.add(crearInsumoVendible("Oreos", "Snacks",
                 new BigDecimal("1000"), new BigDecimal("1600"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal, "https://res.cloudinary.com/dlqx3atyg/image/upload/v1750606169/oreos-1paquete_wapjcd.webp"));
 
-        insumos.add(crearInsumoVendible("Doritos 46g", "snacks",
+        insumos.add(crearInsumoVendible("Doritos 46g", "Snacks",
                 new BigDecimal("1100"), new BigDecimal("1800"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal, "https://res.cloudinary.com/dlqx3atyg/image/upload/v1750606373/doritos-packete_u6bfpe.png"));
 
-        insumos.add(crearInsumoVendible("Chocolate Block", "chocolates",
+        insumos.add(crearInsumoVendible("Chocolate Block", "Chocolates",
                 new BigDecimal("2100"), new BigDecimal("4900"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal, "https://res.cloudinary.com/dlqx3atyg/image/upload/v1750606509/chocolate_block_w5xwdq.png"));
 
-        insumos.add(crearInsumoVendible("Alfajor B&N 3.0", "alfajores",
+        insumos.add(crearInsumoVendible("Alfajor B&N 3.0", "Alfajores",
                 new BigDecimal("700"), new BigDecimal("1500"), UnidadMedidaEnum.UNIDAD, 0,
                 sucursal,
                 "https://res.cloudinary.com/dlqx3atyg/image/upload/v1750607024/alfajor-bn-blanco_xjlvz9.png",
