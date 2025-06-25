@@ -24,6 +24,8 @@ public class EmpleadoData {
     public void initEmpleadoWithUser(){
         SucursalEntity sucursal = sucursalRepository.findById(1L).orElseThrow(()-> new EntityNotFoundException("No se encontro la sucursal"));
 
+        //===================== CAJERO ISABELLA =====================//
+
         UsuarioEntity userIsabella = UsuarioEntity.builder()
                 .email("isabella@gmail.com")
                 .password(passwordEncoder.encode("112233"))
@@ -44,6 +46,7 @@ public class EmpleadoData {
                 .sucursal(sucursal)
                 .build();
 
+        //===================== COCINERO MAITEN =====================//
 
         UsuarioEntity userMaiten = UsuarioEntity.builder()
                 .email("maiten@gmail.com")
@@ -56,7 +59,6 @@ public class EmpleadoData {
                 .rol(roleRepository.findByRolEnum(RolEnum.COCINERO).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Rol")))
                 .build();
 
-
         EmpleadoEntity empleado2 = EmpleadoEntity.builder()
                 .nombre("Maiten")
                 .apellido("Fernandez")
@@ -65,6 +67,30 @@ public class EmpleadoData {
                 .usuario(userMaiten)
                 .sucursal(sucursal)
                 .build();
+
+        //===================== COCINERO SANTIAGO =====================//
+
+        UsuarioEntity userSantiago= UsuarioEntity.builder()
+                .email("santiago@gmail.com")
+                .password(passwordEncoder.encode("112233"))
+                .authProviderEnum(AuthProviderEnum.LOCAL)
+                .disabled(false)
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .rol(roleRepository.findByRolEnum(RolEnum.COCINERO).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Rol")))
+                .build();
+
+        EmpleadoEntity empleado3 = EmpleadoEntity.builder()
+                .nombre("Santiago")
+                .apellido("Robledo")
+                .telefono("3278282818")
+                .activo(true)
+                .usuario(userSantiago)
+                .sucursal(sucursal)
+                .build();
+
+        //===================== DELIVERY EMILIANO =====================//
 
         UsuarioEntity userEmiliano = UsuarioEntity.builder()
                 .email("emiliano@gmail.com")
@@ -78,7 +104,7 @@ public class EmpleadoData {
                 .build();
 
 
-        EmpleadoEntity empleado3 = EmpleadoEntity.builder()
+        EmpleadoEntity empleado4 = EmpleadoEntity.builder()
                 .nombre("Emiliano")
                 .apellido("Chavez")
                 .telefono("23545222")
@@ -87,6 +113,31 @@ public class EmpleadoData {
                 .sucursal(sucursal)
                 .build();
 
-        empleadoRepository.saveAll(List.of(empleado1, empleado2, empleado3));
+        //===================== ADMIN JUAN =====================//
+
+        UsuarioEntity userJuan = UsuarioEntity.builder()
+                .email("juan@gmail.com")
+                .password(passwordEncoder.encode("112233"))
+                .authProviderEnum(AuthProviderEnum.LOCAL)
+                .disabled(false)
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .rol(roleRepository.findByRolEnum(RolEnum.ADMIN).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el Rol")))
+                .build();
+
+
+        EmpleadoEntity empleado5 = EmpleadoEntity.builder()
+                .nombre("Juan Cruz")
+                .apellido("Robledo")
+                .telefono("23545222")
+                .activo(true)
+                .usuario(userJuan)
+                .sucursal(sucursal)
+                .build();
+
+
+
+        empleadoRepository.saveAll(List.of(empleado1, empleado2, empleado3,empleado4,empleado5));
     }
 }
