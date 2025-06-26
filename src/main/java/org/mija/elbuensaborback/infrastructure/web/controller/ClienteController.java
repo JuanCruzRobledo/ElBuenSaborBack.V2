@@ -15,7 +15,7 @@ public class ClienteController {
 
     private final ClienteServiceImpl clienteService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<?> obtenerCliente(@PathVariable Long id) {
         return ResponseEntity.ok(clienteService.traerCliente(id));
     }
