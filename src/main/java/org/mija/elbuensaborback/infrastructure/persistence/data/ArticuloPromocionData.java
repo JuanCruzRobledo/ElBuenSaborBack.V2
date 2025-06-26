@@ -79,7 +79,7 @@ public class ArticuloPromocionData {
                 LocalTime.of(23, 0),
                 comboIndividual
         );
-        combo1.setImagenesUrls(crearImagenes(combo1, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838093/gwiq22zgfprwzknnsnru.webp"));
+        combo1.setImagenesUrls(crearImagenes(combo1, "https://res.cloudinary.com/dcjr3qnze/image/upload/v1750894376/Promo_3_vd9ct2.webp"));
         promociones.add(combo1);
 
         // Vencida
@@ -99,7 +99,7 @@ public class ArticuloPromocionData {
                 LocalTime.of(23, 0),
                 comboFamiliar
         );
-        combo2.setImagenesUrls(crearImagenes(combo2, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838093/kautfm8lturhgcsufeno.webp"));
+        combo2.setImagenesUrls(crearImagenes(combo2, "https://res.cloudinary.com/dcjr3qnze/image/upload/v1750894312/Promo_1_fgdz3d.webp"));
         promociones.add(combo2);
 
         // Futura (comienza en julio)
@@ -118,7 +118,7 @@ public class ArticuloPromocionData {
                 LocalTime.of(22, 0),
                 comboIndividual
         );
-        combo3.setImagenesUrls(crearImagenes(combo3, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838092/wguftynzlcjwpxikbnaq.webp"));
+        combo3.setImagenesUrls(crearImagenes(combo3, "https://res.cloudinary.com/dcjr3qnze/image/upload/v1750894322/Promo_2_gccwoe.webp"));
         promociones.add(combo3);
 
         // Promo corta (de esta semana)
@@ -138,7 +138,7 @@ public class ArticuloPromocionData {
                 LocalTime.of(23, 59),
                 comboIndividual
         );
-        combo4.setImagenesUrls(crearImagenes(combo4, "https://res.cloudinary.com/drqdadlel/image/upload/v1749838093/estguhkiaxdaztpjw5ma.webp"));
+        combo4.setImagenesUrls(crearImagenes(combo4, "https://res.cloudinary.com/dcjr3qnze/image/upload/v1750894503/Promo_4_uvcjcv.webp"));
         promociones.add(combo4);
 
         ArticuloPromocionEntity combo5 = crearPromocion(
@@ -157,7 +157,7 @@ public class ArticuloPromocionData {
                 LocalTime.of(23, 0),
                 comboIndividual
         );
-        combo5.setImagenesUrls(crearImagenes(combo5, "https://res.cloudinary.com/drqdadlel/image/upload/v1750183712/rjgwsqyysixbloshzpjk.png"));
+        combo5.setImagenesUrls(crearImagenes(combo5, "https://res.cloudinary.com/dcjr3qnze/image/upload/v1750894503/Promo_5_dzw5hw.webp"));
         promociones.add(combo5);
 
         articuloPromocionRepository.saveAll(promociones);

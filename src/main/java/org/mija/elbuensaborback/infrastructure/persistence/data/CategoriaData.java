@@ -57,17 +57,13 @@ public class CategoriaData {
         CategoriaEntity jugos = CategoriaEntity.builder().denominacion("Jugos").categoriaPadre(bebidas).build();
         CategoriaEntity energizantes = CategoriaEntity.builder().denominacion("Energizantes").categoriaPadre(bebidas).build();
 
-        CategoriaEntity dulces = CategoriaEntity.builder().denominacion("Dulces").categoriaPadre(insumo).build();
-        CategoriaEntity alfajor = CategoriaEntity.builder().denominacion("Alfajores").categoriaPadre(dulces).build();
-        CategoriaEntity chocolate = CategoriaEntity.builder().denominacion("Chocolates").categoriaPadre(dulces).build();
 
         categoriaRepository.saveAll(List.of(
                 manufacturado, insumo,
                 hamburguesas,
                 salsas, panaderia, lacteos, verduras, legumbres, hongos, carnes, condimentos,snacks,
                 bebidas, gaseosas, aguas, cervezas, jugos, energizantes,sides,
-                combos, comboIndividual, comboFamiliar,
-                dulces, alfajor, chocolate
+                combos, comboIndividual, comboFamiliar
         ));
     }
 }
