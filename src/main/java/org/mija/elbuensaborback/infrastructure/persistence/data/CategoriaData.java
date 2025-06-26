@@ -60,10 +60,10 @@ public class CategoriaData {
 
         categoriaRepository.saveAll(List.of(
                 manufacturado, insumo,
-                hamburguesas,
-                salsas, panaderia, lacteos, verduras, legumbres, hongos, carnes, condimentos,snacks,
-                bebidas, gaseosas, aguas, cervezas, jugos, energizantes,sides,
-                combos, comboIndividual, comboFamiliar
+                hamburguesas, sides,
+                combos, comboIndividual, comboFamiliar,
+                salsas, panaderia, lacteos, verduras, legumbres, hongos, origenAnimal,carnes, condimentos,snacks,
+                bebidas, gaseosas, aguas, cervezas, jugos, energizantes
         ));
     }
 }
