@@ -32,8 +32,8 @@ dependencies {
 // implementation 'org.springframework.boot:spring-boot-starter-validation' // Validación con anotaciones (@Valid)
 
 // === BASE DE DATOS ===
-    runtimeOnly 'com.mysql:mysql-connector-j' // Conector para base de datos MySQL
-// runtimeOnly 'com.h2database:h2' // Base de datos en memoria para testing (opcional)
+//    runtimeOnly 'com.mysql:mysql-connector-j' // Conector para base de datos MySQL
+ runtimeOnly 'com.h2database:h2' // Base de datos en memoria para testing (opcional)
 
 // === LOMBOK Y DESARROLLO ===
     compileOnly 'org.projectlombok:lombok' // Lombok solo en compilación

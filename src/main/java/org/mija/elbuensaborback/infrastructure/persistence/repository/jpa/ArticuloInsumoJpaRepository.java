@@ -16,9 +16,10 @@ public interface ArticuloInsumoJpaRepository extends JpaRepository<ArticuloInsum
     @Query("SELECT new org.mija.elbuensaborback.application.dto.response.ArticuloInsumoBasicResponse(a.id, a.denominacion)  FROM articulo_insumo a WHERE a.esParaPreparar = true")
     List<ArticuloInsumoBasicResponse> basicFindAllParaPreparar();
 
+    @Query("SELECT a FROM articulo_insumo a WHERE LOWER(a.denominacion) = LOWER(:denominacion)")
     ArticuloInsumoEntity findByDenominacion(String denominacion);
 
-    @Query("SELECT a FROM articulo_insumo a WHERE a.categoria.denominacion = :denominacion AND a.esVendible = true")
+    @Query("SELECT a FROM articulo_insumo a WHERE LOWER(a.categoria.denominacion) = LOWER(:denominacion) AND a.esVendible = true")
     List<ArticuloInsumoEntity> findAllByCategoriaDenominacionVendibles(@Param("denominacion") String denominacion);
 
     @Query("SELECT a FROM articulo_insumo a JOIN categoria c WHERE a.esVendible = true")

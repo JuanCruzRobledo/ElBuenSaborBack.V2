@@ -15,7 +15,7 @@ public class ElBuenSaborBackApplication {
         SpringApplication.run(ElBuenSaborBackApplication.class, args);
     }
 
-
+    /*
     @Bean
     CommandLineRunner init(DataInitializationService dataService, ComprobanteCounterJpaRepository repo) {
 
@@ -26,7 +26,7 @@ public class ElBuenSaborBackApplication {
             }
         };
 
-    }
+    }*/
 
 
 }

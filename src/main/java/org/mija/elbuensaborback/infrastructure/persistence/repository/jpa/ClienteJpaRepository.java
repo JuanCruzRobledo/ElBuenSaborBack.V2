@@ -9,7 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ClienteJpaRepository extends JpaRepository<ClienteEntity, Long> {
-    ClienteEntity findByUsuarioEmail(String email);
+
+    @Query("SELECT c FROM cliente c WHERE LOWER(c.usuario.email) = LOWER(:email)")
+    ClienteEntity findByUsuarioEmail(@Param("email") String email);
 
     @Query("SELECT d FROM cliente c JOIN c.domicilio d WHERE c.id = :idCliente AND d.activo = true")
     List<DomicilioEntity> findDomiciliosActivosByClienteId(@Param("idCliente") Long idCliente);
