@@ -25,7 +25,7 @@ public class DomicilioController {
                 .body(domicilioService.crearDomicilio(idCliente,domicilioCreatedRequest));
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<Set<DomicilioResponse>> listarDomicilios(@PathVariable Long idCliente) {
         return ResponseEntity.ok(domicilioService.listarDomicilios(idCliente));
     }

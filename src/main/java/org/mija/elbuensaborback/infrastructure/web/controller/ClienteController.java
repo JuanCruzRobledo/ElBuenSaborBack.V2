@@ -15,7 +15,7 @@ public class ClienteController {
 
     private final ClienteServiceImpl clienteService;
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> obtenerCliente(@PathVariable Long id) {
         return ResponseEntity.ok(clienteService.traerCliente(id));
     }
@@ -41,7 +41,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarCliente(Long id) {
+    public ResponseEntity<?> eliminarCliente(@PathVariable Long id) {
         clienteService.eliminarCliente(id);
         return ResponseEntity.ok("Empleado eliminado");
     }

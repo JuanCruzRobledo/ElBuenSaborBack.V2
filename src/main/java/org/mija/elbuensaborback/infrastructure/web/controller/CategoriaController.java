@@ -27,7 +27,7 @@ public class CategoriaController {
         return ResponseEntity.status(HttpStatus.OK).body(categoriaService.actualizarCategoria(id,categoriaDto));
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> obtenerCategoria(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(categoriaService.obtenerCategoria(id));
     }
@@ -49,7 +49,7 @@ public class CategoriaController {
         return ResponseEntity.status(HttpStatus.OK).body(categoriaService.listarCategoria());
     }
 
-    @GetMapping("padres/getAll")
+    @GetMapping("/padres/getAll")
     public ResponseEntity<?> listarCategoriasPadres() {
         return ResponseEntity.status(HttpStatus.OK).body(categoriaService.listarCategoriaPadres());
     }

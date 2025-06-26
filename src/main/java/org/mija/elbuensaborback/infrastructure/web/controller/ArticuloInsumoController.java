@@ -47,7 +47,7 @@ public class ArticuloInsumoController {
         }
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> obtenerArticuloInsumo(@PathVariable Long id){
         try{
             return ResponseEntity.ok(articuloInsumoService.obtenerArticuloInsumo(id));

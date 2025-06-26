@@ -45,7 +45,7 @@ public class ArticuloManufacturadoController {
         }
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> obtenerArticuloManufacturado (@PathVariable Long id){
         try{
             return ResponseEntity.ok(articuloManufacturadoService.obtenerArticulo(id));
