@@ -2,7 +2,10 @@ package org.mija.elbuensaborback.application.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mija.elbuensaborback.application.dto.request.cliente.ClienteCompleteUpdateRequest;
 import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoCreatedRequest;
+import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ClienteBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.EmpleadoBasicResponse;
 import org.mija.elbuensaborback.application.dto.response.EmpleadoResponse;
@@ -22,5 +25,8 @@ public interface EmpleadoMapper {
     @Mapping(target = "email",source = "usuario.email")
     @Mapping(target = "rol", source = "usuario.rol.rolEnum")
     EmpleadoBasicResponse toBasicResponse(EmpleadoEntity entity);
+
+    @Mapping(target = "usuario", ignore = true)
+    void actualizarDesdeDto(EmpleadoUpdateRequest dto, @MappingTarget EmpleadoEntity entity);
 
 }

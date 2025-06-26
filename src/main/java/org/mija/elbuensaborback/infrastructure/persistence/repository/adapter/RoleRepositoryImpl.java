@@ -19,7 +19,7 @@ public class RoleRepositoryImpl implements RoleRepositoryPort {
 
     @Override
     public Optional<RoleEntity> findById(Long aLong) {
-        return Optional.empty();
+        return roleJpaRepository.findById(aLong);
     }
 
     public Optional<RoleEntity> findByRolEnum(RolEnum role) {

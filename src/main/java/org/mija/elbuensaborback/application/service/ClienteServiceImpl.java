@@ -49,8 +49,6 @@ public class ClienteServiceImpl implements ClienteService {
         ClienteEntity cliente = clienteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se pudo encontrar el cliente"));
         clienteMapper.actualizarDesdeDto(clienteBasicUpdateRequest, cliente);
 
-        cliente.setId(id);
-
         return clienteMapper.toResponse(clienteRepository.save(cliente));
     }
 

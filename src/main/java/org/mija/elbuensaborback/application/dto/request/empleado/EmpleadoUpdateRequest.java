@@ -1,11 +1,11 @@
 package org.mija.elbuensaborback.application.dto.request.empleado;
 
-public record EmpleadoCreatedRequest(
+public record EmpleadoUpdateRequest(
         String nombre,
         String apellido,
         String telefono,
+        boolean activo,
         String email,
-        String password,
         Long rolId
 ) {
 }

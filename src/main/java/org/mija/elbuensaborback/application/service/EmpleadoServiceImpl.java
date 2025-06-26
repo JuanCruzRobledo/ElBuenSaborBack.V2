@@ -3,12 +3,16 @@ package org.mija.elbuensaborback.application.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoCreatedRequest;
+import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.EmpleadoResponse;
 import org.mija.elbuensaborback.application.mapper.EmpleadoMapper;
 import org.mija.elbuensaborback.application.service.contratos.EmpleadoService;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.EmpleadoEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.RoleEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.EmpleadoRepositoryImpl;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.RoleRepositoryImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +23,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
     private final EmpleadoRepositoryImpl empleadoRepository;
     private final EmpleadoMapper empleadoMapper;
+    private final RoleRepositoryImpl roleRepository;
 
     @Override
     public EmpleadoResponse crearEmpleado(EmpleadoCreatedRequest request) {
@@ -43,6 +48,17 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     public List<EmpleadoResponse> listarEmpleados() {
         List<EmpleadoEntity> listaEmpleados = empleadoRepository.findAll();
         return listaEmpleados.stream().map(empleadoMapper::toResponse).toList();
+    }
+
+    @Override
+    public EmpleadoResponse actualizarEmpleado(Long id, EmpleadoUpdateRequest request) {
+        EmpleadoEntity empleado = empleadoRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se pudo encontrar el empleado"));
+        RoleEntity rol = roleRepository.findById(request.rolId()).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el rol"));
+        empleadoMapper.actualizarDesdeDto(request, empleado);
+
+        empleado.getUsuario().setRol(rol);
+
+        return empleadoMapper.toResponse(empleadoRepository.save(empleado));
     }
 
     @Override

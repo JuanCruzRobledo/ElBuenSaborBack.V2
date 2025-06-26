@@ -1,7 +1,9 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.mija.elbuensaborback.application.dto.request.cliente.ClienteCompleteUpdateRequest;
 import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoCreatedRequest;
+import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoUpdateRequest;
 import org.mija.elbuensaborback.application.service.EmpleadoServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +39,10 @@ public class EmpleadoController {
     public ResponseEntity<?> eliminarEmpleado(@PathVariable Long id) {
         empleadoService.eliminarEmpleado(id);
         return ResponseEntity.ok("Empleado eliminado");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarClienteCompleto(@PathVariable Long id, @RequestBody EmpleadoUpdateRequest clienteBasicUpdateRequest) {
+        return ResponseEntity.ok(empleadoService.actualizarEmpleado(id, clienteBasicUpdateRequest));
     }
 }
