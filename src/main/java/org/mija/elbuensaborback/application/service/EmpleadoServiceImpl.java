@@ -7,6 +7,7 @@ import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoUpdateR
 import org.mija.elbuensaborback.application.dto.response.EmpleadoResponse;
 import org.mija.elbuensaborback.application.mapper.EmpleadoMapper;
 import org.mija.elbuensaborback.application.service.contratos.EmpleadoService;
+import org.mija.elbuensaborback.domain.enums.AuthProviderEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.EmpleadoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.RoleEntity;
@@ -28,8 +29,18 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     @Override
     public EmpleadoResponse crearEmpleado(EmpleadoCreatedRequest request) {
         EmpleadoEntity empleado = empleadoMapper.toEntity(request);
+        RoleEntity rol = roleRepository.findById(request.rolId()).orElseThrow(()-> new EntityNotFoundException("Rol no encontrado"));
+
+        //Creo el usuario por defecto
         empleado.setSucursal(SucursalEntity.builder().id(1L).build());
         empleado.setActivo(true);
+        empleado.getUsuario().setRol(rol);
+        empleado.getUsuario().setAuthProviderEnum(AuthProviderEnum.LOCAL);
+        empleado.getUsuario().setDisabled(false);
+        empleado.getUsuario().setAccountExpired(false);
+        empleado.getUsuario().setAccountLocked(false);
+        empleado.getUsuario().setCredentialsExpired(false);
+
         empleado = empleadoRepository.save(empleado);
         return empleadoMapper.toResponse(empleado);
     }
