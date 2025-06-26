@@ -3,6 +3,7 @@ package org.mija.elbuensaborback.infrastructure.security.service;
 import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.request.auth.AuthRequest;
 import org.mija.elbuensaborback.application.dto.request.auth.RegisterRequest;
+import org.mija.elbuensaborback.application.dto.request.usuario.UsuarioChangePasswordRequest;
 import org.mija.elbuensaborback.application.dto.response.AuthResponse;
 import org.mija.elbuensaborback.application.dto.response.ClienteBasicResponse;
 import org.mija.elbuensaborback.application.mapper.ClienteMapper;
@@ -25,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import static com.cloudinary.AccessControlRule.AccessType.token;
@@ -43,7 +45,6 @@ public class AuthenticationService {
     private final ClienteMapper clienteMapper;
     private final PersonaRepositoryImpl personaRepository;
     private final EmpleadoMapper empleadoMapper;
-    private final CustomUserDetailsService customUserDetailsService;
 
     public AuthResponse login(AuthRequest request) {
         Authentication authentication = authManager.authenticate(
@@ -137,6 +138,40 @@ public class AuthenticationService {
         }
 
         return new AuthResponse(newToken, clienteMapper.toBasicResponse(cliente));
+    }
+
+    public AuthResponse changePassword(Long personaId, UsuarioChangePasswordRequest request) {
+        PersonaEntity persona = personaRepository.findById(personaId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Persona no encontrada"));
+
+        UsuarioEntity usuario = persona.getUsuario();
+
+        // Verificamos que el email coincida
+        if (!usuario.getEmail().equals(request.email())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "El email no coincide");
+        }
+
+        // Verificamos que la contraseña actual sea correcta
+        if (!passwordEncoder.matches(request.currentPassword(), usuario.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña actual es incorrecta");
+        }
+
+        // Actualizamos la contraseña
+        usuario.setPassword(passwordEncoder.encode(request.newPassword()));
+        usuarioRepository.save(usuario);
+
+        // Generar nuevo token
+        UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
+        String token = jwtService.generateToken(userDetails);
+
+        // Devolver AuthResponse según tipo de persona
+        if (persona instanceof ClienteEntity cliente) {
+            return new AuthResponse(token, clienteMapper.toBasicResponse(cliente));
+        } else if (persona instanceof EmpleadoEntity empleado) {
+            return new AuthResponse(token, empleadoMapper.toBasicResponse(empleado));
+        } else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Tipo de persona desconocido");
+        }
     }
 
 }

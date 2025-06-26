@@ -19,7 +19,7 @@ public class PersonaRepositoryImpl implements PersonaRepositoryPort {
 
     @Override
     public Optional<PersonaEntity> findById(Long aLong) {
-        return Optional.empty();
+        return personaJpaRepository.findById(aLong);
     }
 
     @Override
