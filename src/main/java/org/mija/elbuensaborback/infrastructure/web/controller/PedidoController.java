@@ -38,7 +38,7 @@ public class PedidoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<Set<PedidoResponse>> listarPedido() {
         Set<PedidoResponse> pedidos = pedidoService.listarPedido();
         return ResponseEntity.ok(pedidos);
