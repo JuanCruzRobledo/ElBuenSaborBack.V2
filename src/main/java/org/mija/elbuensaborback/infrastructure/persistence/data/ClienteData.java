@@ -55,6 +55,8 @@ public class ClienteData {
                 .listaPedido(new ArrayList<>())
                 .build();
 
+        cliente1.setImagen(ImagenClienteEntity.builder().url("https://res.cloudinary.com/dlqx3atyg/image/upload/v1750939471/fotoambar_o7j9hk.webp").cliente(cliente1).build());
+
         /* CREATE CLIENTES */
         DomicilioEntity domicilio2 = DomicilioEntity.builder()
                 .numero(123)
@@ -86,6 +88,8 @@ public class ClienteData {
                 .domicilio(List.of(domicilio2))
                 .listaPedido(new ArrayList<>())
                 .build();
+
+        cliente2.setImagen(ImagenClienteEntity.builder().url("https://res.cloudinary.com/dlqx3atyg/image/upload/v1750939470/fotoJuan_ecihfp.webp").cliente(cliente2).build());
 
         clienteRepository.saveAll(List.of(cliente1, cliente2));
     }
