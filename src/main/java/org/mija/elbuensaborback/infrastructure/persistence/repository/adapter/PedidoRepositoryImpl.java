@@ -77,4 +77,16 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
     public List<RankingClientesResponse> obtenerVentasClientesHastaFecha(LocalDate fechaFin) {
         return pedidoJpaRepository.obtenerVentasClientesHastaFecha(fechaFin);
     }
+
+    public List<PedidoEntity> obtenerPedidosPorRango(LocalDate fechaInicio, LocalDate fechaFin) {
+        return pedidoJpaRepository.obtenerPedidosPorRango(fechaInicio, fechaFin);
+    }
+
+    public List<PedidoEntity> obtenerPedidosDesdeFecha(LocalDate fechaInicio) {
+        return pedidoJpaRepository.obtenerPedidosDesdeFecha(fechaInicio);
+    }
+
+    public List<PedidoEntity> obtenerPedidosHastaFecha(LocalDate fechaFin) {
+        return pedidoJpaRepository.obtenerPedidosHastaFecha(fechaFin);
+    }
 }

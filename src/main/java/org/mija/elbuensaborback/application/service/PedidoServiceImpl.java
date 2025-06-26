@@ -121,6 +121,22 @@ public class PedidoServiceImpl implements PedidoService {
         }).collect(Collectors.toSet());
     }
 
+    @Override
+    public Set<PedidoResponse> listarPedidoEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        if (fechaInicio != null && fechaFin != null) {
+            List<PedidoEntity> pedidos = pedidoRepository.obtenerPedidosPorRango(fechaInicio, fechaFin);
+            return pedidos.stream().map(pedidoMapper::toResponse).collect(Collectors.toSet());
+        } else if (fechaInicio != null) {
+            List<PedidoEntity> pedidos = pedidoRepository.obtenerPedidosDesdeFecha(fechaInicio);
+            return pedidos.stream().map(pedidoMapper::toResponse).collect(Collectors.toSet());
+        } else if (fechaFin != null) {
+            List<PedidoEntity> pedidos = pedidoRepository.obtenerPedidosHastaFecha(fechaFin);
+            return pedidos.stream().map(pedidoMapper::toResponse).collect(Collectors.toSet());
+        } else {
+            return pedidoRepository.findAll().stream().map(pedidoMapper::toResponse).collect(Collectors.toSet());
+        }
+    }
+
 
     public void cambiarEstadoPedido(Long pedidoId, EstadoPedidoDto actualizacionPedido) {
         PedidoEntity pedido = pedidoRepository.findById(pedidoId)

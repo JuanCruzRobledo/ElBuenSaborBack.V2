@@ -4,10 +4,12 @@ import org.mija.elbuensaborback.application.dto.request.Pedido.EstadoPedidoDto;
 import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.PedidoResponse;
 import org.mija.elbuensaborback.application.service.PedidoServiceImpl;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @RestController
@@ -41,6 +43,17 @@ public class PedidoController {
     @GetMapping("/getAll")
     public ResponseEntity<Set<PedidoResponse>> listarPedido() {
         Set<PedidoResponse> pedidos = pedidoService.listarPedido();
+        return ResponseEntity.ok(pedidos);
+    }
+
+    @GetMapping("/fecha-rango")
+    public ResponseEntity<Set<PedidoResponse>> listarPedidosPorFecha(
+            @RequestParam(value = "fechaInicio", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(value = "fechaFin", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin
+    ) {
+        Set<PedidoResponse> pedidos = pedidoService.listarPedidoEntreFechas(fechaInicio, fechaFin);
         return ResponseEntity.ok(pedidos);
     }
 

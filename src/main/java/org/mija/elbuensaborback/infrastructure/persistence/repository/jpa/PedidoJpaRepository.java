@@ -23,6 +23,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
 
     List<PedidoEntity> findByFechaPedidoAndEstadoEnum(LocalDate fechaPedido, EstadoEnum estadoEnum);
 
+    // ======================= TODOS LOS PEDIDOS TERMINADOS ========================//
     @Query("""
     SELECT new org.mija.elbuensaborback.application.dto.response.RankingClientesResponse(
         c.nombre,
@@ -89,5 +90,38 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
             @Param("fechaFin") LocalDate fechaFin
     );
 
+    // ======================= TODOS LOS PEDIDOS ========================//
 
+    @Query("""
+    SELECT p
+    FROM pedido p
+    JOIN p.cliente c
+    WHERE p.fechaPedido BETWEEN :fechaInicio AND :fechaFin
+""")
+    List<PedidoEntity> obtenerPedidosPorRango(
+            @Param("fechaInicio") LocalDate fechaInicio,
+            @Param("fechaFin") LocalDate fechaFin
+    );
+
+    @Query("""
+    SELECT p
+    FROM pedido p
+    JOIN p.cliente c
+    WHERE p.fechaPedido >= :fechaInicio
+    GROUP BY c.id, c.nombre, c.apellido
+""")
+    List<PedidoEntity> obtenerPedidosDesdeFecha(
+            @Param("fechaInicio") LocalDate fechaInicio
+    );
+
+    @Query("""
+    SELECT p
+    FROM pedido p
+    JOIN p.cliente c
+    WHERE p.fechaPedido <= :fechaFin
+    GROUP BY c.id, c.nombre, c.apellido
+""")
+    List<PedidoEntity> obtenerPedidosHastaFecha(
+            @Param("fechaFin") LocalDate fechaFin
+    );
 }
