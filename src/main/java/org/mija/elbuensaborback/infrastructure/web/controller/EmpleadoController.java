@@ -28,12 +28,12 @@ public class EmpleadoController {
         return ResponseEntity.ok(empleadoService.buscarEmpleadoPorEmail(email));
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<?> obtenerTodosLosEmpleados() {
         return ResponseEntity.ok(empleadoService.listarEmpleados());
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarEmpleado(Long id) {
         empleadoService.eliminarEmpleado(id);
         return ResponseEntity.ok("Empleado eliminado");
