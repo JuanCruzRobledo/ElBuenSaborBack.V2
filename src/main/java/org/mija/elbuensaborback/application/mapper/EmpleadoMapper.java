@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mija.elbuensaborback.application.dto.request.cliente.ClienteCompleteUpdateRequest;
+import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoBasicUpdateRequest;
 import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.ClienteBasicResponse;
@@ -28,5 +29,8 @@ public interface EmpleadoMapper {
 
     @Mapping(target = "usuario", ignore = true)
     void actualizarDesdeDto(EmpleadoUpdateRequest dto, @MappingTarget EmpleadoEntity entity);
+
+    @Mapping(target = "usuario", ignore = true)
+    void actualizarDesdeDto(EmpleadoBasicUpdateRequest dto, @MappingTarget EmpleadoEntity entity);
 
 }

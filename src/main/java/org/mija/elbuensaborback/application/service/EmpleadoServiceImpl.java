@@ -2,6 +2,7 @@ package org.mija.elbuensaborback.application.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoBasicUpdateRequest;
 import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoUpdateRequest;
 import org.mija.elbuensaborback.application.dto.response.EmpleadoResponse;
@@ -62,12 +63,22 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     }
 
     @Override
-    public EmpleadoResponse actualizarEmpleado(Long id, EmpleadoUpdateRequest request) {
+    public EmpleadoResponse actualizarEmpleadoCompleto(Long id, EmpleadoUpdateRequest request) {
         EmpleadoEntity empleado = empleadoRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se pudo encontrar el empleado"));
         RoleEntity rol = roleRepository.findById(request.rolId()).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el rol"));
         empleadoMapper.actualizarDesdeDto(request, empleado);
 
         empleado.getUsuario().setRol(rol);
+
+        return empleadoMapper.toResponse(empleadoRepository.save(empleado));
+    }
+
+    @Override
+    public EmpleadoResponse actualizarEmpleadoBasico(Long id, EmpleadoBasicUpdateRequest request) {
+        EmpleadoEntity empleado = empleadoRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se pudo encontrar el empleado"));
+
+        empleadoMapper.actualizarDesdeDto(request, empleado);
+
 
         return empleadoMapper.toResponse(empleadoRepository.save(empleado));
     }

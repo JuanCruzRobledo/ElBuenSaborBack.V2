@@ -1,7 +1,9 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.mija.elbuensaborback.application.dto.request.cliente.ClienteBasicUpdateRequest;
 import org.mija.elbuensaborback.application.dto.request.cliente.ClienteCompleteUpdateRequest;
+import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoBasicUpdateRequest;
 import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.request.empleado.EmpleadoUpdateRequest;
 import org.mija.elbuensaborback.application.service.EmpleadoServiceImpl;
@@ -41,8 +43,13 @@ public class EmpleadoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarClienteCompleto(@PathVariable Long id, @RequestBody EmpleadoUpdateRequest clienteBasicUpdateRequest) {
-        return ResponseEntity.ok(empleadoService.actualizarEmpleado(id, clienteBasicUpdateRequest));
+    @PutMapping("/complete/{id}")
+    public ResponseEntity<?> actualizarClienteCompleto(@PathVariable Long id, @RequestBody EmpleadoUpdateRequest empleadoUpdateRequest) {
+        return ResponseEntity.ok(empleadoService.actualizarEmpleadoCompleto(id, empleadoUpdateRequest));
+    }
+
+    @PutMapping("/basic/{id}")
+    public ResponseEntity<?> actualizarBasicCliente(@PathVariable Long id, @RequestBody EmpleadoBasicUpdateRequest empleadoBasicUpdateRequest) {
+        return ResponseEntity.ok(empleadoService.actualizarEmpleadoBasico(id, empleadoBasicUpdateRequest));
     }
 }
