@@ -2,6 +2,7 @@ package org.mija.elbuensaborback.application.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.mija.elbuensaborback.application.dto.request.Pedido.CheckStockRequest;
 import org.mija.elbuensaborback.application.dto.request.Pedido.EstadoPedidoDto;
 import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.PedidoResponse;
@@ -37,6 +38,7 @@ public class PedidoServiceImpl implements PedidoService {
     private final ClienteRepositoryImpl clienteRepository;
     private final DomicilioRepositoryImpl domicilioRepository;
     private final LocalidadRepositoryImpl localidadRepository;
+    private final StockVerifierService stockVerifierService;
 
     @Override
     @Transactional
@@ -211,6 +213,12 @@ public class PedidoServiceImpl implements PedidoService {
         webSocketController.notificarCambioEstado(dto);
 
         return respuesta;
+    }
+
+
+    public void verificarStockParaElPedido(CheckStockRequest pedidoCreatedRequest) {
+        PedidoEntity pedido = pedidoMapper.checkStockToEntity(pedidoCreatedRequest);
+        stockVerifierService.verificarStock(pedido);
     }
 
 }

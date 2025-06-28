@@ -4,6 +4,7 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mija.elbuensaborback.application.dto.request.Pedido.CheckStockRequest;
 import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.PedidoResponse;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.ClienteEntity;
@@ -34,4 +35,6 @@ public abstract class PedidoMapper {
         if (cliente == null) return null;
         return cliente.getNombre() + " " + cliente.getApellido();
     }
+
+    public abstract PedidoEntity checkStockToEntity(CheckStockRequest request);
 }

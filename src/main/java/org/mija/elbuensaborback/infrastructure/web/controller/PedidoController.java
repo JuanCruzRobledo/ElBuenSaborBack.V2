@@ -1,15 +1,18 @@
 package org.mija.elbuensaborback.infrastructure.web.controller;
 
+import org.mija.elbuensaborback.application.dto.request.Pedido.CheckStockRequest;
 import org.mija.elbuensaborback.application.dto.request.Pedido.EstadoPedidoDto;
 import org.mija.elbuensaborback.application.dto.request.Pedido.PedidoCreatedRequest;
 import org.mija.elbuensaborback.application.dto.response.PedidoResponse;
 import org.mija.elbuensaborback.application.service.PedidoServiceImpl;
+import org.mija.elbuensaborback.domain.exceptions.StockInsuficienteException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -26,6 +29,12 @@ public class PedidoController {
     public ResponseEntity<PedidoResponse> crearPedido(@RequestBody PedidoCreatedRequest request) {
         PedidoResponse response = pedidoService.crearPedido(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/verificar-stock")
+    public ResponseEntity<?> verificarStock(@RequestBody CheckStockRequest request) {
+        pedidoService.verificarStockParaElPedido(request);
+        return ResponseEntity.ok(Map.of("message", "Stock suficiente para realizar el pedido."));
     }
 
     @GetMapping("/{id}")
