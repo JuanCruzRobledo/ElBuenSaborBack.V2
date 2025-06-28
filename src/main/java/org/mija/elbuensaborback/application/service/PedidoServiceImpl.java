@@ -114,6 +114,16 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
+    public Set<PedidoResponse> listarPedidoDiario() {
+        return pedidoRepository.findAllDiarios().stream().map(pedido -> {
+            pedido.setDomicilio(DomicilioEntity.fromSnapshotString(pedido.getDomicilioSnapshot()));
+            LocalidadEntity localidad = localidadRepository.findByNombre(pedido.getDomicilio().getLocalidad().getNombre());
+            pedido.getDomicilio().setLocalidad(localidad);
+            return pedidoMapper.toResponse(pedido);
+        }).collect(Collectors.toSet());
+    }
+
+    @Override
     public Set<PedidoResponse> listarPedidoCliente(Long id) {
         return pedidoRepository.findAllByCliente(id).stream().map(pedido -> {
             pedido.setDomicilio(DomicilioEntity.fromSnapshotString(pedido.getDomicilioSnapshot()));

@@ -23,6 +23,8 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
 
     List<PedidoEntity> findByFechaPedidoAndEstadoEnum(LocalDate fechaPedido, EstadoEnum estadoEnum);
 
+    List<PedidoEntity> findAllByFechaPedido(LocalDate fecha);
+
     // ======================= TODOS LOS PEDIDOS TERMINADOS ========================//
     @Query("""
     SELECT new org.mija.elbuensaborback.application.dto.response.RankingClientesResponse(

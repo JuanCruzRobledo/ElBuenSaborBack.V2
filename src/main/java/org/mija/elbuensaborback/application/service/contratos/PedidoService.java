@@ -13,6 +13,7 @@ public interface PedidoService {
     PedidoResponse obtenerPedido(Long id);
     void eliminarPedido(Long id);
     Set<PedidoResponse> listarPedido();
+    Set<PedidoResponse> listarPedidoDiario();
     Set<PedidoResponse> listarPedidoCliente(Long id);
     Set<PedidoResponse> listarPedidoEntreFechas( LocalDate fechaInicio, LocalDate fechaFin);
 }

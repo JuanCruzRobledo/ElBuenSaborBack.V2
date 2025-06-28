@@ -1,6 +1,7 @@
 package org.mija.elbuensaborback.infrastructure.persistence.repository.adapter;
 
 
+import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.response.RankingClientesResponse;
 import org.mija.elbuensaborback.domain.enums.EstadoEnum;
 import org.mija.elbuensaborback.domain.repository.PedidoRepositoryPort;
@@ -14,12 +15,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class PedidoRepositoryImpl implements PedidoRepositoryPort {
     private final PedidoJpaRepository pedidoJpaRepository;
-
-    public PedidoRepositoryImpl(PedidoJpaRepository pedidoJpaRepository) {
-        this.pedidoJpaRepository = pedidoJpaRepository;
-    }
 
     @Override
     public Optional<PedidoEntity> findById(Long aLong) {
@@ -29,6 +27,10 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
     @Override
     public List<PedidoEntity> findAll() {
         return pedidoJpaRepository.findAll();
+    }
+
+    public List<PedidoEntity> findAllDiarios() {
+        return pedidoJpaRepository.findAllByFechaPedido(LocalDate.now());
     }
 
     public List<PedidoEntity> findAllByCliente(Long id) {

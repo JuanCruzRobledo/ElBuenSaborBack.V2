@@ -55,6 +55,12 @@ public class PedidoController {
         return ResponseEntity.ok(pedidos);
     }
 
+    @GetMapping("/diario/getAll")
+    public ResponseEntity<Set<PedidoResponse>> listarPedidoDiario() {
+        Set<PedidoResponse> pedidos = pedidoService.listarPedidoDiario();
+        return ResponseEntity.ok(pedidos);
+    }
+
     @GetMapping("/fecha-rango")
     public ResponseEntity<Set<PedidoResponse>> listarPedidosPorFecha(
             @RequestParam(value = "fechaInicio", required = false)
