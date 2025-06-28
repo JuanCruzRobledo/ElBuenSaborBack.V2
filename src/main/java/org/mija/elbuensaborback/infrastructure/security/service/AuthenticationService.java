@@ -47,39 +47,54 @@ public class AuthenticationService {
     private final EmpleadoMapper empleadoMapper;
 
     public AuthResponse login(AuthRequest request) {
-        Authentication authentication = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.email(), request.password())
-        );
+        try {
+            System.out.println("Autenticando usuario: " + request.email());
 
-        UserDetails user = (UserDetails) authentication.getPrincipal();
-        String token = jwtService.generateToken(user);
+            Authentication authentication = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.email(), request.password())
+            );
 
-        //Para la respuesta del login:
-        //Buscamos la persona que está asociado a ese usuario
-        PersonaEntity persona = personaRepository.findByUsuarioEmail(request.email());
+            UserDetails user = (UserDetails) authentication.getPrincipal();
+            String token = jwtService.generateToken(user);
 
-        // Validación de estado activo
-        if (!persona.isActivo()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "El usuario no está activo.");
-        }
+            PersonaEntity persona = personaRepository.findByUsuarioEmail(request.email());
 
-        //Dependiendo el tipo de persona devuelve su respuesta
-        switch (request.tipoLogin()) {
-            case "CLIENTE" -> {
-                if (!(persona instanceof ClienteEntity cliente))
-                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No es un cliente");
+            System.out.println("PERSONA: " + persona.getApellido() + " " + persona.getNombre() + " - " + persona.getUsuario().getRol().getRolEnum().name());
 
-                return new AuthResponse(token, clienteMapper.toBasicResponse(cliente));
+            if (!persona.isActivo()) {
+                System.out.println("ERROR: Usuario no está activo.");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "El usuario no está activo.");
             }
-            case "ADMIN" -> {
-                if (!(persona instanceof EmpleadoEntity empleado))
-                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No es un administrador");
 
-                return new AuthResponse(token, empleadoMapper.toBasicResponse(empleado));
+            switch (request.tipoLogin()) {
+                case "CLIENTE" -> {
+                    System.out.println("Login tipo CLIENTE");
+                    if (!(persona instanceof ClienteEntity cliente)) {
+                        System.out.println("ERROR: No es un cliente.");
+                        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No es un cliente");
+                    }
+                    return new AuthResponse(token, clienteMapper.toBasicResponse(cliente));
+                }
+                case "ADMIN" -> {
+                    System.out.println("Login tipo ADMIN");
+                    if (!(persona instanceof EmpleadoEntity empleado)) {
+                        System.out.println("ERROR: No es un administrador.");
+                        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No es un administrador");
+                    }
+                    return new AuthResponse(token, empleadoMapper.toBasicResponse(empleado));
+                }
+                default -> {
+                    System.out.println("ERROR: Tipo de login inválido: " + request.tipoLogin());
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo de login inválido");
+                }
             }
-            default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo de login inválido");
+        } catch (Exception e) {
+            System.out.println("ERROR en login: " + e.getMessage());
+            e.printStackTrace();  // imprime la pila para mayor detalle
+            throw e; // re-lanzar para que el controlador lo maneje (o para que Spring devuelva el error)
         }
     }
+
 
 
     public AuthResponse register(RegisterRequest nuevoUsuario) {
@@ -124,8 +139,8 @@ public class AuthenticationService {
         return new AuthResponse(token,clienteMapper.toBasicResponse(cliente));
     }
 
-    public AuthResponse validateGoogleToken(String tokenHeader) {
-        String token = tokenHeader.replace("Bearer ", "");
+    public AuthResponse validateGoogleToken(String token) {
+
         String email = jwtService.extractUsername(token);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);

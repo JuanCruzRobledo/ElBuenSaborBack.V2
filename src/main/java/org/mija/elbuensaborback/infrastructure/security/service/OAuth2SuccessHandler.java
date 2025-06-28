@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -34,8 +35,18 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         // 2. Generar JWT usando el método específico para OAuth2User
         String jwt = jwtService.generateToken(oAuth2User);
 
+        // 3. Setear cookie como en login local
+        ResponseCookie cookie = ResponseCookie.from("token", jwt)
+                .httpOnly(true)
+                .secure(false) // poner true en producción
+                .path("/")
+                .sameSite("Strict")
+                .maxAge(Duration.ofDays(1))
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
         // 3. Redirigir al frontend con el token
-        String redirectUrl = urlFront + "/auth-redirect?token=" + jwt;
-        new DefaultRedirectStrategy().sendRedirect(request, response, redirectUrl);
+        new DefaultRedirectStrategy().sendRedirect(request, response, urlFront + "/auth-redirect");
     }
 }
