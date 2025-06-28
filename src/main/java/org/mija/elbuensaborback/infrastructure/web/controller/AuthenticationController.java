@@ -151,6 +151,6 @@ public class AuthenticationController {
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         // Se devuelve un mensaje de éxito.
-        return ResponseEntity.ok("Sesión cerrada");
+        return ResponseEntity.ok().build();
     }
 }

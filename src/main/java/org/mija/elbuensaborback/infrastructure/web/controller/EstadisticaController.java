@@ -28,7 +28,7 @@ public class EstadisticaController {
     @PostMapping("/generar")
     public ResponseEntity<?> generarEstadisticas() {
         estadisticaService.generarEstadisticasDelDiaActual();
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
