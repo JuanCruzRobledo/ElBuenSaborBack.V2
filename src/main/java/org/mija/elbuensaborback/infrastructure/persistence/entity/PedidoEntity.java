@@ -115,14 +115,15 @@ public class PedidoEntity {
         this.factura = factura;
     }
 
-    public void procesarStock(){
+    public void procesarStock() {
         for (DetallePedidoEntity detallePedidoEntity : listaDetalle) {
-            if (detallePedidoEntity.getArticulo() instanceof ArticuloManufacturadoEntity) {
-                ((ArticuloManufacturadoEntity) detallePedidoEntity.getArticulo()).descontarStock(detallePedidoEntity.getCantidad());
-            } else if (detallePedidoEntity.getArticulo() instanceof ArticuloInsumoEntity) {
-                ((ArticuloInsumoEntity) detallePedidoEntity.getArticulo()).descontarStock(detallePedidoEntity.getCantidad().doubleValue());
-            } else if (detallePedidoEntity.getArticulo() instanceof ArticuloPromocionEntity) {
-                ((ArticuloPromocionEntity) detallePedidoEntity.getArticulo()).descontarStock(detallePedidoEntity.getCantidad());
+            String nombreArticulo = detallePedidoEntity.getArticulo().getDenominacion();
+            if (detallePedidoEntity.getArticulo() instanceof ArticuloManufacturadoEntity manufacturado) {
+                manufacturado.descontarStock(detallePedidoEntity.getCantidad(), nombreArticulo);
+            } else if (detallePedidoEntity.getArticulo() instanceof ArticuloInsumoEntity insumo) {
+                insumo.descontarStock(detallePedidoEntity.getCantidad().doubleValue(), nombreArticulo);
+            } else if (detallePedidoEntity.getArticulo() instanceof ArticuloPromocionEntity promo) {
+                promo.descontarStock(detallePedidoEntity.getCantidad(), nombreArticulo);
             }
         }
     }

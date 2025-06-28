@@ -32,13 +32,13 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
     private List<PromocionDetalleEntity> promocionDetalle;
 
 
-    public void descontarStock(int cantidad) {
-        for (int i = 0; i < cantidad ; i++) {
+    public void descontarStock(int cantidad, String articuloPadreNombre) {
+        for (int i = 0; i < cantidad; i++) {
             for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
-                if (detalle.getArticulo() instanceof ArticuloManufacturadoEntity) {
-                    ((ArticuloManufacturadoEntity) detalle.getArticulo()).descontarStock(detalle.getCantidad());
-                } else if (detalle.getArticulo() instanceof ArticuloInsumoEntity) {
-                    ((ArticuloInsumoEntity) detalle.getArticulo()).descontarStock(detalle.getCantidad().doubleValue());
+                if (detalle.getArticulo() instanceof ArticuloManufacturadoEntity manufacturado) {
+                    manufacturado.descontarStock(detalle.getCantidad(), articuloPadreNombre);
+                } else if (detalle.getArticulo() instanceof ArticuloInsumoEntity insumo) {
+                    insumo.descontarStock(detalle.getCantidad().doubleValue(), articuloPadreNombre);
                 }
             }
         }

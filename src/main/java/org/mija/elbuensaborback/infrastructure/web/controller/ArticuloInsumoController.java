@@ -20,85 +20,49 @@ public class ArticuloInsumoController {
     //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<?> crearArticuloInsumo(@RequestBody ArticuloInsumoCreatedRequest articuloInsumoCreatedRequest) {
-        try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(articuloInsumoService.crearArticuloInsumo(articuloInsumoCreatedRequest));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(articuloInsumoService.crearArticuloInsumo(articuloInsumoCreatedRequest));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editarArticuloInsumo(@RequestBody ArticuloInsumoUpdateRequest articuloManufacturadoCreatedRequest, @PathVariable Long id ){
-        try{
-            ArticuloInsumoResponse articuloManufacturado = articuloInsumoService.actualizarArticuloInsumo(id, articuloManufacturadoCreatedRequest);
-            return ResponseEntity.ok(articuloManufacturado);
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        ArticuloInsumoResponse articuloManufacturado = articuloInsumoService.actualizarArticuloInsumo(id, articuloManufacturadoCreatedRequest);
+        return ResponseEntity.ok(articuloManufacturado);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarArticuloInsumo(@PathVariable Long id){
-        try{
-            articuloInsumoService.eliminarArticuloInsumo(id);
-            return ResponseEntity.ok(HttpStatus.NO_CONTENT);
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        articuloInsumoService.eliminarArticuloInsumo(id);
+        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerArticuloInsumo(@PathVariable Long id){
-        try{
-            return ResponseEntity.ok(articuloInsumoService.obtenerArticuloInsumo(id));
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        return ResponseEntity.ok(articuloInsumoService.obtenerArticuloInsumo(id));
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<?> obtenerTodosArticuloInsumo(){
-        try{
-            return ResponseEntity.ok(articuloInsumoService.listarArticulosInsumo());
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        return ResponseEntity.ok(articuloInsumoService.listarArticulosInsumo());
     }
 
     @GetMapping("/vendibles/basic/getAll")
     public ResponseEntity<?> obtenerInsumosVendibles(){
-        try{
-            return ResponseEntity.ok(articuloInsumoService.obtenerInsumosVendibles());
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        return ResponseEntity.ok(articuloInsumoService.obtenerInsumosVendibles());
     }
 
     @GetMapping("/{categoria}/basic/getAll")
     public ResponseEntity<?> obtenerBebidasPorCategoria(@PathVariable String categoria){
-        try{
-            return ResponseEntity.ok(articuloInsumoService.obtenerBebidas(categoria));
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        return ResponseEntity.ok(articuloInsumoService.obtenerBebidas(categoria));
     }
 
     @GetMapping("/basic/getAll")
     public ResponseEntity<?> obtenerTodosBasicArticuloInsumo(){
-        try{
-            return ResponseEntity.ok(articuloInsumoService.listarBasicArticulosInsumo());
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        return ResponseEntity.ok(articuloInsumoService.listarBasicArticulosInsumo());
     }
 
     @GetMapping("/elaboracion/basic/getAll")
     public ResponseEntity<?> obtenerTodosBasicArticuloInsumoParaPreparar(){
-        try{
-            return ResponseEntity.ok(articuloInsumoService.listarBasicArticulosInsumoParaPreparar());
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        return ResponseEntity.ok(articuloInsumoService.listarBasicArticulosInsumoParaPreparar());
     }
 
     @PatchMapping("/{id}/precio-stock")
@@ -106,21 +70,13 @@ public class ArticuloInsumoController {
             @PathVariable Long id,
             @RequestBody ArticuloActualizarStockPrecioRequest request
     ) {
-        try {
-            ArticuloInsumoResponse actualizado = articuloInsumoService.actualizarPrecioYStock(id, request);
-            return ResponseEntity.ok(actualizado);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+        ArticuloInsumoResponse actualizado = articuloInsumoService.actualizarPrecioYStock(id, request);
+        return ResponseEntity.ok(actualizado);
     }
 
     @GetMapping("/bajo-stock/getAll")
     public ResponseEntity<?> obtenerBajoStock(){
-        try{
-            return ResponseEntity.ok(articuloInsumoService.obtenerInsumosBajoDeStock());
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        return ResponseEntity.ok(articuloInsumoService.obtenerInsumosBajoDeStock());
     }
 
 }

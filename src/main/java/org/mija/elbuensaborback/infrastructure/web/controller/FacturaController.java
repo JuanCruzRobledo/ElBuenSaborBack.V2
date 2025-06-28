@@ -17,23 +17,16 @@ public class FacturaController {
 
     @GetMapping(value = "/pedido/{idPedido}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> descargarFactura(@PathVariable Long idPedido) {
-        try {
-            byte[] pdfBytes = facturaService.generarFacturaPdf(idPedido);
+        byte[] pdfBytes = facturaService.generarFacturaPdf(idPedido);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDisposition(ContentDisposition.attachment()
-                    .filename("factura_pedido_" + idPedido + ".pdf")
-                    .build());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename("factura_pedido_" + idPedido + ".pdf")
+                .build());
 
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(pdfBytes);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(pdfBytes);
     }
 }

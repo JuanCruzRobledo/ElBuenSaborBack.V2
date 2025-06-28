@@ -3,6 +3,8 @@ package org.mija.elbuensaborback.infrastructure.persistence.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.mija.elbuensaborback.domain.exceptions.StockInsuficienteException;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -55,9 +57,16 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
     }
 
     //@Override
-    public void descontarStock(int cantidad) {
+    public void descontarStock(int cantidad, String articuloPadreNombre) {
         for (ArticuloManufacturadoDetalleEntity detalle : this.getArticuloManufacturadoDetalle()) {
-            detalle.getArticuloInsumo().descontarStock(detalle.getCantidad() * cantidad);
+            ArticuloInsumoEntity insumo = detalle.getArticuloInsumo();
+            if (detalle.getCantidad() > insumo.getStockActual()) {
+                throw new StockInsuficienteException(
+                        "No hay suficiente stock de insumo '" + insumo.getDenominacion() +
+                                "' requerido por el artículo '" + articuloPadreNombre + "'"
+                );
+            }
+            insumo.descontarStock(detalle.getCantidad() * cantidad, articuloPadreNombre);
         }
     }
 

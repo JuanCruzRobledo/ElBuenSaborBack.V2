@@ -17,60 +17,34 @@ public class ArticuloManufacturadoController {
 
     @PostMapping("")
     public ResponseEntity<?> crearArticuloManufacturada(@RequestBody ArticuloManufacturadoCreatedRequest articuloManufacturadoCreatedRequest) {
-        try{
-            ArticuloManufacturadoResponse articuloManufacturado = articuloManufacturadoService.crearArticulo(articuloManufacturadoCreatedRequest);
-            return ResponseEntity.ok(articuloManufacturado);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        ArticuloManufacturadoResponse articuloManufacturado = articuloManufacturadoService.crearArticulo(articuloManufacturadoCreatedRequest);
+        return ResponseEntity.ok(articuloManufacturado);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editarArticuloManufacturado (@RequestBody ArticuloManufacturadoUpdateRequest articuloManufacturadoCreatedRequest, @PathVariable Long id ){
-        try{
-            ArticuloManufacturadoResponse articuloManufacturado = articuloManufacturadoService.actualizarArticulo(id, articuloManufacturadoCreatedRequest);
-            return ResponseEntity.ok(articuloManufacturado);
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        ArticuloManufacturadoResponse articuloManufacturado = articuloManufacturadoService.actualizarArticulo(id, articuloManufacturadoCreatedRequest);
+        return ResponseEntity.ok(articuloManufacturado);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarArticuloManufacturado (@PathVariable Long id){
-        try{
-            articuloManufacturadoService.eliminarArticulo(id);
-            return ResponseEntity.ok(HttpStatus.NO_CONTENT);
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        articuloManufacturadoService.eliminarArticulo(id);
+        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerArticuloManufacturado (@PathVariable Long id){
-        try{
-            return ResponseEntity.ok(articuloManufacturadoService.obtenerArticulo(id));
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        return ResponseEntity.ok(articuloManufacturadoService.obtenerArticulo(id));
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<?> obtenerTodosArticuloManufacturado (){
-        try{
-            return ResponseEntity.ok(articuloManufacturadoService.listarArticulos());
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        return ResponseEntity.ok(articuloManufacturadoService.listarArticulos());
     }
 
     @GetMapping("/basic/getAll")
     public ResponseEntity<?> obtenerTodosBasicArticulosManufacturados (){
-        try{
-            return ResponseEntity.ok(articuloManufacturadoService.listarBasicArticulosManufacturados());
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+        return ResponseEntity.ok(articuloManufacturadoService.listarBasicArticulosManufacturados());
     }
-
-
 }

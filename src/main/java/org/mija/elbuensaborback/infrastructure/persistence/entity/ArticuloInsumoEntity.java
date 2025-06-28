@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
+import org.mija.elbuensaborback.domain.exceptions.StockInsuficienteException;
 
 import java.math.BigDecimal;
 
@@ -29,10 +30,13 @@ public class ArticuloInsumoEntity extends ArticuloEntity {
 
 
     //@Override
-    public void descontarStock(Double cantidad) {
+    public void descontarStock(Double cantidad, String articuloPadreNombre) {
         double nuevoStock = this.getStockActual() - cantidad;
         if (nuevoStock < 0) {
-            throw new RuntimeException("Stock insuficiente para el insumo: " + getDenominacion());
+            throw new StockInsuficienteException(
+                    "No hay suficiente stock de insumo '" + this.getDenominacion() +
+                            "' requerido por el artículo '" + articuloPadreNombre + "'"
+            );
         }
         this.setStockActual(nuevoStock);
     }

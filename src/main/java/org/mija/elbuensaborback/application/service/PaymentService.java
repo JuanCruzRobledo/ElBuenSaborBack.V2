@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.response.PreferenceResponseDto;
 import org.mija.elbuensaborback.domain.enums.EstadoEnum;
 import org.mija.elbuensaborback.domain.enums.EstadoPagoEnum;
+import org.mija.elbuensaborback.domain.exceptions.MercadoPagoException;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ArticuloRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PedidoRepositoryImpl;
@@ -43,63 +44,67 @@ public class PaymentService {
 
 
 
-    public PreferenceResponseDto crearPreferencia(Long id) throws MPException, MPApiException {
+    public PreferenceResponseDto crearPreferencia(Long id) {
 
-        // Inicializar SDK
-        MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
+        try {
+            // Inicializar SDK
+            MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
-        // Crear entidad Pedido
-        PedidoEntity pedidoGuardado = pedidoRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el pedido al que se quiere pagar"));
+            // Crear entidad Pedido
+            PedidoEntity pedidoGuardado = pedidoRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No se pudo encontrar el pedido al que se quiere pagar"));
 
-        // Crear preferencia de Mercado Pago
-        PreferenceClient preferenceClient = new PreferenceClient();
+            // Crear preferencia de Mercado Pago
+            PreferenceClient preferenceClient = new PreferenceClient();
 
-        // Crear lista de ítems de instrumentos
-        List<PreferenceItemRequest> items = pedidoGuardado.getListaDetalle().stream()
-                .map(detalle -> PreferenceItemRequest.builder()
-                        .title(detalle.getArticulo().getDenominacion())
-                        .quantity(detalle.getCantidad())
-                        .unitPrice(detalle.getArticulo().getPrecioVenta())
-                        .build())
-                .toList();
+            // Crear lista de ítems de instrumentos
+            List<PreferenceItemRequest> items = pedidoGuardado.getListaDetalle().stream()
+                    .map(detalle -> PreferenceItemRequest.builder()
+                            .title(detalle.getArticulo().getDenominacion())
+                            .quantity(detalle.getCantidad())
+                            .unitPrice(detalle.getArticulo().getPrecioVenta())
+                            .build())
+                    .toList();
 
-        // Si hay costo de envío, agregarlo como ítem adicional
-        List<PreferenceItemRequest> itemsConEnvio = new ArrayList<>(items);
+            // Si hay costo de envío, agregarlo como ítem adicional
+            List<PreferenceItemRequest> itemsConEnvio = new ArrayList<>(items);
 
-        if (pedidoGuardado.getGastosEnvio().doubleValue() >0 ) {
-            PreferenceItemRequest envioItem = PreferenceItemRequest.builder()
-                    .title("Costo de Envío")
-                    .quantity(1)
-                    .unitPrice(pedidoGuardado.getGastosEnvio())
+            if (pedidoGuardado.getGastosEnvio().doubleValue() >0 ) {
+                PreferenceItemRequest envioItem = PreferenceItemRequest.builder()
+                        .title("Costo de Envío")
+                        .quantity(1)
+                        .unitPrice(pedidoGuardado.getGastosEnvio())
+                        .build();
+                itemsConEnvio.add(envioItem);
+            }
+
+            PreferenceBackUrlsRequest preferenceBackUrls = PreferenceBackUrlsRequest.builder()
+                    .failure(urlNgrok+"/payment/rechazar/" + String.valueOf(pedidoGuardado.getId()))
+                    .pending(urlNgrok+"/payment/pendiente/" + String.valueOf(pedidoGuardado.getId()))
+                    .success(urlNgrok+"/payment/aprobar/" + String.valueOf(pedidoGuardado.getId()))
                     .build();
-            itemsConEnvio.add(envioItem);
+
+            PreferencePayerRequest payer = PreferencePayerRequest.builder()
+                    .name(pedidoGuardado.getCliente().getNombre())
+                    .email(pedidoGuardado.getCliente().getUsuario().getEmail())
+                    .build();
+
+            PreferenceRequest preferenceRequest = PreferenceRequest.builder()
+                    .payer(payer)
+                    ///webhook?token=secreto123 ESTO SE DEBERIA HACER REALMENTE
+                    .notificationUrl(urlNgrok+"/payment/webhook")
+                    .items(itemsConEnvio) // Usamos la lista con envío incluido si aplica
+                    .backUrls(preferenceBackUrls)
+                    .autoReturn("approved")
+                    .dateOfExpiration(OffsetDateTime.now(ZoneOffset.UTC).plusMinutes(10)) //Borrar si no anda
+                    .externalReference(String.valueOf(pedidoGuardado.getId()))
+                    .build();
+
+            Preference preference = preferenceClient.create(preferenceRequest);
+
+            return new PreferenceResponseDto(preference.getId(), pedidoGuardado.getId(), pedidoGuardado.getTotal());
+        } catch (MPException | MPApiException e) {
+            throw new MercadoPagoException("Error al crear la preferencia de MercadoPago", e.getMessage());
         }
-
-        PreferenceBackUrlsRequest preferenceBackUrls = PreferenceBackUrlsRequest.builder()
-                .failure(urlNgrok+"/payment/rechazar/" + String.valueOf(pedidoGuardado.getId()))
-                .pending(urlNgrok+"/payment/pendiente/" + String.valueOf(pedidoGuardado.getId()))
-                .success(urlNgrok+"/payment/aprobar/" + String.valueOf(pedidoGuardado.getId()))
-                .build();
-
-        PreferencePayerRequest payer = PreferencePayerRequest.builder()
-                .name(pedidoGuardado.getCliente().getNombre())
-                .email(pedidoGuardado.getCliente().getUsuario().getEmail())
-                .build();
-
-        PreferenceRequest preferenceRequest = PreferenceRequest.builder()
-                .payer(payer)
-                ///webhook?token=secreto123 ESTO SE DEBERIA HACER REALMENTE
-                .notificationUrl(urlNgrok+"/payment/webhook")
-                .items(itemsConEnvio) // Usamos la lista con envío incluido si aplica
-                .backUrls(preferenceBackUrls)
-                .autoReturn("approved")
-                .dateOfExpiration(OffsetDateTime.now(ZoneOffset.UTC).plusMinutes(10)) //Borrar si no anda
-                .externalReference(String.valueOf(pedidoGuardado.getId()))
-                .build();
-
-        Preference preference = preferenceClient.create(preferenceRequest);
-
-        return new PreferenceResponseDto(preference.getId(), pedidoGuardado.getId(), pedidoGuardado.getTotal());
     }
 
 
@@ -150,8 +155,7 @@ public class PaymentService {
 
         } catch (MPApiException e) {
             System.out.println("Error de la API de Mercado Pago:");
-            System.out.println("Respuesta: " + e.getApiResponse().getContent());
-            e.printStackTrace();
+            throw new MercadoPagoException("Error al crear la preferencia de MercadoPago", e.getMessage());
         } catch (Exception e) {
             System.out.println("Error general al procesar el pago:");
             e.printStackTrace();
