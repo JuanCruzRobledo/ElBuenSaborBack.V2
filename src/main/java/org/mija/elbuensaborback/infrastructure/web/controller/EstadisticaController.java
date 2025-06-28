@@ -26,9 +26,9 @@ public class EstadisticaController {
 
     // Endpoint temporal solo para pruebas
     @PostMapping("/generar")
-    public ResponseEntity<String> generarEstadisticas() {
+    public ResponseEntity<?> generarEstadisticas() {
         estadisticaService.generarEstadisticasDelDiaActual();
-        return ResponseEntity.ok("Estadísticas generadas correctamente.");
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
