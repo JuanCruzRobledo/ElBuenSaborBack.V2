@@ -115,17 +115,46 @@ public class PedidoEntity {
         this.factura = factura;
     }
 
-    public void procesarStock() {
-        for (DetallePedidoEntity detallePedidoEntity : listaDetalle) {
-            String nombreArticulo = detallePedidoEntity.getArticulo().getDenominacion();
-            if (detallePedidoEntity.getArticulo() instanceof ArticuloManufacturadoEntity manufacturado) {
-                manufacturado.descontarStock(detallePedidoEntity.getCantidad(), nombreArticulo);
-            } else if (detallePedidoEntity.getArticulo() instanceof ArticuloInsumoEntity insumo) {
-                insumo.descontarStock(detallePedidoEntity.getCantidad().doubleValue(), nombreArticulo);
-            } else if (detallePedidoEntity.getArticulo() instanceof ArticuloPromocionEntity promo) {
-                promo.descontarStock(detallePedidoEntity.getCantidad(), nombreArticulo);
+    public void reservarStock() {
+        for (DetallePedidoEntity detalle : listaDetalle) {
+            String nombreArticulo = detalle.getArticulo().getDenominacion();
+            int cantidad = detalle.getCantidad();
+
+            if (detalle.getArticulo() instanceof ArticuloInsumoEntity insumo) {
+                insumo.reservarStock(cantidad, nombreArticulo);
+            } else if (detalle.getArticulo() instanceof ArticuloManufacturadoEntity manufacturado) {
+                manufacturado.reservarStock(cantidad, nombreArticulo);
+            } else if (detalle.getArticulo() instanceof ArticuloPromocionEntity promo) {
+                promo.reservarStock(cantidad, nombreArticulo);
             }
         }
     }
 
+    public void confirmarStock() {
+        for (DetallePedidoEntity detalle : listaDetalle) {
+            int cantidad = detalle.getCantidad();
+
+            if (detalle.getArticulo() instanceof ArticuloInsumoEntity insumo) {
+                insumo.confirmarStock(cantidad);
+            } else if (detalle.getArticulo() instanceof ArticuloManufacturadoEntity manufacturado) {
+                manufacturado.confirmarStock(cantidad);
+            } else if (detalle.getArticulo() instanceof ArticuloPromocionEntity promo) {
+                promo.confirmarStock(cantidad);
+            }
+        }
+    }
+
+    public void liberarStock() {
+        for (DetallePedidoEntity detalle : listaDetalle) {
+            int cantidad = detalle.getCantidad();
+
+            if (detalle.getArticulo() instanceof ArticuloInsumoEntity insumo) {
+                insumo.liberarStock(cantidad);
+            } else if (detalle.getArticulo() instanceof ArticuloManufacturadoEntity manufacturado) {
+                manufacturado.liberarStock(cantidad);
+            } else if (detalle.getArticulo() instanceof ArticuloPromocionEntity promo) {
+                promo.liberarStock(cantidad);
+            }
+        }
+    }
 }

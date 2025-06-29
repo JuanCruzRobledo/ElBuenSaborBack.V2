@@ -25,8 +25,10 @@ public class StockVerifierService {
     }
 
     private void verificarInsumo(ArticuloInsumoEntity insumo, double cantidad, String articuloPadre) {
-        if (insumo.getStockActual() < cantidad) {
-            throw new StockInsuficienteException("No contamos con Stock para el articulo "+ articuloPadre + " .Prueba disminuyendo la cantidad");
+        double disponible = insumo.getStockActual() - insumo.getStockReservado();
+        if (disponible < cantidad) {
+            throw new StockInsuficienteException("No contamos con stock suficiente del insumo '" + insumo.getDenominacion() +
+                    "' requerido por el artículo '" + articuloPadre + "'. Disminuye la cantidad o espera reposición.");
         }
     }
 
@@ -53,4 +55,3 @@ public class StockVerifierService {
         }
     }
 }
-

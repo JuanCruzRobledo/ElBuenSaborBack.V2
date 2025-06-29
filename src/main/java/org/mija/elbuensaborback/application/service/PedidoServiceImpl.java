@@ -74,7 +74,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.calcularCostoTotalPedido();
 
         // Procesar stock
-        pedido.procesarStock();
+        pedido.reservarStock();
         pedido.setDomicilioSnapshot(domicilio.toString());
 
         pedido = pedidoRepository.save(pedido);
@@ -149,12 +149,15 @@ public class PedidoServiceImpl implements PedidoService {
         }
     }
 
-
+    @Transactional
     public void cambiarEstadoPedido(Long pedidoId, EstadoPedidoDto actualizacionPedido) {
         PedidoEntity pedido = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
         if (actualizacionPedido.nuevoEstado() != null){
+            if (actualizacionPedido.nuevoEstado() == EstadoEnum.PREPARACION){
+                pedido.confirmarStock();
+            }
             pedido.setEstadoEnum(actualizacionPedido.nuevoEstado());
         }
         /*
@@ -201,8 +204,18 @@ public class PedidoServiceImpl implements PedidoService {
         return respuesta;
     }
 
+    @Transactional
     public PedidoResponse cancelarPedido(Long id){
         PedidoEntity pedido = pedidoRepository.findById(id).orElseThrow(()->new EntityNotFoundException("No se encontro el pedido con el id "+ id));
+
+        // Liberar Stock solo si esta en pendiente
+        if (pedido.getEstadoEnum() == EstadoEnum.PENDIENTE) {
+            pedido.liberarStock();
+        }
+
+        if (pedido.getEstadoEnum() == EstadoEnum.ENTREGADO || pedido.getEstadoEnum() == EstadoEnum.TERMINADO) {
+            throw new IllegalStateException("No se puede cancelar un pedido ya entregado o terminado.");
+        }
 
         pedido.setEstadoPagoEnum(EstadoPagoEnum.RECHAZADO);
         pedido.setEstadoEnum(EstadoEnum.CANCELADO);

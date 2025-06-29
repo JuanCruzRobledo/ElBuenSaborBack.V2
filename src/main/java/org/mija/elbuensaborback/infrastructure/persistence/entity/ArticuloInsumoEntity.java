@@ -9,8 +9,6 @@ import lombok.experimental.SuperBuilder;
 import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 import org.mija.elbuensaborback.domain.exceptions.StockInsuficienteException;
 
-import java.math.BigDecimal;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,17 +26,32 @@ public class ArticuloInsumoEntity extends ArticuloEntity {
     private Double stockMinimo;
     private Boolean esParaPreparar;
 
+    @Builder.Default //Asegurarnos de que el builder tambien le ponga el valor 0
+    private Double stockReservado = 0.0; //Se pone en 0 para todos los nuevos insumos
 
-    //@Override
-    public void descontarStock(Double cantidad, String articuloPadreNombre) {
-        double nuevoStock = this.getStockActual() - cantidad;
-        if (nuevoStock < 0) {
-            throw new StockInsuficienteException(
-                    "No hay suficiente stock de insumo '" + this.getDenominacion() +
-                            "' requerido por el artículo '" + articuloPadreNombre + "'"
-            );
+
+    public Double getStockDisponible() {
+        return stockActual - stockReservado;
+    }
+
+    public void reservarStock(double cantidad, String articuloPadreNombre) {
+        if (getStockDisponible() < cantidad) {
+            throw new StockInsuficienteException("No contamos con stock suficiente del insumo '" + this.getDenominacion() +
+                    "' requerido por el artículo '" + articuloPadreNombre + "'. Disminuye la cantidad o espera reposición.");
         }
-        this.setStockActual(nuevoStock);
+        this.stockReservado += cantidad;
+    }
+
+    public void liberarStock(double cantidad) {
+        this.stockReservado = Math.max(0, this.stockReservado - cantidad);
+    }
+
+    public void confirmarStock(double cantidad) {
+        if (this.stockReservado < cantidad) {
+            throw new IllegalStateException("No hay suficiente stock reservado para confirmar.");
+        }
+        this.stockActual -= cantidad;
+        this.stockReservado -= cantidad;
     }
 
 }

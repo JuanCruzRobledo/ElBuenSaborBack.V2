@@ -56,17 +56,29 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
         //setPrecioVenta(costoTotal.multiply(BigDecimal.valueOf(1.3)));
     }
 
-    //@Override
-    public void descontarStock(int cantidad, String articuloPadreNombre) {
+    //================= RESERVAR STOCK ==================//
+
+    public void reservarStock(int cantidad, String articuloPadreNombre) {
         for (ArticuloManufacturadoDetalleEntity detalle : this.getArticuloManufacturadoDetalle()) {
             ArticuloInsumoEntity insumo = detalle.getArticuloInsumo();
-            if (detalle.getCantidad() > insumo.getStockActual()) {
-                throw new StockInsuficienteException(
-                        "No hay suficiente stock de insumo '" + insumo.getDenominacion() +
-                                "' requerido por el artículo '" + articuloPadreNombre + "'"
-                );
-            }
-            insumo.descontarStock(detalle.getCantidad() * cantidad, articuloPadreNombre);
+            double requerido = detalle.getCantidad() * cantidad;
+            insumo.reservarStock(requerido, articuloPadreNombre);
+        }
+    }
+
+    public void liberarStock(int cantidad) {
+        for (ArticuloManufacturadoDetalleEntity detalle : this.getArticuloManufacturadoDetalle()) {
+            ArticuloInsumoEntity insumo = detalle.getArticuloInsumo();
+            double requerido = detalle.getCantidad() * cantidad;
+            insumo.liberarStock(requerido);
+        }
+    }
+
+    public void confirmarStock(int cantidad) {
+        for (ArticuloManufacturadoDetalleEntity detalle : this.getArticuloManufacturadoDetalle()) {
+            ArticuloInsumoEntity insumo = detalle.getArticuloInsumo();
+            double requerido = detalle.getCantidad() * cantidad;
+            insumo.confirmarStock(requerido);
         }
     }
 
