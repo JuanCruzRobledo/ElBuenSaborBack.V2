@@ -218,7 +218,7 @@ public class ArticuloPromocionData {
         promocion.tiempoEstimadoCalculado(5);
         promocion.calcularPrecioCosto();
         promocion.calcularPrecioTotal();
-        promocion.calcularPrecioVenta();
+        promocion.calcularPrecioVenta(null);
 
         return promocion;
     }

@@ -19,6 +19,7 @@ public record ArticuloInsumoUpdateRequest(
         Double stockMaximo,
         Double stockMinimo,
         Boolean esParaPreparar,
-        Boolean esVendible
+        Boolean esVendible,
+        Float margen
 ) {
 }

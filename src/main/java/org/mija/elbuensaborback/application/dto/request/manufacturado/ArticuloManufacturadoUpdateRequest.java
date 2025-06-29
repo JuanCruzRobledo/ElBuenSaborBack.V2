@@ -18,5 +18,6 @@ public record ArticuloManufacturadoUpdateRequest(
         Set<ImagenDto> imagenesUrls,
         Long categoriaId,
         String descripcion,
-        List<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalle
+        List<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalle,
+        Float margen
 ){}

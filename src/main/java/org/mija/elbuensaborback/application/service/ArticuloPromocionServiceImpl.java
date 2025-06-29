@@ -55,14 +55,21 @@ public class ArticuloPromocionServiceImpl implements ArticuloPromocionService {
     public ArticuloPromocionDto crearPromocion(ArticuloPromocionCreatedRequest articuloPromocionCreatedRequest) {
         ArticuloPromocionEntity articuloPromocion = articuloPromocionMapper.toEntity(articuloPromocionCreatedRequest);
 
-        //1. Calcular el precio costo de la promocion y el precio de total sin descuento
+        // 1. Asignar sucursal
         SucursalEntity sucursal = SucursalEntity.builder().id(1L).build();
         articuloPromocion.setSucursal(sucursal);
+
+        // 2. Calcular precio costo (suma de costos de los artículos incluidos)
         articuloPromocion.calcularPrecioCosto();
+
+        // 3. Calcular precio total sin descuento (suma de precios de venta de artículos incluidos)
         articuloPromocion.calcularPrecioTotal();
 
-        articuloPromocion = articuloPromocionRepository.save(articuloPromocion);
+        // 4. Calcular precio de venta (usa margen o el valor del request)
+        articuloPromocion.calcularPrecioVenta(articuloPromocionCreatedRequest.precioVenta());
 
+        // 5. Guardar y devolver
+        articuloPromocion = articuloPromocionRepository.save(articuloPromocion);
         return articuloPromocionMapper.toResponse(articuloPromocion);
     }
 
@@ -98,15 +105,19 @@ public class ArticuloPromocionServiceImpl implements ArticuloPromocionService {
         // 7. Mapear datos desde el DTO hacia la entidad (incluyendo detalles)
         articuloPromocionMapper.updateEntityWithDetalles(updateDto, promocionEntity, articulos);
 
-        // 8. Validar precios
+        // Reasignar categoría
+        promocionEntity.setCategoria(categoria);
+
+        // 8. Validar precios (comparar precioCosto real con el recibido)
         if (promocionEntity.getPrecioCosto().compareTo(updateDto.precioCosto()) != 0) {
             throw new RuntimeException("Precio de costo no coincide con el esperado.");
         }
-
-        // 9. Setear nueva categoría y costo
-        promocionEntity.setCategoria(categoria);
+        // Calcular precios (costo + total sin descuento)
         promocionEntity.calcularPrecioCosto();
         promocionEntity.calcularPrecioTotal();
+
+        // Calcular precio de venta (según margen o valor manual del request)
+        promocionEntity.calcularPrecioVenta(updateDto.precioVenta());
 
         // 11. Verificar cambio de estado y aplicar lógica relacionada
         boolean estaActivaAhora = Boolean.TRUE.equals(promocionEntity.getProductoActivo());

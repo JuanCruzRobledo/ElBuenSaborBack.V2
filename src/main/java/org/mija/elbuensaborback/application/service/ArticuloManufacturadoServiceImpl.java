@@ -42,20 +42,21 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
         SucursalEntity sucursal = SucursalEntity.builder().id(1L).build();
         articuloEntity.setSucursal(sucursal);
 
+        // Calcular el precio de costo real con sus insumos
         articuloEntity.calcularPrecioCosto();
 
-        System.out.println("COSTO CALCULADO: "+ articuloEntity.getPrecioCosto());
-        System.out.println("COSTO RECIBIDO: "+ articulo.precioCosto());
+        // Calcular el precio de venta (si tiene margen, se calcula; si no, usa el del request)
+        articuloEntity.calcularPrecioVenta(articulo.precioVenta());
 
-        articuloEntity.setPrecioCosto(articulo.precioCosto());
-        articuloEntity.setPrecioVenta(articulo.precioVenta());
+        // También establecer el tiempo estimado desde el request
         articuloEntity.setTiempoEstimadoMinutos(articulo.tiempoEstimadoMinutos());
 
+        // Guardar en base de datos
         articuloEntity = articuloManufacturadoRepository.save(articuloEntity);
 
+        // Cargar y asociar los detalles
         List<ArticuloManufacturadoDetalleEntity> listaDetalles =
                 articuloManufacturadoDetalleRepository.findAllByIdArticuloManufacturado(articuloEntity.getId());
-
         articuloEntity.setArticuloManufacturadoDetalle(listaDetalles);
 
         return articuloManufacturadoMapper.toResponse(articuloEntity);
@@ -63,7 +64,7 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
 
     @Override
     @Transactional
-    public ArticuloManufacturadoResponse actualizarArticulo(Long id, ArticuloManufacturadoUpdateRequest articulo) {
+    public ArticuloManufacturadoResponse actualizarArticulo(Long id, ArticuloManufacturadoUpdateRequest articuloRequest) {
         // 1. Buscar el artículo existente
         ArticuloManufacturadoEntity articuloEntity = articuloManufacturadoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Artículo no encontrado con ID: " + id));
@@ -72,11 +73,11 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
         boolean estabaActivo = Boolean.TRUE.equals(articuloEntity.getProductoActivo());
 
         // 3. Buscar la categoría
-        CategoriaEntity categoria = categoriaRepository.findById(articulo.categoriaId())
-                .orElseThrow(() -> new RuntimeException("Categoría no encontrada con ID: " + articulo.categoriaId()));
+        CategoriaEntity categoria = categoriaRepository.findById(articuloRequest.categoriaId())
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada con ID: " + articuloRequest.categoriaId()));
 
         // 4. Obtener todos los IDs de insumos mencionados en los detalles
-        List<Long> insumoIds = articulo.articuloManufacturadoDetalle().stream()
+        List<Long> insumoIds = articuloRequest.articuloManufacturadoDetalle().stream()
                 .map(ArticuloManufacturadoDetalleDto::articuloInsumoId)
                 .distinct()
                 .toList();
@@ -91,21 +92,26 @@ public class ArticuloManufacturadoServiceImpl implements ArticuloManufacturadoSe
         }
 
         // 7. Mapear cambios
-        articuloManufacturadoMapper.updateEntityWithDetalles(articulo, articuloEntity, insumos);
+        articuloManufacturadoMapper.updateEntityWithDetalles(articuloRequest, articuloEntity, insumos);
 
         // 8. Validaciones de negocio
-        if (articuloEntity.getPrecioCosto() != articulo.precioCosto()) {
+        // Validar si el precio de costo es suficiente
+        if (articuloEntity.getPrecioCosto() != articuloRequest.precioCosto()) {
             throw new RuntimeException("Precio costo insuficiente");
         }
 
-        if (articulo.precioCosto() != null) {
-            articuloEntity.setPrecioCosto(articulo.precioCosto());
+        // Si se envió precioCosto, usarlo; si no, recalcular
+        if (articuloRequest.precioCosto() != null) {
+            articuloEntity.setPrecioCosto(articuloRequest.precioCosto());
         } else {
             articuloEntity.calcularPrecioCosto();
         }
 
-        articuloEntity.setPrecioVenta(articulo.precioVenta());
-        articuloEntity.setTiempoEstimadoMinutos(articulo.tiempoEstimadoMinutos());
+        // Calcular el precio de venta usando la lógica de margen o precio manual
+        articuloEntity.calcularPrecioVenta(articuloRequest.precioVenta());
+
+        // Establecer tiempo estimado y categoría
+        articuloEntity.setTiempoEstimadoMinutos(articuloRequest.tiempoEstimadoMinutos());
         articuloEntity.setCategoria(categoria);
 
 

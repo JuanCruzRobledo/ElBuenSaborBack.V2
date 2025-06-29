@@ -9,6 +9,8 @@ import lombok.experimental.SuperBuilder;
 import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 import org.mija.elbuensaborback.domain.exceptions.StockInsuficienteException;
 
+import java.math.BigDecimal;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -52,6 +54,23 @@ public class ArticuloInsumoEntity extends ArticuloEntity {
         }
         this.stockActual -= cantidad;
         this.stockReservado -= cantidad;
+    }
+
+    public void calcularPrecioVenta(BigDecimal precioVentaManual) {
+        if (this.getMargen() != null && this.getPrecioCosto() != null) {
+            if (this.getMargen() == 0f) {
+                // Margen explícitamente 0%
+                this.setPrecioVenta(this.getPrecioCosto());
+            } else {
+                // Calcular el precio con el margen
+                BigDecimal margen = BigDecimal.valueOf(this.getMargen()).divide(BigDecimal.valueOf(100));
+                BigDecimal nuevoPrecioVenta = this.getPrecioCosto().multiply(BigDecimal.ONE.add(margen));
+                this.setPrecioVenta(nuevoPrecioVenta);
+            }
+        } else {
+            // Si no hay margen, usar el precio ingresado manualmente
+            this.setPrecioVenta(precioVentaManual);
+        }
     }
 
 }

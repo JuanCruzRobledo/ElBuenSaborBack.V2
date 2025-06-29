@@ -26,7 +26,7 @@ public abstract class ArticuloEntity {
     @Column(unique = true, nullable = false)
     private String denominacion;
     private BigDecimal precioVenta;
-
+    private Float margen;
 
     private Integer tiempoEstimadoMinutos;
     private BigDecimal precioCosto;

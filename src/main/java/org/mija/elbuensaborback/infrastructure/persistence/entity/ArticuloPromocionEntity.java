@@ -42,6 +42,7 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
         this.setTiempoEstimadoMinutos(max + tiempoBase);
     }
 
+    //Suma del precio de costo de todos los Articulos de la promocion
     public void calcularPrecioCosto(){
         BigDecimal costoTotal = BigDecimal.ZERO;
 
@@ -53,10 +54,27 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
         }
         setPrecioCosto(costoTotal);
     }
-    public void calcularPrecioVenta(){
-        setPrecioVenta(this.getPrecioTotal().multiply(BigDecimal.valueOf(0.9)));
+
+    //Precio que va a valer la promocion
+    public void calcularPrecioVenta(BigDecimal precioVentaManual) {
+        if (getPrecioTotal() != null && getMargen() != null) {
+            if (getMargen() == 0f) {
+                // No hay descuento, se vende al precio total
+                setPrecioVenta(getPrecioTotal());
+            } else {
+                // Aplicar margen de descuento
+                BigDecimal descuento = BigDecimal.valueOf(getMargen())
+                        .divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
+                BigDecimal nuevoPrecioVenta = getPrecioTotal().multiply(BigDecimal.ONE.subtract(descuento));
+                setPrecioVenta(nuevoPrecioVenta);
+            }
+        } else {
+            // Si no hay margen
+            setPrecioVenta(precioVentaManual);
+        }
     }
 
+    //Precio de la suma del precio Venta de todos los Articulos de la promocion
     public void calcularPrecioTotal(){
         BigDecimal ventaTotal = BigDecimal.ZERO;
 

@@ -27,9 +27,6 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
     @OneToMany(mappedBy = "articuloManufacturado", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticuloManufacturadoDetalleEntity> articuloManufacturadoDetalle = new ArrayList<>();
 
-    public boolean sePuedePreparar() {
-        return articuloManufacturadoDetalle != null && !articuloManufacturadoDetalle.isEmpty();
-    }
 
     public void tiempoEstimadoCalculado(int tiempoBase){
         Double tiempoDetalle = 0.00;
@@ -54,6 +51,23 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
 
         setPrecioCosto(costoTotal);
         //setPrecioVenta(costoTotal.multiply(BigDecimal.valueOf(1.3)));
+    }
+
+    public void calcularPrecioVenta(BigDecimal precioVentaManual) {
+        if (getPrecioCosto() != null && getMargen() != null) {
+            if (getMargen() == 0f) {
+                // Si margen es 0, el precio de venta es igual al precio de costo
+                setPrecioVenta(getPrecioCosto());
+            } else {
+                // Aplicar el margen de ganancia
+                BigDecimal margen = BigDecimal.valueOf(getMargen()).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
+                BigDecimal nuevoPrecioVenta = getPrecioCosto().multiply(BigDecimal.ONE.add(margen));
+                setPrecioVenta(nuevoPrecioVenta);
+            }
+        } else {
+            // Si no hay margen
+            setPrecioVenta(precioVentaManual);
+        }
     }
 
     //================= RESERVAR STOCK ==================//

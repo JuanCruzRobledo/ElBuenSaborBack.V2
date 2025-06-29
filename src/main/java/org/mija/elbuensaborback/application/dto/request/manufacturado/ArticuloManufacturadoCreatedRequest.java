@@ -16,5 +16,6 @@ public record ArticuloManufacturadoCreatedRequest(
         Long categoriaId,
         String descripcion,
         BigDecimal precioCosto,
-        List<ArticuloManufacturadoDetalleCreatedRequest> articuloManufacturadoDetalle
+        List<ArticuloManufacturadoDetalleCreatedRequest> articuloManufacturadoDetalle,
+        Float margen
 ){}
