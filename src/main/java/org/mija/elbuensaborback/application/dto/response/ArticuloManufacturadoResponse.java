@@ -21,5 +21,6 @@ public record ArticuloManufacturadoResponse(
         String categoriaDenominacion,
         String descripcion,
         BigDecimal precioCosto,
-        List<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalle
+        List<ArticuloManufacturadoDetalleDto> articuloManufacturadoDetalle,
+        Float margen
 ) {}

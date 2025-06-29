@@ -25,6 +25,7 @@ public record ArticuloPromocionDto(
         LocalTime horaHasta,
         String descripcion,
         BigDecimal precioTotal,
-        List<DetalleDto> promocionDetalle
+        List<DetalleDto> promocionDetalle,
+        Float margen
 ) {
 }

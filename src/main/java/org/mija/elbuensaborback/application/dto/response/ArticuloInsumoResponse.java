@@ -20,6 +20,7 @@ public record ArticuloInsumoResponse(
         Double stockMaximo,
         Double stockMinimo,
         Boolean esParaPreparar,
-        Boolean esVendible
+        Boolean esVendible,
+        Float margen
 ) {
 }

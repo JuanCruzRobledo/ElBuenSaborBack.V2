@@ -23,11 +23,6 @@ public enum UnidadMedidaEnum {
     M,     // Metro
     KM,    // Kilómetro
 
-    // Unidades
-    UNI,   // Unidad
-    DOC,   // Docena
-    PAR,   // Par
-
     // Tiempo
     SEG,   // Segundo
     MIN,   // Minuto
