@@ -148,6 +148,11 @@ public class PaymentService {
                 pedido.generarFactura(numeroComprobante, datosMP);
             } else if ("rejected".equals(status)) {
                 pedido.setEstadoPagoEnum(EstadoPagoEnum.RECHAZADO);
+
+                if (pedido.getEstadoEnum() == EstadoEnum.PENDIENTE) {
+                    pedido.liberarStock();
+                }
+
                 pedido.setEstadoEnum(EstadoEnum.CANCELADO);
             }
             pedidoRepository.save(pedido);
@@ -162,10 +167,17 @@ public class PaymentService {
         }
     }
 
+    @Transactional
     public void rechazarPedido(Long id) {
         PedidoEntity pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
+
         pedido.setEstadoPagoEnum(EstadoPagoEnum.RECHAZADO);
+
+        if (pedido.getEstadoEnum() == EstadoEnum.PENDIENTE) {
+            pedido.liberarStock();
+        }
+
         pedido.setEstadoEnum(EstadoEnum.CANCELADO);
 
         pedidoRepository.save(pedido);
