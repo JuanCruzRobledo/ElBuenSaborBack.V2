@@ -3,6 +3,7 @@ package org.mija.elbuensaborback.application.service;
 import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.response.RankingClientesResponse;
 import org.mija.elbuensaborback.application.dto.response.RankingArticuloResponse;
+import org.mija.elbuensaborback.domain.enums.TipoEnvioEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.EstadisticaDiaria;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.DetallePedidoRepositoryImpl;
@@ -13,8 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -126,27 +126,69 @@ public class EstadisticaService {
     }
 
     public List<RankingArticuloResponse> rankingManufacturados(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<RankingArticuloResponse> ranking;
+
         if (fechaInicio != null && fechaFin != null) {
-            return detallePedidoRepository.rankingArticulosManufacturadosMasPedidosEntreFechas(fechaInicio, fechaFin);
+            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidosEntreFechas(fechaInicio, fechaFin);
         } else if (fechaInicio != null) {
-            return detallePedidoRepository.rankingArticulosManufacturadosMasPedidosDesdeFecha(fechaInicio);
+            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidosDesdeFecha(fechaInicio);
         } else if (fechaFin != null) {
-            return detallePedidoRepository.rankingArticulosManufacturadosMasPedidosHastaFecha(fechaFin);
+            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidosHastaFecha(fechaFin);
         } else {
-            return detallePedidoRepository.rankingArticulosManufacturadosMasPedidos();
+            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidos();
         }
+
+        return aplicarDescuentoSoloTakeaway(ranking);
     }
 
     public List<RankingArticuloResponse> rankingInsumos(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<RankingArticuloResponse> ranking;
+
         if (fechaInicio != null && fechaFin != null) {
-            return detallePedidoRepository.rankingArticulosInsumosMasPedidosEntreFechas(fechaInicio, fechaFin);
+            ranking = detallePedidoRepository.rankingArticulosInsumosMasPedidosEntreFechas(fechaInicio, fechaFin);
         } else if (fechaInicio != null) {
-            return detallePedidoRepository.rankingArticulosInsumosMasPedidosDesdeFecha(fechaInicio);
+            ranking = detallePedidoRepository.rankingArticulosInsumosMasPedidosDesdeFecha(fechaInicio);
         } else if (fechaFin != null) {
-            return detallePedidoRepository.rankingArticulosInsumosMasPedidosHastaFecha(fechaFin);
+            ranking = detallePedidoRepository.rankingArticulosInsumosMasPedidosHastaFecha(fechaFin);
         } else {
-            return detallePedidoRepository.rankingArticulosInsumosMasPedidos();
+            ranking = detallePedidoRepository.rankingArticulosInsumosMasPedidos();
         }
+
+        return aplicarDescuentoSoloTakeaway(ranking);
+    }
+
+    // Aplica descuento del 10% si el artículo fue vendido con algún pedido tipo TAKEAWAY
+    private List<RankingArticuloResponse> aplicarDescuentoSoloTakeaway(List<RankingArticuloResponse> ranking) {
+        Map<String, RankingArticuloResponse> resultado = new HashMap<>();
+
+        for (RankingArticuloResponse item : ranking) {
+            BigDecimal subtotal = item.totalRecaudado();
+
+            // Aplica descuento si el tipo de envío fue TAKEAWAY
+            if (item.tipoEnvioEnum() == TipoEnvioEnum.TAKEAWAY) {
+                subtotal = subtotal.multiply(BigDecimal.valueOf(0.9));
+            }
+
+            resultado.merge(
+                    item.denominacion(),
+                    new RankingArticuloResponse(
+                            item.denominacion(),
+                            item.cantidadTotal(),
+                            subtotal,
+                            null // ya no usamos tipo de envío final
+                    ),
+                    (existente, nuevo) -> new RankingArticuloResponse(
+                            existente.denominacion(),
+                            existente.cantidadTotal() + nuevo.cantidadTotal(),
+                            existente.totalRecaudado().add(nuevo.totalRecaudado()),
+                            null
+                    )
+            );
+        }
+
+        return resultado.values().stream()
+                .sorted(Comparator.comparing(RankingArticuloResponse::cantidadTotal).reversed())
+                .toList();
     }
 
     public void generarEstadisticasDeTodosLosDias() {
