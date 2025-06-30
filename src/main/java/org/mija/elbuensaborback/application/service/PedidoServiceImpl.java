@@ -11,6 +11,7 @@ import org.mija.elbuensaborback.application.service.contratos.PedidoService;
 import org.mija.elbuensaborback.domain.enums.EstadoEnum;
 import org.mija.elbuensaborback.domain.enums.EstadoPagoEnum;
 import org.mija.elbuensaborback.domain.enums.TipoEnvioEnum;
+import org.mija.elbuensaborback.domain.exceptions.FaltaDePagoException;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.ClienteRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.DomicilioRepositoryImpl;
@@ -157,6 +158,9 @@ public class PedidoServiceImpl implements PedidoService {
         if (actualizacionPedido.nuevoEstado() != null){
             if (actualizacionPedido.nuevoEstado() == EstadoEnum.CANCELADO) {
                 new RuntimeException("No se puede cambiar a este estado");
+            }
+            if (actualizacionPedido.nuevoEstado() == EstadoEnum.ENTREGADO && (pedido.getEstadoPagoEnum() == EstadoPagoEnum.PENDIENTE | pedido.getEstadoPagoEnum() == EstadoPagoEnum.RECHAZADO)) {
+                new FaltaDePagoException("No se puede cambiar a este estado, debe pagar el pedido antes");
             }
             if (actualizacionPedido.nuevoEstado() == EstadoEnum.PREPARACION){
                 pedido.confirmarStock();
