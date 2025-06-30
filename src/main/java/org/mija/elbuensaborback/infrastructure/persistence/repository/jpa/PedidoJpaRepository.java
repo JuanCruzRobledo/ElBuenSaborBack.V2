@@ -28,7 +28,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     @Query("SELECT DISTINCT p.fechaPedido FROM pedido p WHERE p.estadoEnum = 'ENTREGADO'")
     List<LocalDate> findFechasDePedidosEntregados();
 
-    // ======================= TODOS LOS PEDIDOS TERMINADOS ========================//
+    // ======================= TODOS LOS PEDIDOS ENTREGADO ========================//
     @Query("""
     SELECT new org.mija.elbuensaborback.application.dto.response.RankingClientesResponse(
         c.nombre,
@@ -38,7 +38,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     )
     FROM pedido p
     JOIN p.cliente c
-    WHERE p.estadoEnum = 'TERMINADO'
+    WHERE p.estadoEnum = 'ENTREGADO'
     GROUP BY c.id, c.nombre, c.apellido
 """)
     List<RankingClientesResponse> obtenerVentasClientesFinalizados();
@@ -52,7 +52,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     )
     FROM pedido p
     JOIN p.cliente c
-    WHERE p.estadoEnum = 'TERMINADO'
+    WHERE p.estadoEnum = 'ENTREGADO'
     AND p.fechaPedido BETWEEN :fechaInicio AND :fechaFin
     GROUP BY c.id, c.nombre, c.apellido
 """)
@@ -70,7 +70,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     )
     FROM pedido p
     JOIN p.cliente c
-    WHERE p.estadoEnum = 'TERMINADO'
+    WHERE p.estadoEnum = 'ENTREGADO'
     AND p.fechaPedido >= :fechaInicio
     GROUP BY c.id, c.nombre, c.apellido
 """)
@@ -87,7 +87,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     )
     FROM pedido p
     JOIN p.cliente c
-    WHERE p.estadoEnum = 'TERMINADO'
+    WHERE p.estadoEnum = 'ENTREGADO'
     AND p.fechaPedido <= :fechaFin
     GROUP BY c.id, c.nombre, c.apellido
 """)

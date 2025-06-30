@@ -25,7 +25,7 @@ public interface DetallePedidoJpaRepository extends JpaRepository<DetallePedidoE
         FROM pedido_detalle d
         JOIN d.pedido p
         JOIN d.articulo a
-        WHERE p.estadoEnum = 'TERMINADO'
+        WHERE p.estadoEnum = 'ENTREGADO'
           AND TYPE(a) = articulo_manufacturado 
         GROUP BY a.id, a.denominacion
         ORDER BY SUM(d.cantidad) DESC
@@ -42,7 +42,7 @@ public interface DetallePedidoJpaRepository extends JpaRepository<DetallePedidoE
         FROM pedido_detalle d
         JOIN d.pedido p
         JOIN d.articulo a
-        WHERE p.estadoEnum = 'TERMINADO'
+        WHERE p.estadoEnum = 'ENTREGADO'
           AND TYPE(a) = articulo_manufacturado
           AND p.fechaPedido BETWEEN :fechaInicio AND :fechaFin
         GROUP BY a.id, a.denominacion
@@ -63,7 +63,7 @@ public interface DetallePedidoJpaRepository extends JpaRepository<DetallePedidoE
         FROM pedido_detalle d
         JOIN d.pedido p
         JOIN d.articulo a
-        WHERE p.estadoEnum = 'TERMINADO'
+        WHERE p.estadoEnum = 'ENTREGADO'
           AND TYPE(a) = articulo_manufacturado
           AND p.fechaPedido >= :fechaInicio
         GROUP BY a.id, a.denominacion
@@ -83,7 +83,7 @@ public interface DetallePedidoJpaRepository extends JpaRepository<DetallePedidoE
         FROM pedido_detalle d
         JOIN d.pedido p
         JOIN d.articulo a
-        WHERE p.estadoEnum = 'TERMINADO'
+        WHERE p.estadoEnum = 'ENTREGADO'
           AND TYPE(a) = articulo_manufacturado
           AND p.fechaPedido <= :fechaFin
         GROUP BY a.id, a.denominacion
@@ -107,7 +107,7 @@ public interface DetallePedidoJpaRepository extends JpaRepository<DetallePedidoE
         FROM pedido_detalle d
         JOIN d.pedido p
         JOIN d.articulo a
-        WHERE p.estadoEnum = 'TERMINADO'
+        WHERE p.estadoEnum = 'ENTREGADO'
           AND TYPE(a) = articulo_insumo
         GROUP BY a.id, a.denominacion
         ORDER BY SUM(d.cantidad) DESC
@@ -124,7 +124,7 @@ public interface DetallePedidoJpaRepository extends JpaRepository<DetallePedidoE
         FROM pedido_detalle d
         JOIN d.pedido p
         JOIN d.articulo a
-        WHERE p.estadoEnum = 'TERMINADO'
+        WHERE p.estadoEnum = 'ENTREGADO'
           AND TYPE(a) = articulo_insumo
           AND p.fechaPedido BETWEEN :fechaInicio AND :fechaFin
         GROUP BY a.id, a.denominacion
@@ -145,7 +145,7 @@ public interface DetallePedidoJpaRepository extends JpaRepository<DetallePedidoE
         FROM pedido_detalle d
         JOIN d.pedido p
         JOIN d.articulo a
-        WHERE p.estadoEnum = 'TERMINADO'
+        WHERE p.estadoEnum = 'ENTREGADO'
           AND TYPE(a) = articulo_insumo
           AND p.fechaPedido >= :fechaInicio
         GROUP BY a.id, a.denominacion
@@ -165,7 +165,7 @@ public interface DetallePedidoJpaRepository extends JpaRepository<DetallePedidoE
         FROM pedido_detalle d
         JOIN d.pedido p
         JOIN d.articulo a
-        WHERE p.estadoEnum = 'TERMINADO'
+        WHERE p.estadoEnum = 'ENTREGADO'
           AND TYPE(a) = articulo_insumo 
           AND p.fechaPedido <= :fechaFin
         GROUP BY a.id, a.denominacion
