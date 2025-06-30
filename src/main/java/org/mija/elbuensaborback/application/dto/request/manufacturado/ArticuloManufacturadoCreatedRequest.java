@@ -11,6 +11,7 @@ public record ArticuloManufacturadoCreatedRequest(
         String denominacion,
         BigDecimal precioVenta,
         Boolean productoActivo,
+        Boolean esVendible,
         Integer tiempoEstimadoMinutos,
         Set<String> imagenesUrls,
         Long categoriaId,

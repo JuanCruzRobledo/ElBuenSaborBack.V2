@@ -14,6 +14,7 @@ public record ArticuloManufacturadoUpdateRequest(
         BigDecimal precioVenta,
         BigDecimal precioCosto,
         Boolean productoActivo,
+        Boolean esVendible,
         Integer tiempoEstimadoMinutos,
         Set<ImagenDto> imagenesUrls,
         Long categoriaId,
