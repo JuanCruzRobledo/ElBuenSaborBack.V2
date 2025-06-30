@@ -68,7 +68,7 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
         insumo.calcularPrecioVenta(precioVentaManual);
 
         // Actualizar fabricados y promociones relacionados
-        actualizarFabricadosYPromociones(insumo, precioVentaManual);
+        actualizarFabricadosYPromociones(insumo);
 
         // Guardar nuevo estado
         boolean estaActivoAhora = Boolean.TRUE.equals(insumo.getProductoActivo());
@@ -132,7 +132,7 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
         articulo.calcularPrecioVenta(precioVentaAnterior);
 
         // Propagar cambios a manufacturados y promociones que dependan de este insumo
-        actualizarFabricadosYPromociones(articulo, precioVentaAnterior);
+        actualizarFabricadosYPromociones(articulo);
 
         // Persistir cambios
         articuloInsumoRepository.save(articulo);
@@ -178,7 +178,7 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
 
     //========================== METODO PARA ACTUALIZAR LOS PRECIOS EN ARTICULOS ===========================
 
-    private void actualizarFabricadosYPromociones(ArticuloInsumoEntity insumo, BigDecimal precioVentaManual) {
+    private void actualizarFabricadosYPromociones(ArticuloInsumoEntity insumo) {
         // 1. Actualizar Articulos Manufacturados que usen este insumo
         List<ArticuloManufacturadoDetalleEntity> detallesManufacturados =
                 articuloManufacturadoDetalleRepository.findByArticuloInsumo(insumo);
@@ -189,7 +189,7 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
             ArticuloManufacturadoEntity manufacturado = detalle.getArticuloManufacturado();
             if (manufacturado != null && manufacturadosActualizados.add(manufacturado)) {
                 manufacturado.calcularPrecioCosto();
-                manufacturado.calcularPrecioVenta(precioVentaManual);
+                manufacturado.calcularPrecioVenta(manufacturado.getPrecioVenta());
             }
         }
 
@@ -203,7 +203,7 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
             if (promo != null && promocionesActualizadas.add(promo)) {
                 promo.calcularPrecioCosto();
                 promo.calcularPrecioTotal();
-                promo.calcularPrecioVenta(precioVentaManual);
+                promo.calcularPrecioVenta(promo.getPrecioVenta());
             }
         }
 
@@ -215,7 +215,7 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
                 if (promo != null && promocionesActualizadas.add(promo)) {
                     promo.calcularPrecioCosto();
                     promo.calcularPrecioTotal();
-                    promo.calcularPrecioVenta(precioVentaManual);
+                    promo.calcularPrecioVenta(promo.getPrecioVenta());
                 }
             }
         }
