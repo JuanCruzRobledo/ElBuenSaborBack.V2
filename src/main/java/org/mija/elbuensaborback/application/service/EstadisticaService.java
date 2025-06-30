@@ -100,8 +100,16 @@ public class EstadisticaService {
         estadisticaDiariaRepository.save(estadistica);
     }
 
-    public List<EstadisticaDiaria> obtenerEstadisticasPorRango(LocalDate fechaInicio, LocalDate fechaFin) {
-        return estadisticaDiariaRepository.findByFechaBetween(fechaInicio, fechaFin);
+    public List<EstadisticaDiaria> obtenerEstadisticasPorRangoFlexible(LocalDate fechaInicio, LocalDate fechaFin) {
+        if (fechaInicio != null && fechaFin != null) {
+            return estadisticaDiariaRepository.findByFechaBetween(fechaInicio, fechaFin);
+        } else if (fechaInicio != null) {
+            return estadisticaDiariaRepository.findByFechaGreaterThanEqual(fechaInicio);
+        } else if (fechaFin != null) {
+            return estadisticaDiariaRepository.findByFechaLessThanEqual(fechaFin);
+        } else {
+            return estadisticaDiariaRepository.findAll();
+        }
     }
 
 

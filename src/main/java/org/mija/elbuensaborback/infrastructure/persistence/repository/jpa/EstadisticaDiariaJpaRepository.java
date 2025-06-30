@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface EstadisticaDiariaJpaRepository extends JpaRepository<EstadisticaDiaria, LocalDate> {
     List<EstadisticaDiaria> findByFechaBetween(LocalDate fechaInicio, LocalDate fechaFin);
     Optional<EstadisticaDiaria> findByFecha(LocalDate fecha);
+    List<EstadisticaDiaria> findByFechaGreaterThanEqual(LocalDate fechaInicio);
+    List<EstadisticaDiaria> findByFechaLessThanEqual(LocalDate fechaFin);
 }

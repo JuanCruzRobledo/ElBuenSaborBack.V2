@@ -44,10 +44,13 @@ public class EstadisticaController {
 
     @GetMapping
     public ResponseEntity<List<EstadisticaDiaria>> obtenerEstadisticasPorRango(
-            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+            @RequestParam(value = "fechaInicio", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
 
-        List<EstadisticaDiaria> estadisticas = estadisticaService.obtenerEstadisticasPorRango(fechaInicio, fechaFin);
+            @RequestParam(value = "fechaFin", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+
+        List<EstadisticaDiaria> estadisticas = estadisticaService.obtenerEstadisticasPorRangoFlexible(fechaInicio, fechaFin);
         return ResponseEntity.ok(estadisticas);
     }
 
