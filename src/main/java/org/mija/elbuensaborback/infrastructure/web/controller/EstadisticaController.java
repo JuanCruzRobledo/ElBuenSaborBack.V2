@@ -42,7 +42,7 @@ public class EstadisticaController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
+    @GetMapping("/diarias")
     public ResponseEntity<List<EstadisticaDiaria>> obtenerEstadisticasPorRango(
             @RequestParam(value = "fechaInicio", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
