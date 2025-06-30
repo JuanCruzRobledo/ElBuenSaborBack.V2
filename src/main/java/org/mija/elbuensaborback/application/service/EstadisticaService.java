@@ -48,7 +48,11 @@ public class EstadisticaService {
         BigDecimal ganancia = ingreso.subtract(costo);
 
         // Crear y guardar la estadística
-        EstadisticaDiaria estadistica = new EstadisticaDiaria();
+        // Buscar la estadística existente o crear una nueva
+        EstadisticaDiaria estadistica = estadisticaDiariaRepository
+                .findByFecha(ayer)
+                .orElse(new EstadisticaDiaria());
+
         estadistica.setFecha(ayer);
         estadistica.setIngresoTotal(ingreso);
         estadistica.setCostoTotal(costo);
@@ -74,7 +78,11 @@ public class EstadisticaService {
 
         BigDecimal ganancia = ingreso.subtract(costo);
 
-        EstadisticaDiaria estadistica = new EstadisticaDiaria();
+        // Buscar la estadística existente o crear una nueva
+        EstadisticaDiaria estadistica = estadisticaDiariaRepository
+                .findByFecha(hoy)
+                .orElse(new EstadisticaDiaria());
+
         estadistica.setFecha(hoy);
         estadistica.setIngresoTotal(ingreso);
         estadistica.setCostoTotal(costo);
@@ -121,6 +129,38 @@ public class EstadisticaService {
             return detallePedidoRepository.rankingArticulosInsumosMasPedidosHastaFecha(fechaFin);
         } else {
             return detallePedidoRepository.rankingArticulosInsumosMasPedidos();
+        }
+    }
+
+    public void generarEstadisticasDeTodosLosDias() {
+        List<LocalDate> fechas = pedidoRepository.findFechasDePedidosEntregados();
+
+        for (LocalDate fecha : fechas) {
+            List<PedidoEntity> pedidos = pedidoRepository.findTerminadosByFechaPedido(fecha);
+
+            BigDecimal ingreso = pedidos.stream()
+                    .map(PedidoEntity::getTotal)
+                    .filter(Objects::nonNull)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            BigDecimal costo = pedidos.stream()
+                    .map(PedidoEntity::getCostoTotal)
+                    .filter(Objects::nonNull)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            BigDecimal ganancia = ingreso.subtract(costo);
+
+            // Buscar si ya existe, y actualizarla. Si no, crearla.
+            EstadisticaDiaria estadistica = estadisticaDiariaRepository
+                    .findByFecha(fecha)
+                    .orElse(new EstadisticaDiaria());
+
+            estadistica.setFecha(fecha);
+            estadistica.setIngresoTotal(ingreso);
+            estadistica.setCostoTotal(costo);
+            estadistica.setGanancia(ganancia);
+
+            estadisticaDiariaRepository.save(estadistica);
         }
     }
 

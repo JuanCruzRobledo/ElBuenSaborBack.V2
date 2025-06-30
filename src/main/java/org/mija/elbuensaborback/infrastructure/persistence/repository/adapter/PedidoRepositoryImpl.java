@@ -61,7 +61,7 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
     }
 
     public List<PedidoEntity> findTerminadosByFechaPedido(LocalDate fechaPedido){
-        return pedidoJpaRepository.findByFechaPedidoAndEstadoEnum(fechaPedido, EstadoEnum.TERMINADO);
+        return pedidoJpaRepository.findByFechaPedidoAndEstadoEnum(fechaPedido, EstadoEnum.ENTREGADO);
     }
 
     public List<RankingClientesResponse> obtenerVentasClientesFinalizados() {
@@ -90,5 +90,9 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
 
     public List<PedidoEntity> obtenerPedidosHastaFecha(LocalDate fechaFin) {
         return pedidoJpaRepository.obtenerPedidosHastaFecha(fechaFin);
+    }
+
+    public List<LocalDate> findFechasDePedidosEntregados() {
+        return pedidoJpaRepository.findFechasDePedidosEntregados();
     }
 }

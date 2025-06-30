@@ -25,6 +25,9 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
 
     List<PedidoEntity> findAllByFechaPedido(LocalDate fecha);
 
+    @Query("SELECT DISTINCT p.fechaPedido FROM pedido p WHERE p.estadoEnum = 'ENTREGADO'")
+    List<LocalDate> findFechasDePedidosEntregados();
+
     // ======================= TODOS LOS PEDIDOS TERMINADOS ========================//
     @Query("""
     SELECT new org.mija.elbuensaborback.application.dto.response.RankingClientesResponse(

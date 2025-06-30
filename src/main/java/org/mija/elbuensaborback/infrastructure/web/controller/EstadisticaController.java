@@ -24,9 +24,20 @@ public class EstadisticaController {
         this.estadisticaService = estadisticaService;
     }
 
-    // Endpoint temporal solo para pruebas
-    @PostMapping("/generar")
-    public ResponseEntity<?> generarEstadisticas() {
+    @PostMapping("/generar-hoy")
+    public ResponseEntity<?> generarEstadisticasHoy() {
+        estadisticaService.generarEstadisticasDelDiaActual();
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/generar-ayer")
+    public ResponseEntity<?> generarEstadisticasAyer() {
+        estadisticaService.generarEstadisticasDelDiaActual();
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/generar-todos")
+    public ResponseEntity<?> generarEstadisticasTodas() {
         estadisticaService.generarEstadisticasDelDiaActual();
         return ResponseEntity.ok().build();
     }
