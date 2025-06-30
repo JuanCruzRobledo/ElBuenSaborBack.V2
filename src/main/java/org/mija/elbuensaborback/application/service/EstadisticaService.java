@@ -27,67 +27,76 @@ public class EstadisticaService {
     // Ejecuta todos los días a las 2:00 AM
     @Scheduled(cron = "0 0 2 * * ?")
     public void generarEstadisticasDelDiaAnterior() {
+        // Obtener la fecha de ayer
         LocalDate ayer = LocalDate.now().minusDays(1);
 
-        // Consultar pedidos del día anterior
+        // Buscar los pedidos del día anterior que fueron ENTREGADOS
         List<PedidoEntity> pedidos = pedidoRepository.findTerminadosByFechaPedido(ayer);
 
-        // Calcular ingreso total
+        // Calcular el ingreso total sumando los totales de los pedidos
         BigDecimal ingreso = pedidos.stream()
                 .map(PedidoEntity::getTotal)
                 .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        // Calcular costo total
+        // Calcular el costo total sumando los costos de los pedidos
         BigDecimal costo = pedidos.stream()
                 .map(PedidoEntity::getCostoTotal)
                 .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        // Calcular ganancia
+        // Calcular la ganancia como ingreso - costo
         BigDecimal ganancia = ingreso.subtract(costo);
 
-        // Crear y guardar la estadística
-        // Buscar la estadística existente o crear una nueva
+        // Buscar si ya existe una estadística para ese día, si no, crear una nueva
         EstadisticaDiaria estadistica = estadisticaDiariaRepository
                 .findByFecha(ayer)
                 .orElse(new EstadisticaDiaria());
 
+        // Establecer los valores calculados
         estadistica.setFecha(ayer);
         estadistica.setIngresoTotal(ingreso);
         estadistica.setCostoTotal(costo);
         estadistica.setGanancia(ganancia);
 
+        // Guardar (crear o actualizar) la estadística en la base de datos
         estadisticaDiariaRepository.save(estadistica);
     }
 
     public void generarEstadisticasDelDiaActual() {
+        // Obtener la fecha actual
         LocalDate hoy = LocalDate.now();
 
+        // Buscar los pedidos del día actual que fueron ENTREGADOS
         List<PedidoEntity> pedidos = pedidoRepository.findTerminadosByFechaPedido(hoy);
 
+        // Calcular el ingreso total
         BigDecimal ingreso = pedidos.stream()
                 .map(PedidoEntity::getTotal)
                 .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        // Calcular el costo total
         BigDecimal costo = pedidos.stream()
                 .map(PedidoEntity::getCostoTotal)
                 .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        // Calcular la ganancia como ingreso - costo
         BigDecimal ganancia = ingreso.subtract(costo);
 
-        // Buscar la estadística existente o crear una nueva
+        // Buscar si ya existe una estadística para ese día, si no, crear una nueva
         EstadisticaDiaria estadistica = estadisticaDiariaRepository
                 .findByFecha(hoy)
                 .orElse(new EstadisticaDiaria());
 
+        // Establecer los valores calculados
         estadistica.setFecha(hoy);
         estadistica.setIngresoTotal(ingreso);
         estadistica.setCostoTotal(costo);
         estadistica.setGanancia(ganancia);
 
+        // Guardar (crear o actualizar) la estadística en la base de datos
         estadisticaDiariaRepository.save(estadistica);
     }
 
@@ -133,33 +142,41 @@ public class EstadisticaService {
     }
 
     public void generarEstadisticasDeTodosLosDias() {
+        // Obtener todas las fechas únicas donde hubo pedidos entregados
         List<LocalDate> fechas = pedidoRepository.findFechasDePedidosEntregados();
 
+        // Iterar por cada fecha
         for (LocalDate fecha : fechas) {
+            // Obtener los pedidos ENTREGADOS de esa fecha
             List<PedidoEntity> pedidos = pedidoRepository.findTerminadosByFechaPedido(fecha);
 
+            // Calcular ingreso total sumando los totales de los pedidos
             BigDecimal ingreso = pedidos.stream()
                     .map(PedidoEntity::getTotal)
                     .filter(Objects::nonNull)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+            // Calcular costo total sumando los costos de los pedidos
             BigDecimal costo = pedidos.stream()
                     .map(PedidoEntity::getCostoTotal)
                     .filter(Objects::nonNull)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+            // Calcular ganancia = ingreso - costo
             BigDecimal ganancia = ingreso.subtract(costo);
 
-            // Buscar si ya existe, y actualizarla. Si no, crearla.
+            // Buscar si ya existe una estadística para esa fecha, si no, crear una nueva
             EstadisticaDiaria estadistica = estadisticaDiariaRepository
                     .findByFecha(fecha)
                     .orElse(new EstadisticaDiaria());
 
+            // Establecer los valores en la estadística
             estadistica.setFecha(fecha);
             estadistica.setIngresoTotal(ingreso);
             estadistica.setCostoTotal(costo);
             estadistica.setGanancia(ganancia);
 
+            // Guardar (insertar o actualizar) en la base de datos
             estadisticaDiariaRepository.save(estadistica);
         }
     }

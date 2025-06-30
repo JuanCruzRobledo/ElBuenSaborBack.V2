@@ -32,13 +32,13 @@ public class EstadisticaController {
 
     @PostMapping("/generar-ayer")
     public ResponseEntity<?> generarEstadisticasAyer() {
-        estadisticaService.generarEstadisticasDelDiaActual();
+        estadisticaService.generarEstadisticasDelDiaAnterior();
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/generar-todos")
     public ResponseEntity<?> generarEstadisticasTodas() {
-        estadisticaService.generarEstadisticasDelDiaActual();
+        estadisticaService.generarEstadisticasDeTodosLosDias();
         return ResponseEntity.ok().build();
     }
 
