@@ -155,6 +155,9 @@ public class PedidoServiceImpl implements PedidoService {
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
 
         if (actualizacionPedido.nuevoEstado() != null){
+            if (actualizacionPedido.nuevoEstado() == EstadoEnum.CANCELADO) {
+                new RuntimeException("No se puede cambiar a este estado");
+            }
             if (actualizacionPedido.nuevoEstado() == EstadoEnum.PREPARACION){
                 pedido.confirmarStock();
             }
