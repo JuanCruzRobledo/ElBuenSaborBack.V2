@@ -21,6 +21,7 @@ public record ArticuloPromocionCreatedRequest(
         LocalTime horaDesde,
         LocalTime horaHasta,
         String descripcion,
-        List<DetalleDto> promocionDetalle
+        List<DetalleDto> promocionDetalle,
+        Float margen
 ) {
 }
