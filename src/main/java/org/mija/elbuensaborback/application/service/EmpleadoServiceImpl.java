@@ -15,6 +15,7 @@ import org.mija.elbuensaborback.infrastructure.persistence.entity.RoleEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.SucursalEntity;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.EmpleadoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.RoleRepositoryImpl;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     private final EmpleadoRepositoryImpl empleadoRepository;
     private final EmpleadoMapper empleadoMapper;
     private final RoleRepositoryImpl roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public EmpleadoResponse crearEmpleado(EmpleadoCreatedRequest request) {
@@ -41,6 +43,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         empleado.getUsuario().setAccountExpired(false);
         empleado.getUsuario().setAccountLocked(false);
         empleado.getUsuario().setCredentialsExpired(false);
+        empleado.getUsuario().setPassword(passwordEncoder.encode(request.password()));
 
         empleado = empleadoRepository.save(empleado);
         return empleadoMapper.toResponse(empleado);

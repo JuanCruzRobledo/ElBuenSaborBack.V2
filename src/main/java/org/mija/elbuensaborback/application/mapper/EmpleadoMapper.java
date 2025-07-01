@@ -20,7 +20,6 @@ public interface EmpleadoMapper {
     EmpleadoResponse toResponse(EmpleadoEntity entity);
 
     @Mapping(target = "usuario.email", source = "email")
-    @Mapping(target = "usuario.password", source = "password")
     EmpleadoEntity toEntity(EmpleadoCreatedRequest request);
 
     @Mapping(target = "email",source = "usuario.email")
