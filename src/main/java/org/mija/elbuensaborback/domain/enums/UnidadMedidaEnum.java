@@ -1,35 +1,20 @@
 package org.mija.elbuensaborback.domain.enums;
 
+
 public enum UnidadMedidaEnum {
-    UNIDAD,
+    GR(0.001), // 1000 gramos = 1kg
+    KG(1.0),
+    ML(0.001),
+    L(1.0),
+    UNIDAD(1.0);
 
-    // Peso
-    MG,    // Miligramo
-    GR,    // Gramo
-    HG,    // Hectogramo
-    KG,    // Kilogramo
-    TON,   // Tonelada
+    private final double factor;
 
-    // Volumen
-    ML,    // Mililitro
-    CL,    // Centilitro
-    DL,    // Decilitro
-    L,     // Litro
-    M3,    // Metro cúbico
+    UnidadMedidaEnum(double factor) {
+        this.factor = factor;
+    }
 
-    // Longitud
-    MM,    // Milímetro
-    CM,    // Centímetro
-    M,     // Metro
-    KM,    // Kilómetro
-
-    // Tiempo
-    SEG,   // Segundo
-    MIN,   // Minuto
-    H,     // Hora
-
-    // Superficie (opcional si se trabaja con áreas)
-    CM2,   // Centímetro cuadrado
-    M2,    // Metro cuadrado
-    HA     // Hectárea
+    public double getFactor() {
+        return factor;
+    }
 }

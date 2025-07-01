@@ -41,16 +41,16 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
         BigDecimal costoTotal = BigDecimal.ZERO;
 
         for (ArticuloManufacturadoDetalleEntity detalle : articuloManufacturadoDetalle) {
-            BigDecimal precio = detalle.getArticuloInsumo().getPrecioVenta();
-            BigDecimal cantidad = BigDecimal.valueOf(detalle.getCantidad());
-            BigDecimal precioPorCantidad = precio
-                    .divide(BigDecimal.valueOf(1000), 4, RoundingMode.HALF_UP)
-                    .multiply(cantidad);
+            ArticuloInsumoEntity insumo = detalle.getArticuloInsumo();
+
+            BigDecimal cantidadBase = BigDecimal.valueOf(insumo.convertirACantidadBase(detalle.getCantidad()));
+            BigDecimal precioUnitario = insumo.getPrecioVenta(); // ya está por unidad base
+            BigDecimal precioPorCantidad = precioUnitario.multiply(cantidadBase);
+
             costoTotal = costoTotal.add(precioPorCantidad);
         }
 
         setPrecioCosto(costoTotal);
-        //setPrecioVenta(costoTotal.multiply(BigDecimal.valueOf(1.3)));
     }
 
     public void calcularPrecioVenta(BigDecimal precioVentaManual) {
@@ -75,24 +75,24 @@ public class ArticuloManufacturadoEntity extends ArticuloEntity {
     public void reservarStock(int cantidad, String articuloPadreNombre) {
         for (ArticuloManufacturadoDetalleEntity detalle : this.getArticuloManufacturadoDetalle()) {
             ArticuloInsumoEntity insumo = detalle.getArticuloInsumo();
-            double requerido = detalle.getCantidad() * cantidad;
-            insumo.reservarStock(requerido, articuloPadreNombre);
+            double requeridoBase = insumo.convertirACantidadBase(detalle.getCantidad() * cantidad);
+            insumo.reservarStock(requeridoBase, articuloPadreNombre);
         }
     }
 
     public void liberarStock(int cantidad) {
         for (ArticuloManufacturadoDetalleEntity detalle : this.getArticuloManufacturadoDetalle()) {
             ArticuloInsumoEntity insumo = detalle.getArticuloInsumo();
-            double requerido = detalle.getCantidad() * cantidad;
-            insumo.liberarStock(requerido);
+            double requeridoBase = insumo.convertirACantidadBase(detalle.getCantidad() * cantidad);
+            insumo.liberarStock(requeridoBase);
         }
     }
 
     public void confirmarStock(int cantidad) {
         for (ArticuloManufacturadoDetalleEntity detalle : this.getArticuloManufacturadoDetalle()) {
             ArticuloInsumoEntity insumo = detalle.getArticuloInsumo();
-            double requerido = detalle.getCantidad() * cantidad;
-            insumo.confirmarStock(requerido);
+            double requeridoBase = insumo.convertirACantidadBase(detalle.getCantidad() * cantidad);
+            insumo.confirmarStock(requeridoBase);
         }
     }
 

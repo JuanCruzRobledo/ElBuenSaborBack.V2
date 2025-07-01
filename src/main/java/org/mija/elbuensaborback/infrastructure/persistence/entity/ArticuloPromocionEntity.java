@@ -43,15 +43,24 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
     }
 
     //Suma del precio de costo de todos los Articulos de la promocion
-    public void calcularPrecioCosto(){
+    public void calcularPrecioCosto() {
         BigDecimal costoTotal = BigDecimal.ZERO;
 
-        for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
-            BigDecimal precio = detalle.getArticulo().getPrecioCosto();
+        for (PromocionDetalleEntity detalle : promocionDetalle) {
+            ArticuloEntity articulo = detalle.getArticulo();
             BigDecimal cantidad = BigDecimal.valueOf(detalle.getCantidad());
-            BigDecimal precioPorCantidad = precio.multiply(cantidad);
-            costoTotal = costoTotal.add(precioPorCantidad);
+
+            if (articulo instanceof ArticuloInsumoEntity insumo) {
+                BigDecimal cantidadBase = BigDecimal.valueOf(insumo.convertirACantidadBase(cantidad.doubleValue()));
+                BigDecimal precioPorCantidad = insumo.getPrecioCosto().multiply(cantidadBase);
+                costoTotal = costoTotal.add(precioPorCantidad);
+            } else {
+                // Artículo manufacturado o promoción
+                BigDecimal precioPorCantidad = articulo.getPrecioCosto().multiply(cantidad);
+                costoTotal = costoTotal.add(precioPorCantidad);
+            }
         }
+
         setPrecioCosto(costoTotal);
     }
 
@@ -90,46 +99,43 @@ public class ArticuloPromocionEntity extends ArticuloEntity {
     //================= RESERVAR STOCK ==================//
 
     public void reservarStock(int cantidad, String articuloPadreNombre) {
-        for (int i = 0; i < cantidad; i++) {
-            for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
-                ArticuloEntity articulo = detalle.getArticulo();
-                int cantDetalle = detalle.getCantidad();
+        for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
+            ArticuloEntity articulo = detalle.getArticulo();
+            int cantTotal = detalle.getCantidad() * cantidad;
 
-                if (articulo instanceof ArticuloManufacturadoEntity manufacturado) {
-                    manufacturado.reservarStock(cantDetalle, articuloPadreNombre);
-                } else if (articulo instanceof ArticuloInsumoEntity insumo) {
-                    insumo.reservarStock((double) cantDetalle, articuloPadreNombre);
-                }
+            if (articulo instanceof ArticuloManufacturadoEntity manufacturado) {
+                manufacturado.reservarStock(cantTotal, articuloPadreNombre);
+            } else if (articulo instanceof ArticuloInsumoEntity insumo) {
+                double requerido = insumo.convertirACantidadBase(cantTotal);
+                insumo.reservarStock(requerido, articuloPadreNombre);
             }
         }
     }
 
     public void liberarStock(int cantidad) {
-        for (int i = 0; i < cantidad; i++) {
-            for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
-                ArticuloEntity articulo = detalle.getArticulo();
-                int cantDetalle = detalle.getCantidad();
+        for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
+            ArticuloEntity articulo = detalle.getArticulo();
+            int cantTotal = detalle.getCantidad() * cantidad;
 
-                if (articulo instanceof ArticuloManufacturadoEntity manufacturado) {
-                    manufacturado.liberarStock(cantDetalle);
-                } else if (articulo instanceof ArticuloInsumoEntity insumo) {
-                    insumo.liberarStock(cantDetalle);
-                }
+            if (articulo instanceof ArticuloManufacturadoEntity manufacturado) {
+                manufacturado.liberarStock(cantTotal);
+            } else if (articulo instanceof ArticuloInsumoEntity insumo) {
+                double requerido = insumo.convertirACantidadBase(cantTotal);
+                insumo.liberarStock(requerido);
             }
         }
     }
 
     public void confirmarStock(int cantidad) {
-        for (int i = 0; i < cantidad; i++) {
-            for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
-                ArticuloEntity articulo = detalle.getArticulo();
-                int cantDetalle = detalle.getCantidad();
+        for (PromocionDetalleEntity detalle : this.getPromocionDetalle()) {
+            ArticuloEntity articulo = detalle.getArticulo();
+            int cantTotal = detalle.getCantidad() * cantidad;
 
-                if (articulo instanceof ArticuloManufacturadoEntity manufacturado) {
-                    manufacturado.confirmarStock(cantDetalle);
-                } else if (articulo instanceof ArticuloInsumoEntity insumo) {
-                    insumo.confirmarStock(cantDetalle);
-                }
+            if (articulo instanceof ArticuloManufacturadoEntity manufacturado) {
+                manufacturado.confirmarStock(cantTotal);
+            } else if (articulo instanceof ArticuloInsumoEntity insumo) {
+                double requerido = insumo.convertirACantidadBase(cantTotal);
+                insumo.confirmarStock(requerido);
             }
         }
     }

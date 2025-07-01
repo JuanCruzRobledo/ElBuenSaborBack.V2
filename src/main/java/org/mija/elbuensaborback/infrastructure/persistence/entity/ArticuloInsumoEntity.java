@@ -37,23 +37,26 @@ public class ArticuloInsumoEntity extends ArticuloEntity {
     }
 
     public void reservarStock(double cantidad, String articuloPadreNombre) {
-        if (getStockDisponible() < cantidad) {
+        double cantidadBase = convertirACantidadBase(cantidad);
+        if (getStockDisponible() < cantidadBase) {
             throw new StockInsuficienteException("No contamos con stock suficiente del insumo '" + this.getDenominacion() +
                     "' requerido por el artículo '" + articuloPadreNombre + "'. Disminuye la cantidad o espera reposición.");
         }
-        this.stockReservado += cantidad;
+        this.stockReservado += cantidadBase;
     }
 
     public void liberarStock(double cantidad) {
-        this.stockReservado = Math.max(0, this.stockReservado - cantidad);
+        double cantidadBase = convertirACantidadBase(cantidad);
+        this.stockReservado = Math.max(0, this.stockReservado - cantidadBase);
     }
 
     public void confirmarStock(double cantidad) {
-        if (this.stockReservado < cantidad) {
+        double cantidadBase = convertirACantidadBase(cantidad);
+        if (this.stockReservado < cantidadBase) {
             throw new IllegalStateException("No hay suficiente stock reservado para confirmar.");
         }
-        this.stockActual -= cantidad;
-        this.stockReservado -= cantidad;
+        this.stockActual -= cantidadBase;
+        this.stockReservado -= cantidadBase;
     }
 
     public void calcularPrecioVenta(BigDecimal precioVentaManual) {
@@ -71,6 +74,10 @@ public class ArticuloInsumoEntity extends ArticuloEntity {
             // Si no hay margen, usar el precio ingresado manualmente
             this.setPrecioVenta(precioVentaManual);
         }
+    }
+
+    public double convertirACantidadBase(double cantidad) {
+        return cantidad * unidadMedidaEnum.getFactor();
     }
 
 }

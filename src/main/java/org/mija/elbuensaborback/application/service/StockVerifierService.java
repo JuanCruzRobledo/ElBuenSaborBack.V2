@@ -12,7 +12,7 @@ import java.util.Map;
 public class StockVerifierService {
 
     public void verificarStock(PedidoEntity pedido) {
-        // Mapa temporal para acumular el uso de insumos por insumo
+        // Mapa temporal para acumular el uso de insumos por insumo (en unidad base)
         Map<ArticuloInsumoEntity, Double> insumosUsados = new HashMap<>();
         Map<ArticuloInsumoEntity, String> insumoArticuloPadre = new HashMap<>();
 
@@ -31,6 +31,7 @@ public class StockVerifierService {
             }
         }
 
+        // Verificar stock disponible
         for (Map.Entry<ArticuloInsumoEntity, Double> entry : insumosUsados.entrySet()) {
             ArticuloInsumoEntity insumo = entry.getKey();
             double cantidadRequerida = entry.getValue();
@@ -39,14 +40,16 @@ public class StockVerifierService {
             if (disponible < cantidadRequerida) {
                 String articuloPadre = insumoArticuloPadre.getOrDefault(insumo, "el pedido");
                 throw new StockInsuficienteException(
-                        "No contamos con stock suficiente del insumo '" + insumo.getDenominacion() + "'. Disminuye la cantidad o espera reposición."
+                        "No contamos con stock suficiente del insumo '" + insumo.getDenominacion() +
+                                "' requerido por el artículo '" + articuloPadre + "'. Disminuye la cantidad o espera reposición."
                 );
             }
         }
     }
 
     private void acumularInsumo(Map<ArticuloInsumoEntity, Double> mapa, ArticuloInsumoEntity insumo, double cantidad) {
-        mapa.put(insumo, mapa.getOrDefault(insumo, 0.0) + cantidad);
+        double cantidadBase = insumo.convertirACantidadBase(cantidad); // 🔄 Conversión a unidad base
+        mapa.put(insumo, mapa.getOrDefault(insumo, 0.0) + cantidadBase);
     }
 
     private void acumularManufacturado(
