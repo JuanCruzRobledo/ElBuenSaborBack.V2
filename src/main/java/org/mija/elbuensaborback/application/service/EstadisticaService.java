@@ -3,12 +3,13 @@ package org.mija.elbuensaborback.application.service;
 import lombok.RequiredArgsConstructor;
 import org.mija.elbuensaborback.application.dto.response.RankingClientesResponse;
 import org.mija.elbuensaborback.application.dto.response.RankingArticuloResponse;
+import org.mija.elbuensaborback.domain.enums.EstadoEnum;
 import org.mija.elbuensaborback.domain.enums.TipoEnvioEnum;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.EstadisticaDiaria;
-import org.mija.elbuensaborback.infrastructure.persistence.entity.PedidoEntity;
+import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.DetallePedidoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.PedidoRepositoryImpl;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.EstadisticaDiariaJpaRepository;
+import org.mija.elbuensaborback.infrastructure.persistence.repository.jpa.PedidoJpaRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.util.*;
 public class EstadisticaService {
 
     private final PedidoRepositoryImpl pedidoRepository;
+    private final PedidoJpaRepository pedidoJpaRepository;
     private final DetallePedidoRepositoryImpl detallePedidoRepository;
     private final EstadisticaDiariaJpaRepository estadisticaDiariaRepository;
 
@@ -125,22 +127,6 @@ public class EstadisticaService {
         }
     }
 
-    public List<RankingArticuloResponse> rankingManufacturados(LocalDate fechaInicio, LocalDate fechaFin) {
-        List<RankingArticuloResponse> ranking;
-
-        if (fechaInicio != null && fechaFin != null) {
-            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidosEntreFechas(fechaInicio, fechaFin);
-        } else if (fechaInicio != null) {
-            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidosDesdeFecha(fechaInicio);
-        } else if (fechaFin != null) {
-            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidosHastaFecha(fechaFin);
-        } else {
-            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidos();
-        }
-
-        return aplicarDescuentoSoloTakeaway(ranking);
-    }
-
     public List<RankingArticuloResponse> rankingInsumos(LocalDate fechaInicio, LocalDate fechaFin) {
         List<RankingArticuloResponse> ranking;
 
@@ -154,42 +140,32 @@ public class EstadisticaService {
             ranking = detallePedidoRepository.rankingArticulosInsumosMasPedidos();
         }
 
+        // Buscar pedidos entregados en el rango deseado
+        List<PedidoEntity> pedidos = obtenerPedidosEntregadosEntreFechas(fechaInicio, fechaFin);
+        agregarArticulosDesdePromociones(ranking, pedidos, ArticuloInsumoEntity.class);
+
         return aplicarDescuentoSoloTakeaway(ranking);
     }
 
-    // Aplica descuento del 10% si el artículo fue vendido con algún pedido tipo TAKEAWAY
-    private List<RankingArticuloResponse> aplicarDescuentoSoloTakeaway(List<RankingArticuloResponse> ranking) {
-        Map<String, RankingArticuloResponse> resultado = new HashMap<>();
+    public List<RankingArticuloResponse> rankingManufacturados(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<RankingArticuloResponse> ranking;
 
-        for (RankingArticuloResponse item : ranking) {
-            BigDecimal subtotal = item.totalRecaudado();
-
-            // Aplica descuento si el tipo de envío fue TAKEAWAY
-            if (item.tipoEnvioEnum() == TipoEnvioEnum.TAKEAWAY) {
-                subtotal = subtotal.multiply(BigDecimal.valueOf(0.9));
-            }
-
-            resultado.merge(
-                    item.denominacion(),
-                    new RankingArticuloResponse(
-                            item.denominacion(),
-                            item.cantidadTotal(),
-                            subtotal,
-                            null // ya no usamos tipo de envío final
-                    ),
-                    (existente, nuevo) -> new RankingArticuloResponse(
-                            existente.denominacion(),
-                            existente.cantidadTotal() + nuevo.cantidadTotal(),
-                            existente.totalRecaudado().add(nuevo.totalRecaudado()),
-                            null
-                    )
-            );
+        if (fechaInicio != null && fechaFin != null) {
+            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidosEntreFechas(fechaInicio, fechaFin);
+        } else if (fechaInicio != null) {
+            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidosDesdeFecha(fechaInicio);
+        } else if (fechaFin != null) {
+            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidosHastaFecha(fechaFin);
+        } else {
+            ranking = detallePedidoRepository.rankingArticulosManufacturadosMasPedidos();
         }
 
-        return resultado.values().stream()
-                .sorted(Comparator.comparing(RankingArticuloResponse::cantidadTotal).reversed())
-                .toList();
+        List<PedidoEntity> pedidos = obtenerPedidosEntregadosEntreFechas(fechaInicio, fechaFin);
+        agregarArticulosDesdePromociones(ranking, pedidos, ArticuloManufacturadoEntity.class);
+
+        return aplicarDescuentoSoloTakeaway(ranking);
     }
+
 
     public void generarEstadisticasDeTodosLosDias() {
         // Obtener todas las fechas únicas donde hubo pedidos entregados
@@ -231,4 +207,113 @@ public class EstadisticaService {
         }
     }
 
+    //========================METODOS DE AYUDA ================================
+
+    private void agregarArticulosDesdePromociones(
+            List<RankingArticuloResponse> ranking,
+            List<PedidoEntity> pedidos,
+            Class<? extends ArticuloEntity> tipoArticulo
+    ) {
+        Map<String, RankingArticuloResponse> mapa = new HashMap<>();
+
+        // Cargar ranking actual al mapa
+        for (RankingArticuloResponse r : ranking) {
+            String clave = r.denominacion() + r.tipoEnvioEnum();
+            mapa.put(clave, r);
+        }
+
+        for (PedidoEntity pedido : pedidos) {
+            if (pedido.getEstadoEnum() != EstadoEnum.ENTREGADO) continue;
+
+            for (DetallePedidoEntity detalle : pedido.getListaDetalle()) {
+                ArticuloEntity articulo = detalle.getArticulo();
+
+                if (articulo instanceof ArticuloPromocionEntity promo) {
+                    for (PromocionDetalleEntity pd : promo.getPromocionDetalle()) {
+                        ArticuloEntity articuloPromo = pd.getArticulo();
+
+                        if (tipoArticulo.isInstance(articuloPromo)) {
+                            String denominacion = articuloPromo.getDenominacion();
+                            TipoEnvioEnum tipoEnvio = pedido.getTipoEnvioEnum();
+                            String clave = denominacion + tipoEnvio;
+
+                            int cantidadTotal = detalle.getCantidad() * pd.getCantidad();
+                            BigDecimal subtotal = articuloPromo.getPrecioVenta().multiply(BigDecimal.valueOf(cantidadTotal));
+
+                            RankingArticuloResponse existente = mapa.get(clave);
+
+                            if (existente != null) {
+                                Long nuevaCantidad = existente.cantidadTotal() + cantidadTotal;
+                                BigDecimal nuevoSubTotal = existente.totalRecaudado().add(subtotal);
+
+                                mapa.put(clave, new RankingArticuloResponse(
+                                        denominacion,
+                                        nuevaCantidad,
+                                        nuevoSubTotal,
+                                        tipoEnvio
+                                ));
+                            } else {
+                                mapa.put(clave, new RankingArticuloResponse(
+                                        denominacion,
+                                        (long) cantidadTotal,
+                                        subtotal,
+                                        tipoEnvio
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Reemplazar el contenido original con los nuevos objetos actualizados
+        ranking.clear();
+        ranking.addAll(mapa.values());
+    }
+
+    // Aplica descuento del 10% si el artículo fue vendido con algún pedido tipo TAKEAWAY
+    private List<RankingArticuloResponse> aplicarDescuentoSoloTakeaway(List<RankingArticuloResponse> ranking) {
+        Map<String, RankingArticuloResponse> resultado = new HashMap<>();
+
+        for (RankingArticuloResponse item : ranking) {
+            BigDecimal subtotal = item.totalRecaudado();
+
+            // Aplica descuento si el tipo de envío fue TAKEAWAY
+            if (item.tipoEnvioEnum() == TipoEnvioEnum.TAKEAWAY) {
+                subtotal = subtotal.multiply(BigDecimal.valueOf(0.9));
+            }
+
+            resultado.merge(
+                    item.denominacion(),
+                    new RankingArticuloResponse(
+                            item.denominacion(),
+                            item.cantidadTotal(),
+                            subtotal,
+                            null // ya no usamos tipo de envío final
+                    ),
+                    (existente, nuevo) -> new RankingArticuloResponse(
+                            existente.denominacion(),
+                            existente.cantidadTotal() + nuevo.cantidadTotal(),
+                            existente.totalRecaudado().add(nuevo.totalRecaudado()),
+                            null
+                    )
+            );
+        }
+
+        return resultado.values().stream()
+                .sorted(Comparator.comparing(RankingArticuloResponse::cantidadTotal).reversed())
+                .toList();
+    }
+
+    private List<PedidoEntity> obtenerPedidosEntregadosEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        if (fechaInicio != null && fechaFin != null) {
+            return pedidoJpaRepository.findByEstadoEnumAndFechaPedidoBetween(EstadoEnum.ENTREGADO, fechaInicio, fechaFin);
+        } else if (fechaInicio != null) {
+            return pedidoJpaRepository.findByEstadoEnumAndFechaPedidoAfter(EstadoEnum.ENTREGADO, fechaInicio.minusDays(1));
+        } else if (fechaFin != null) {
+            return pedidoJpaRepository.findByEstadoEnumAndFechaPedidoBefore(EstadoEnum.ENTREGADO, fechaFin.plusDays(1));
+        } else {
+            return pedidoJpaRepository.findByEstadoEnum(EstadoEnum.ENTREGADO);
+        }
+    }
 }

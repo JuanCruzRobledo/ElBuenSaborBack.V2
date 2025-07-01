@@ -133,4 +133,11 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     List<PedidoEntity> obtenerPedidosHastaFecha(
             @Param("fechaFin") LocalDate fechaFin
     );
+
+    //===================AUXILIARES====================
+
+    List<PedidoEntity> findByEstadoEnumAndFechaPedidoBetween(EstadoEnum estado, LocalDate inicio, LocalDate fin);
+    List<PedidoEntity> findByEstadoEnumAndFechaPedidoAfter(EstadoEnum estado, LocalDate inicio);
+    List<PedidoEntity> findByEstadoEnumAndFechaPedidoBefore(EstadoEnum estado, LocalDate fin);
+    List<PedidoEntity> findByEstadoEnum(EstadoEnum estado);
 }
