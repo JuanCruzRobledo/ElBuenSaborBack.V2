@@ -40,7 +40,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     JOIN p.cliente c
     WHERE p.estadoEnum = 'ENTREGADO'
     GROUP BY c.id, c.nombre, c.apellido
-    ORDER BY SUM(p.total)
+    ORDER BY SUM(p.total) DESC
 """)
     List<RankingClientesResponse> obtenerVentasClientesFinalizados();
 
@@ -56,7 +56,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     WHERE p.estadoEnum = 'ENTREGADO'
     AND p.fechaPedido BETWEEN :fechaInicio AND :fechaFin
     GROUP BY c.id, c.nombre, c.apellido
-    ORDER BY SUM(p.total)
+    ORDER BY SUM(p.total) DESC
 """)
     List<RankingClientesResponse> obtenerVentasClientesPorRango(
             @Param("fechaInicio") LocalDate fechaInicio,
@@ -75,7 +75,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     WHERE p.estadoEnum = 'ENTREGADO'
     AND p.fechaPedido >= :fechaInicio
     GROUP BY c.id, c.nombre, c.apellido
-    ORDER BY SUM(p.total)
+    ORDER BY SUM(p.total) DESC
 """)
     List<RankingClientesResponse> obtenerVentasClientesDesdeFecha(
             @Param("fechaInicio") LocalDate fechaInicio
@@ -93,7 +93,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
     WHERE p.estadoEnum = 'ENTREGADO'
     AND p.fechaPedido <= :fechaFin
     GROUP BY c.id, c.nombre, c.apellido
-    ORDER BY SUM(p.total)
+    ORDER BY SUM(p.total) DESC
 """)
     List<RankingClientesResponse> obtenerVentasClientesHastaFecha(
             @Param("fechaFin") LocalDate fechaFin
