@@ -11,6 +11,7 @@ import org.mija.elbuensaborback.application.dto.response.ArticuloInsumoResponse;
 import org.mija.elbuensaborback.application.helpers.ArticuloEstadoService;
 import org.mija.elbuensaborback.application.mapper.ArticuloInsumoMapper;
 import org.mija.elbuensaborback.application.service.contratos.ArticuloInsumoService;
+import org.mija.elbuensaborback.domain.enums.UnidadMedidaEnum;
 import org.mija.elbuensaborback.infrastructure.persistence.entity.*;
 import org.mija.elbuensaborback.infrastructure.persistence.repository.adapter.*;
 import org.springframework.stereotype.Service;
@@ -50,38 +51,53 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
     @Transactional
     public ArticuloInsumoResponse actualizarArticuloInsumo(Long id, ArticuloInsumoUpdateRequest articuloUpdateRequest) {
 
+        // Buscar la categoría
         CategoriaEntity categoria = categoriaRepository.findById(articuloUpdateRequest.categoriaId())
                 .orElseThrow(() -> new EntityNotFoundException("No se encontró la categoría"));
 
+        // Buscar el insumo existente
         ArticuloInsumoEntity insumo = articuloInsumoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("No se pudo encontrar el insumo"));
 
         // Guardar estado anterior
         boolean estabaActivo = Boolean.TRUE.equals(insumo.getProductoActivo());
 
-        // Mapear cambios
+        // Guardar la unidad anterior antes de actualizar
+        UnidadMedidaEnum unidadAnterior = insumo.getUnidadMedidaEnum();
+
+        // Mapear cambios del request a la entidad
         articuloInsumoMapper.updateEntity(insumo, articuloUpdateRequest);
         insumo.setCategoria(categoria);
 
-        // Calcular precio venta del insumo
+        // Detectar si la unidad de medida cambió
+        UnidadMedidaEnum nuevaUnidad = insumo.getUnidadMedidaEnum();
+        boolean unidadCambio = !unidadAnterior.equals(nuevaUnidad);
+
+        // Calcular precio de venta con base en el margen o el valor ingresado
         BigDecimal precioVentaManual = articuloUpdateRequest.precioVenta();
         insumo.calcularPrecioVenta(precioVentaManual);
 
-        // Actualizar fabricados y promociones relacionados
+        // Si la unidad cambió, debemos recalcular las cantidades en manufacturados
+        if (unidadCambio) {
+            recalcularManufacturadosPorCambioUnidad(insumo, unidadAnterior);
+        }
+
+        // Actualizar artículos fabricados y promociones relacionadas
         actualizarFabricadosYPromociones(insumo);
 
-        // Guardar nuevo estado
+        // Guardar nuevo estado de actividad
         boolean estaActivoAhora = Boolean.TRUE.equals(insumo.getProductoActivo());
 
-        // Activar o desactivar relaciones si cambió el estado
+        // Reactivar o desactivar si cambió el estado
         if (!estabaActivo && estaActivoAhora) {
-            insumo.setProductoActivo(Boolean.FALSE); //Para no afectar el metodo recursivo que lo va a activar
+            insumo.setProductoActivo(Boolean.FALSE); // para evitar afectar la recursión
             articuloEstadoService.reactivarInsumoRecursivamente(insumo);
         } else if (estabaActivo && !estaActivoAhora) {
-            insumo.setProductoActivo(Boolean.TRUE); //Para no afectar el metodo recursivo que lo va a activar
+            insumo.setProductoActivo(Boolean.TRUE); // para evitar afectar la recursión
             articuloEstadoService.desactivarInsumoRecursivamente(insumo);
         }
 
+        // Devolver respuesta con DTO actualizado
         return articuloInsumoMapper.toResponse(insumo);
     }
 
@@ -218,6 +234,29 @@ public class ArticuloInsumoServiceImpl implements ArticuloInsumoService {
                     promo.calcularPrecioVenta(promo.getPrecioVenta());
                 }
             }
+        }
+    }
+    private void recalcularManufacturadosPorCambioUnidad(ArticuloInsumoEntity insumo, UnidadMedidaEnum unidadAnterior) {
+        // Obtener todos los detalles que usan el insumo actualizado
+        List<ArticuloManufacturadoDetalleEntity> detalles = articuloManufacturadoDetalleRepository.findByArticuloInsumo(insumo);
+
+        for (ArticuloManufacturadoDetalleEntity detalle : detalles) {
+            // Obtener la cantidad actual (en base a la unidad anterior)
+            double cantidadActual = detalle.getCantidad();
+
+            // Convertir a unidad base usando la unidad anterior
+            double cantidadBase = unidadAnterior.getFactor() * cantidadActual;
+
+            // Convertir desde unidad base a nueva unidad
+            double cantidadConvertida = cantidadBase / insumo.getUnidadMedidaEnum().getFactor();
+
+            // Actualizar cantidad
+            detalle.setCantidad(cantidadConvertida);
+
+            // Recalcular el precio del artículo manufacturado padre
+            ArticuloManufacturadoEntity manufacturado = detalle.getArticuloManufacturado();
+            manufacturado.calcularPrecioCosto();
+            manufacturado.calcularPrecioVenta(manufacturado.getPrecioVenta());
         }
     }
 }
