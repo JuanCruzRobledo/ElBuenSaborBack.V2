@@ -55,14 +55,7 @@ cd elbuensabor-back
 
 Crear un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
-```
-# Base de datos
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=elbuensabor
-DB_USER=root
-DB_PASSWORD=
-
+``` 
 # Google OAuth2
 OAUTH_CLIENT_ID=...
 OAUTH_CLIENT_SECRET=...
@@ -140,16 +133,20 @@ Si usás **Gradle**:
 - Login con JWT y Google (OAuth2)
 - Registro de usuarios
 - Gestión de perfiles
-- Validación de roles y permisos
+- Validación de roles y permisos 
+- Recuperación de contraseña
 
 ### 🍔 Módulo de Productos
 - CRUD de artículos manufacturados
 - CRUD de insumos
 - CRUD de promociones
 - Control de stock y stock mínimo
+- Descuento de stock
+- Reactivación y desactivación automática de productos
 
 ### 📦 Módulo de Pedidos
 - Generación de pedidos
+- Verificación de stock antes de pedir
 - Cambio de estados de pedido
 - WebSocket para notificaciones en tiempo real
 
@@ -175,26 +172,15 @@ Si usás **Gradle**:
 - Validación de pagos y manejo de IPN
 - Uso de ngrok para pruebas en entorno local
 
-> ⚠️ Esta estructura representa la lógica del backend. Algunas de estas funcionalidades ya están integradas al frontend, y otras están listas pero en espera de implementación del lado cliente.
-
----
-
-## 🚧 Módulos pendientes
-
-Aunque gran parte de la lógica ya está implementada, restan algunos detalles por completar:
-
-- Envío de email para recuperación de contraseña o cambio de correo electrónico
-- Integración final de Cloudinary en los endpoints de artículos
-- Proteger dinámicamente los endpoints para que usuarios solo puedan acceder a los datos que coincidan con los suyos
-- Validaciones adicionales en endpoints existentes
+### 🛡️ Otros módulos 
 - Manejo de respuestas en caso de error (GlobalExceptionHandler)
-- Envío de facturas por email
 - Corrección en algunos CRUDs de los faltantes por implementar en el front
+
 ---
 
 ## 📅 Última actualización Readme
 
-📆 2025-06-19
+📆 2025-07-03
 
 ---
 
